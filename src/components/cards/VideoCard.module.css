@@ -1,0 +1,145 @@
+/* File: src/components/cards/VideoCard.module.css */
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  margin-top: 25px;
+  margin-bottom: 10px;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+.mediaButton {
+  border: none;
+  background: none;
+  padding: 0px;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ✅ play overlay CENTRALIZADO */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.30),
+    rgba(0, 0, 0, 0.62)
+  );
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.mediaButton:hover .overlay {
+  opacity: 1;
+}
+
+.overlayInner {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+}
+
+.playIcon {
+  font-size: 44px;
+  line-height: 1;
+}
+
+.openText {
+  font-size: 13px;
+  color: rgba(233, 236, 241, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.body {
+  padding: 12px 14px 14px;
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.desc {
+  margin: 0;
+  color: rgba(233, 236, 241, 0.70);
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.72);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.modalContent {
+  width: min(980px, 94vw);
+  max-height: 90vh;
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(14, 16, 22, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  padding: 14px;
+}
+
+.modalClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.modalVideo {
+  width: 100%;
+  height: auto;
+  max-height: 84vh;
+  display: block;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
+}

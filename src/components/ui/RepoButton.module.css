@@ -1,0 +1,77 @@
+/* File: src/components/ui/RepoButton.module.css */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  /* ✅ maior */
+  padding: 20px 30px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+
+  --social-color: #8250df;
+  --social-fill: rgba(11, 13, 18, 0.92);
+  --social-hover-fill: #8250df;
+  --social-border: linear-gradient(90deg, #8250df, #b072ff, #8250df);
+
+  background:
+    linear-gradient(var(--social-fill), var(--social-fill)) padding-box,
+    var(--social-border) border-box;
+
+  color: var(--social-color);
+  font-weight: 950;
+  text-decoration: none;
+
+  transition: transform 0.15s ease, filter 0.15s ease;
+  will-change: transform, filter;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.98);
+
+  background:
+    linear-gradient(var(--social-hover-fill), var(--social-hover-fill)) padding-box,
+    var(--social-border) border-box;
+
+  color: #fff;
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(233, 236, 241, 0.22);
+  outline-offset: 3px;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 20px; /* ✅ maior */
+  height: 20px;
+  fill: currentColor;
+}
+
+.inline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.muted {
+  font-weight: 850;
+  opacity: 0.75;
+}
+
+.strong {
+  font-weight: 950;
+}
