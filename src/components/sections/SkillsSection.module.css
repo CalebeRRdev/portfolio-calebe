@@ -1,0 +1,274 @@
+/* File: src/components/sections/SkillsSection.module.css */
+
+.section {
+    padding: 34px 0;
+    scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
+  
+    --bee-yellow: rgb(255, 176, 0);
+    --bee-amber: rgb(255, 206, 84);
+  }
+  
+  .sectionHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  
+  .sectionTitle {
+    margin: 0;
+    font-size: 22px;
+  }
+  
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  .groupTitle {
+    margin: 18px 0 0;
+    font-size: 16px;
+    text-align: center;
+    opacity: 0.92;
+  }
+  
+  .card {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+  
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .cardNarrow {
+    width: min(860px, 92vw);
+  }
+  
+  .cardWide {
+    width: min(980px, 92vw);
+  }
+  
+  /* ✅ card full-bleed (de ponta a ponta) */
+.cardFullBleed {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  
+    /* opcional: tira o arredondado do card externo
+       pra ficar “faixa” full width */
+    border-radius: 0;
+  
+    /* mantém o conteúdo mais “respirado” na lateral */
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .chip {
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(233, 236, 241, 0.92);
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  /* ===========================
+     CAROUSEL (sem container visível)
+     - padroniza por altura
+     - respeita aspect ratio
+     - não força upscale
+     =========================== */
+  
+  .carousel {
+  /* já tinha */
+  position: relative;
+  overflow: hidden;
+
+  /* ✅ deixa a faixa bem “full width” */
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+
+  /* mais espaço lateral interno do track */
+  padding: 22px 0;
+
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+
+  --logo-h: 120px;
+}
+  
+  .carouselDragging { cursor: grabbing; }
+  
+  .carouselTrack {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  
+    /* ✅ mais padding lateral pra não “colar” no canto da tela */
+    padding: 0 36px;
+  
+    width: max-content;
+    will-change: transform;
+  }
+  
+  /* wrapper invisível (sem fundo, sem borda) */
+  .logoWrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* ✅ tamanho “igualzinho” pela altura
+     - width auto = mantém proporção
+     - max-height fixa a altura “visual”
+     - sem width fixa => não estica
+     - não upscala agressivamente (mantém nítido) */
+  .logoImg {
+    height: var(--logo-h);
+    width: auto;
+    max-width: 260px; /* limita logos muito largos */
+    object-fit: contain;
+    object-position: center;
+    filter: drop-shadow(0 10px 22px rgba(0,0,0,0.35));
+  }
+  
+  /* fade nas pontas */
+  .carouselEdgeLeft,
+  .carouselEdgeRight {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 180px;
+    z-index: 2;
+  }
+  
+  .carouselEdgeLeft {
+    left: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.35) 55%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.38;
+  }
+  
+  .carouselEdgeRight {
+    right: 0;
+    background: linear-gradient(
+      270deg,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.35) 55%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.38;
+  }
+  
+  /* ===========================
+     SOFT PILLS FIELD (30–40% visíveis)
+     =========================== */
+  
+  .softField {
+    position: relative;
+    width: 100%;
+    height: 260px; /* ajuste altura do “campo” */
+    border-radius: 14px;
+  
+    border: 1px solid rgba(255, 176, 0, 0.18);
+    background:
+      radial-gradient(700px 220px at 50% 0%,
+        rgba(255, 176, 0, 0.14),
+        rgba(0,0,0,0) 60%),
+      rgba(255, 255, 255, 0.02);
+  
+    overflow: hidden;
+
+    gap: 20px;
+  }
+  
+  .softPill {
+    position: absolute;
+    padding: 10px 14px;
+    border-radius: 999px;
+  
+    font-size: 13px;
+    font-weight: 800;
+    color: rgba(233, 236, 241, 0.92);
+  
+    border: 1px solid rgba(255, 176, 0, 0.26);
+    background:
+      linear-gradient(145deg,
+        rgba(255, 176, 0, 0.18),
+        rgba(255, 176, 0, 0.06) 40%,
+        rgba(0, 0, 0, 0.18) 100%);
+  
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.20),
+      0 14px 28px rgba(0,0,0,0.22);
+  
+    white-space: nowrap;
+    user-select: none;
+  
+    transition: opacity 760ms ease, filter 760ms ease;
+  }
+  
+  .softPill:hover {
+    filter: drop-shadow(0 12px 22px rgba(255, 176, 0, 0.18));
+  }
+  
+  /* animação de entrada/saída */
+  .softPillIn {
+    opacity: 1;
+  }
+  
+  .softPillOut {
+    opacity: 0;
+  }
+  
+  /* Acessibilidade */
+  @media (prefers-reduced-motion: reduce) {
+    .softPill {
+      transition: none;
+    }
+  }
+  
+  /* Responsivo */
+  @media (max-width: 900px) {
+    .cardFullBleed {
+      border-radius: 0;
+    }
+  
+    .carouselTrack {
+      padding: 0 18px;
+      gap: 18px;
+    }
+  
+    .carouselEdgeLeft,
+    .carouselEdgeRight {
+      width: 96px;
+    }
+  }
+  
+    .carousel { --logo-h: 72px; }
+    .carouselEdgeLeft,
+    .carouselEdgeRight { width: 74px; }
+  
+    .softField { height: 230px; }
+    .softPill { font-size: 12px; padding: 9px 12px; }

@@ -1,6 +1,7 @@
 // File: src/components/ui/RepoButton.tsx
 
 import styles from "./RepoButton.module.css";
+import { GoArrowUpRight } from "react-icons/go";
 
 function GitHubIcon(props: { className?: string }) {
   return (
@@ -10,28 +11,55 @@ function GitHubIcon(props: { className?: string }) {
   );
 }
 
-export function RepoButton(props: {
+type RepoButtonProps = {
   href: string;
-  username: string; // ex: "@CalebeRRdev"
-  labelMuted?: string; // ex: "Developed by"
+
+  /** Small label above the main line (ex: "MobTech Solutions") */
+  titleTop?: string;
+
+  /** Main action text (ex: "View repository") */
+  titleMain?: string;
+
+  /** Optional handle shown on the right (ex: "@CalebeRRdev") */
+  username?: string;
+
+  /** Tooltip */
   title?: string;
-}) {
+
+  ariaLabel?: string;
+};
+
+export function RepoButton({
+  href,
+  titleTop = "GitHub",
+  titleMain = "View repository",
+  username,
+  title,
+  ariaLabel = "Open GitHub repository",
+}: RepoButtonProps) {
   return (
     <a
       className={styles.btn}
-      href={props.href}
+      href={href}
       target="_blank"
       rel="noreferrer"
-      aria-label="GitHub repository"
-      title={props.title ?? `GitHub: ${props.username}`}
+      aria-label={ariaLabel}
+      title={title ?? titleMain}
     >
       <span className={styles.iconWrap} aria-hidden="true">
         <GitHubIcon className={styles.icon} />
       </span>
 
-      <span className={styles.inline}>
-        <span className={styles.muted}>{props.labelMuted ?? "Developed by"}</span>
-        <span className={styles.strong}>{props.username}</span>
+      <span className={styles.textCol}>
+        <span className={styles.top}>{titleTop}</span>
+        <span className={styles.main}>
+          {titleMain}
+          {username ? <span className={styles.handle}>{username}</span> : null}
+        </span>
+      </span>
+
+      <span className={styles.chev} aria-hidden="true">
+      <GoArrowUpRight />
       </span>
     </a>
   );

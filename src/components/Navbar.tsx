@@ -21,21 +21,21 @@ export function Navbar() {
 
   const [open, setOpen] = useState(false);
 
+  const closeMenu = () => setOpen(false);
+  const toggleMenu = () => setOpen((v) => !v);
+
   const scrollToId = (id: string) => {
     const el = document.getElementById(id);
     const nav = navRef.current;
     if (!el) return;
 
-    const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : 64;
-    const gap = 0;
+    const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : 72;
+    const gap = 12; // espacinho extra pra respirar
 
     const y = el.getBoundingClientRect().top + window.scrollY - (navH + gap);
 
     window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
   };
-
-  const closeMenu = () => setOpen(false);
-  const toggleMenu = () => setOpen((v) => !v);
 
   // ESC closes drawer + lock scroll while open
   useEffect(() => {
@@ -55,6 +55,28 @@ export function Navbar() {
     };
   }, [open]);
 
+  // mantém CSS var com altura real da navbar (opcional, mas útil)
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+
+    const update = () => {
+      const h = Math.ceil(nav.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    };
+
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(nav);
+
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
   return (
     <>
       <header ref={navRef} className={styles.header}>
@@ -64,8 +86,11 @@ export function Navbar() {
           onClick={(e) => {
             e.preventDefault();
             scrollToId("inicio");
+            closeMenu();
           }}
+          aria-label="Go to Home section"
         >
+          Calebe
         </a>
 
         <nav className={styles.navDesktop} aria-label="Primary">
@@ -121,7 +146,7 @@ export function Navbar() {
               onClick={(e) => {
                 e.preventDefault();
                 scrollToId(it.id);
-                closeMenu();
+                closeMenu(); // ✅ fecha drawer
               }}
             >
               {it.label}

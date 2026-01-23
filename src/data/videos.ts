@@ -1,10 +1,11 @@
 // File: src/data/videos.ts
 
+export type VideoGroup = "mobtech" | "ipuy";
 export type VideoAspect = "9/16" | "16/9";
 
 export type VideoItem = {
   id: string;
-  group: "mobtech" | "ipuy";
+  group: VideoGroup;
   title: string;
   description: string;
   src: string;

@@ -1,6 +1,7 @@
 /* File: src/components/Navbar.module.css */
 
 .header {
+  min-height: var(--nav-h);
   position: fixed;
   top: 0;
   left: 0;

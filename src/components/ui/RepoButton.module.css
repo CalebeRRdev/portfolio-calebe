@@ -4,12 +4,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  gap: 16px;
 
-  /* ✅ maior */
-  padding: 20px 30px;
+  padding: 18px 26px;
   border-radius: 999px;
   border: 2px solid transparent;
 
@@ -23,7 +20,6 @@
     var(--social-border) border-box;
 
   color: var(--social-color);
-  font-weight: 950;
   text-decoration: none;
 
   transition: transform 0.15s ease, filter 0.15s ease;
@@ -31,6 +27,8 @@
 
   cursor: pointer;
   user-select: none;
+  margin-top: 15px;
+  margin-bottom: 30px;
 }
 
 .btn:hover {
@@ -56,22 +54,44 @@
 }
 
 .icon {
-  width: 20px; /* ✅ maior */
+  width: 20px;
   height: 20px;
   fill: currentColor;
 }
 
-.inline {
+.textCol {
+  display: grid;
+  gap: 2px;
+  line-height: 1.1;
+}
+
+.top {
+  font-weight: 850;
+  font-size: 12px;
+  opacity: 0.78;
+  letter-spacing: 0.2px;
+}
+
+.main {
   display: inline-flex;
   align-items: baseline;
-  gap: 8px;
-}
-
-.muted {
-  font-weight: 850;
-  opacity: 0.75;
-}
-
-.strong {
+  gap: 10px;
   font-weight: 950;
+  font-size: 15px;
+}
+
+.handle {
+  font-weight: 900;
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+.chev {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 900;
+  opacity: 0.9;
+  transform: translateY(-0.5px);
 }

@@ -1,0 +1,77 @@
+/* File: src/components/sections/HeroSection.module.css */
+
+.hero {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 34px;
+    padding: 34px 0 44px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    align-items: center;
+  
+    scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
+  }
+  
+  .heroLeft {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .heroRight {
+    max-width: 680px;
+  }
+  
+  .avatarWrap {
+    width: 250px;
+    height: 250px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 46px rgba(0, 0, 0, 0.45);
+  }
+  
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 80% 35%;
+  }
+  
+  .title {
+    font-size: 34px;
+    line-height: 1.08;
+    margin: 0 0 12px;
+  }
+  
+  .subtitle {
+    margin: 0 0 10px;
+    color: rgba(233, 236, 241, 0.82);
+    line-height: 1.75;
+    font-size: 16px;
+  }
+  
+  .subtitleMuted {
+    margin: 0;
+    color: rgba(233, 236, 241, 0.6);
+    line-height: 1.75;
+  }
+  
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 18px;
+    }
+  
+    .heroRight {
+      margin: 0 auto;
+    }
+  
+    .avatarWrap {
+      width: 220px;
+      height: 220px;
+    }
+  
+    .title {
+      font-size: 32px;
+    }
+  }

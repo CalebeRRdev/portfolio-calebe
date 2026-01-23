@@ -1,0 +1,72 @@
+/* File: src/components/sections/ProjectsSection.module.css */
+
+.section {
+  padding: 34px 0;
+  scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
+}
+
+.header {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+}
+
+.subTitle {
+  margin: 28px 0 14px;
+  font-size: 15px;
+  color: rgba(233, 236, 241, 0.92);
+  text-align: center;
+}
+
+/* MobTech: 2 cards verticais lado a lado */
+.mobtechGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 360px));
+  gap: 100px;
+  justify-content: center;
+  align-items: start;
+}
+
+.mobtechCardWrap {
+  width: 100%;
+}
+
+/* IPUY: stacked */
+.ipuyStack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  justify-items: center;
+}
+
+.ipuyCardWrap {
+  width: min(820px, 100%);
+}
+
+/* espaço entre cards e botões */
+.centerRow {
+  display: grid;
+  place-items: center;
+  margin-top: 28px;
+}
+
+.centerCol {
+  display: grid;
+  place-items: center;
+  gap: 22px;
+  margin-top: 28px;
+}
+
+@media (max-width: 900px) {
+  .mobtechGrid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}

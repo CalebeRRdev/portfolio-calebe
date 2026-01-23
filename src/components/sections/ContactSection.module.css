@@ -1,0 +1,150 @@
+/* File: src/components/sections/ContactSection.module.css */
+
+.section {
+    padding: 34px 0;
+    scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
+  }
+  
+  .sectionHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  
+  .sectionTitle {
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+  
+  /* grid */
+  .grid {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  
+  /* =========================
+     SOCIAL BUTTONS (outline -> filled on hover)
+     (COPIADO do Footer.module.css, só sem :global)
+     ========================= */
+  
+  .btnSocial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 2px ;
+  
+    /* defaults (IGUAL) */
+    --social-color: var(--text);
+    --social-fill: color-mix(in srgb, var(--bg) 92%, white);
+    --social-hover-fill: var(--social-color);
+    --social-border: linear-gradient(90deg, var(--border), var(--border));
+  
+    background:
+      linear-gradient(var(--social-fill), var(--social-fill)) padding-box,
+      var(--social-border) border-box;
+  
+    color: var(--social-color);
+    font-weight: 900;
+    text-decoration: none;
+  
+    transition: transform 0.15s ease, filter 0.15s ease;
+    will-change: transform, filter;
+  
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .btnSocial:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.98);
+  
+    background:
+      linear-gradient(var(--social-hover-fill), var(--social-hover-fill)) padding-box,
+      var(--social-border) border-box;
+  
+    color: #fff;
+  }
+  
+  .btnSocial:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--text) 25%  , white);
+    outline-offset: 3px;
+  }
+  
+  .socialIco {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .socialSvg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor; /* IMPORTANTÍSSIMO p/ o ícone acompanhar a cor */
+  }
+  
+  /* =========================
+     BRAND THEMES
+     (o hover fill é a cor principal, e a borda mantém o gradiente)
+     ========================= */
+  
+  /* LinkedIn */
+  .btnLinkedin {
+    --li-blue: #0a66c2;
+    --social-color: var(--li-blue);
+    --social-hover-fill: var(--li-blue);
+    --social-border: linear-gradient(90deg, var(--li-blue), #4a90ff, var(--li-blue));
+  }
+  
+  /* WhatsApp */
+  .btnWhatsapp {
+    --wa-green: #25d366;
+    --social-color: var(--wa-green);
+    --social-hover-fill: var(--wa-green);
+    --social-border: linear-gradient(90deg, var(--wa-green), #86efac, var(--wa-green));
+  }
+  
+  /* Gmail */
+  .btnGmail {
+    --gm-red: #ea4335;
+    --social-color: var(--gm-red);
+    --social-hover-fill: var(--gm-red);
+    --social-border: linear-gradient(90deg, #ea4335, #fbbc05, #34a853, #4285f4);
+  }
+  
+  /* Instagram (IGUAL ao footer) */
+  .btnInstagram {
+    --ig-pink: #d62976;
+    --social-color: var(--ig-pink);
+    --social-hover-fill: var(--ig-pink);
+    --social-border: linear-gradient(
+      90deg,
+      #feda75,
+      #fa7e1e,
+      #d62976,
+      #962fbf,
+      #4f5bd5
+    );
+  }
+  
+  /* GitHub (puxando pro roxo) (IGUAL ao footer) */
+  .btnGithub {
+    --gh-purple: #8250df;
+    --social-color: var(--gh-purple);
+    --social-hover-fill: var(--gh-purple);
+    --social-border: linear-gradient(90deg, #8250df, #b072ff, #8250df);
+  }
+  
+  /* responsive */
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
