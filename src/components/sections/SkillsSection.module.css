@@ -140,7 +140,7 @@
      - sem width fixa => não estica
      - não upscala agressivamente (mantém nítido) */
   .logoImg {
-    height: var(--logo-h);
+    height: 140px;
     width: auto;
     max-width: 260px; /* limita logos muito largos */
     object-fit: contain;

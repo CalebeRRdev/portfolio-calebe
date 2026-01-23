@@ -1,5 +1,13 @@
 /* File: src/components/Navbar.module.css */
 
+
+/* exemplo */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 30;
+}
+
 .header {
   min-height: var(--nav-h);
   position: fixed;
@@ -18,12 +26,14 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
   
-  .brand {
-    font-weight: 900;
-    letter-spacing: 0.4px;
-    color: #e9ecf1;
-    text-decoration: none;
-  }
+.brand {
+  font-weight: 900;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: 0.4px;
+  color: #e9ecf1;
+  text-decoration: none;
+}
   
   .navDesktop {
     display: flex;

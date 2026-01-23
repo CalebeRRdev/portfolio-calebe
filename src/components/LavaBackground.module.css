@@ -1,0 +1,144 @@
+/* File: src/components/LavaBackground.module.css */
+
+.wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 1;            /* fundo */
+    pointer-events: none;
+    transform: translateZ(0);
+  
+    background:
+      radial-gradient(900px 600px at 50% 0%, rgba(120, 70, 255, 0.08), transparent 60%),
+      radial-gradient(900px 600px at 50% 100%, rgba(0, 120, 255, 0.08), transparent 60%),
+      #07080b;
+  
+    outline: 2px solid lime; /* DEBUG: depois pode remover */
+  }
+  
+  .lava {
+    position: absolute;
+    inset: -20%;
+    overflow: hidden;
+    filter: blur(60px) saturate(1.25) contrast(1.25);
+    opacity: 0.9;
+  }
+    
+  /* bolha base */
+  .blob {
+    position: absolute;
+    width: 42vmax;
+    height: 42vmax;
+    border-radius: 999px;
+  
+    /* cor da bolha (cada uma muda via vars) */
+    background: radial-gradient(circle at 30% 30%, rgba(255, 120, 255, 0.95), rgba(120, 80, 255, 0.25) 55%, transparent 70%);
+  
+    mix-blend-mode: normal; /* em vez de screen */
+    opacity: 0.75;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+  
+  /* blobs com cores/posições e animações diferentes */
+  .b1 {
+    --c1: rgba(180, 80, 255, 0.95);
+    --c2: rgba(90, 80, 255, 0.20);
+    background: radial-gradient(circle at 35% 30%, var(--c1), var(--c2) 55%, transparent 72%);
+    top: 10%;
+    left: 5%;
+    animation: drift1 10s ease-in-out infinite;
+  }
+  
+  .b2 {
+    --c1: rgba(0, 140, 255, 0.95);
+    --c2: rgba(0, 90, 255, 0.18);
+    background: radial-gradient(circle at 35% 35%, var(--c1), var(--c2) 55%, transparent 72%);
+    top: 20%;
+    right: 0%;
+    width: 48vmax;
+    height: 48vmax;
+    animation: drift2 12s ease-in-out infinite;
+  }
+  
+  .b3 {
+    --c1: rgba(255, 0, 180, 0.90);
+    --c2: rgba(170, 60, 255, 0.18);
+    background: radial-gradient(circle at 30% 30%, var(--c1), var(--c2) 55%, transparent 72%);
+    bottom: 10%;
+    left: 20%;
+    width: 46vmax;
+    height: 46vmax;
+    animation: drift3 16s ease-in-out infinite;
+  }
+  
+  .b4 {
+    --c1: rgba(120, 80, 255, 0.95);
+    --c2: rgba(0, 120, 255, 0.16);
+    background: radial-gradient(circle at 30% 30%, var(--c1), var(--c2) 55%, transparent 72%);
+    bottom: 0%;
+    right: 10%;
+    width: 44vmax;
+    height: 44vmax;
+    animation: drift4 10s ease-in-out infinite;
+  }
+  
+  .b5 {
+    --c1: rgba(255, 120, 80, 0.55);
+    --c2: rgba(120, 80, 255, 0.12);
+    background: radial-gradient(circle at 30% 30%, var(--c1), var(--c2) 55%, transparent 72%);
+    top: -5%;
+    left: 40%;
+    width: 40vmax;
+    height: 40vmax;
+    animation: drift5 15s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  
+  /* vinheta */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(1200px 700px at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%);
+    opacity: 0.55;
+  }
+  
+  /* ruído (bem sutil) */
+  .noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    mix-blend-mode: overlay;
+  }
+  
+  /* animações */
+  @keyframes drift1 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(12vw, 8vh, 0) scale(1.12); }
+  }
+  
+  @keyframes drift2 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+    50% { transform: translate3d(-14vw, 10vh, 0) scale(0.98); }
+  }
+  
+  @keyframes drift3 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(10vw, -12vh, 0) scale(1.10); }
+  }
+  
+  @keyframes drift4 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1.06); }
+    50% { transform: translate3d(-10vw, -6vh, 0) scale(1); }
+  }
+  
+  @keyframes drift5 {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(0vw, 14vh, 0) scale(1.15); }
+  }
+  
+  /* acessibilidade
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none !important; }
+  } */

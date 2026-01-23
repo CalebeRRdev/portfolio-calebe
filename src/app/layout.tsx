@@ -1,7 +1,7 @@
 // File: src/app/layout.tsx
-
 import "./globals.css";
 import type { Metadata } from "next";
+import LavaBackground from "@/components/LavaBackground";
 
 export const metadata: Metadata = {
   title: "Calebe's Portfolio",
@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <LavaBackground />
+        <div className="app-shell">{children}</div>
+      </body>
     </html>
   );
 }

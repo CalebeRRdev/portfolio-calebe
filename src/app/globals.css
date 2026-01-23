@@ -18,26 +18,39 @@
 
 /* ✅ IMPORTANT: offsets globais para navegação por hash e scroll */
 html {
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + var(--nav-gap));
 }
 
 section[id] {
   scroll-margin-top: calc(var(--nav-h) + var(--nav-gap));
+  scroll-snap-align: start;
 }
+
+/* File: src/app/globals.css */
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  height: 100%;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  position: relative;
+  isolation: isolate;
+
+  /* fundo base */
+}
+
+/* ✅ garante que o app inteiro fique acima do fundo */
+.app-shell {
+  position: relative;
+  z-index: 2;
 }
 
 * {

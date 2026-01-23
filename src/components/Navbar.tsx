@@ -90,7 +90,7 @@ export function Navbar() {
           }}
           aria-label="Go to Home section"
         >
-          Calebe
+        Calebe Rodrigues Rolim
         </a>
 
         <nav className={styles.navDesktop} aria-label="Primary">
