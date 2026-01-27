@@ -4,8 +4,12 @@
     padding: 34px 0;
     scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
   
-    --bee-yellow: rgb(255, 176, 0);
-    --bee-amber: rgb(255, 206, 84);
+    /* ✅ paleta verde/preto */
+    --hc-base: rgb(0, 60, 0); /* #003c00 */
+    --hc-glow: rgba(0, 255, 120, 0.18);
+    --hc-border: rgba(0, 60, 0, 0.42);
+    --hc-border-strong: rgba(0, 60, 0, 0.62);
+    --hc-fill: rgba(11, 13, 18, 0.75);
   }
   
   .sectionHeader {
@@ -55,21 +59,23 @@
   }
   
   /* ✅ card full-bleed (de ponta a ponta) */
-.cardFullBleed {
+  .cardFullBleed {
     width: 100vw;
     max-width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-  
-    /* opcional: tira o arredondado do card externo
-       pra ficar “faixa” full width */
     border-radius: 0;
-  
-    /* mantém o conteúdo mais “respirado” na lateral */
     padding-left: 0;
     padding-right: 0;
   }
-
+  
+  /* ✅ remove as linhas retas só no card do carrossel */
+  .cardFullBleed {
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+  
   .chips {
     display: flex;
     flex-wrap: wrap;
@@ -83,72 +89,107 @@
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: rgba(233, 236, 241, 0.92);
     font-size: 13px;
-    background: rgba(255, 255, 255, 0.02);
+  
+    /* ✅ cor sólida pras pills do card */
+    background: rgb(25, 25, 25);
   }
   
   /* ===========================
-     CAROUSEL (sem container visível)
-     - padroniza por altura
-     - respeita aspect ratio
-     - não força upscale
+     CAROUSEL (MOLDURA CURVA)
      =========================== */
   
   .carousel {
-  /* já tinha */
-  position: relative;
-  overflow: hidden;
-
-  /* ✅ deixa a faixa bem “full width” */
-  border-radius: 0;
-  border-left: 0;
-  border-right: 0;
-
-  /* mais espaço lateral interno do track */
-  padding: 22px 0;
-
-  cursor: grab;
-  user-select: none;
-  touch-action: pan-y;
-
-  --logo-h: 120px;
-}
+    position: relative;
+    overflow: hidden;
   
-  .carouselDragging { cursor: grabbing; }
+    /* ✅ agora o carrossel vira a “moldura” (curva) */
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+  
+    /* ✅ arco/circunferência */
+    border-radius: 999px;
+  
+    /* ✅ mais espaço pro arco “respirar” */
+    padding: 36px 0 42px;
+  
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-y;
+  
+    --logo-h: 120px;
+  
+    /* importante pro pseudo-elemento não vazar em stacking context */
+    isolation: isolate;
+  }
+  
+  /* ✅ glow suave seguindo a curva (opcional, mas bonito) */
+  .carousel::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    z-index: 0;
+    background: radial-gradient(
+      900px 260px at 50% 20%,
+      rgba(0, 255, 120, 0.10),
+      rgba(0, 0, 0, 0) 60%
+    );
+  }
+  
+  .carouselDragging {
+    cursor: grabbing;
+  }
   
   .carouselTrack {
+    position: relative;
+    z-index: 1;
+  
     display: flex;
     align-items: center;
     gap: 28px;
-  
-    /* ✅ mais padding lateral pra não “colar” no canto da tela */
     padding: 0 36px;
   
     width: max-content;
     will-change: transform;
   }
   
-  /* wrapper invisível (sem fundo, sem borda) */
   .logoWrap {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  
+    /* ✅ o “arco” vem daqui (setado via JS nas vars) */
+    transform: translate3d(0, var(--arc-y, 0px), 0) rotate(var(--arc-rot, 0deg));
+    transition: transform 420ms ease;
+  
+    will-change: transform;
   }
   
-  /* ✅ tamanho “igualzinho” pela altura
-     - width auto = mantém proporção
-     - max-height fixa a altura “visual”
-     - sem width fixa => não estica
-     - não upscala agressivamente (mantém nítido) */
+  .logoWrap:hover {
+    z-index: 5; /* fica acima dos vizinhos */
+  }
+  
+  .logoWrap:hover .logoImg {
+    transform: scale(1.16);
+    filter:
+      drop-shadow(0 14px 28px rgba(0,0,0,0.45))
+      drop-shadow(0 0 18px rgba(0, 255, 120, 0.18));
+  }
+  
   .logoImg {
     height: 140px;
     width: auto;
-    max-width: 260px; /* limita logos muito largos */
+    max-width: 260px;
     object-fit: contain;
     object-position: center;
-    filter: drop-shadow(0 10px 22px rgba(0,0,0,0.35));
+  
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+  
+    /* ✅ hover “lupa” */
+    transition: transform 180ms ease, filter 180ms ease;
+    transform: translateZ(0);
   }
   
-  /* fade nas pontas */
   .carouselEdgeLeft,
   .carouselEdgeRight {
     pointer-events: none;
@@ -182,29 +223,31 @@
   }
   
   /* ===========================
-     SOFT PILLS FIELD (30–40% visíveis)
+     SOFT PILLS FIELD (SEM OVERLAP)
      =========================== */
   
   .softField {
     position: relative;
     width: 100%;
-    height: 260px; /* ajuste altura do “campo” */
+    height: 260px;
     border-radius: 14px;
   
-    border: 1px solid rgba(255, 176, 0, 0.18);
+    border: 1px solid var(--hc-border);
     background:
-      radial-gradient(700px 220px at 50% 0%,
-        rgba(255, 176, 0, 0.14),
-        rgba(0,0,0,0) 60%),
-      rgba(255, 255, 255, 0.02);
+      radial-gradient(
+        700px 220px at 50% 0%,
+        rgba(0, 255, 120, 0.10),
+        rgba(0, 0, 0, 0) 60%
+      ),
+      var(--hc-fill);
   
     overflow: hidden;
-
-    gap: 20px;
   }
   
   .softPill {
     position: absolute;
+    transform: translate(-50%, -50%);
+  
     padding: 10px 14px;
     border-radius: 999px;
   
@@ -212,28 +255,28 @@
     font-weight: 800;
     color: rgba(233, 236, 241, 0.92);
   
-    border: 1px solid rgba(255, 176, 0, 0.26);
-    background:
-      linear-gradient(145deg,
-        rgba(255, 176, 0, 0.18),
-        rgba(255, 176, 0, 0.06) 40%,
-        rgba(0, 0, 0, 0.18) 100%);
+    border: 1px solid var(--hc-border-strong);
+    background: linear-gradient(
+      145deg,
+      rgba(0, 255, 120, 0.10),
+      rgba(0, 60, 0, 0.18) 42%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
   
     box-shadow:
-      inset 0 0 0 1px rgba(0,0,0,0.20),
-      0 14px 28px rgba(0,0,0,0.22);
+      inset 0 0 0 1px rgba(0, 0, 0, 0.22),
+      0 14px 28px rgba(0, 0, 0, 0.22);
   
     white-space: nowrap;
     user-select: none;
   
-    transition: opacity 760ms ease, filter 760ms ease;
+    transition: opacity 760ms ease, filter 760ms ease, transform 520ms ease;
   }
   
   .softPill:hover {
-    filter: drop-shadow(0 12px 22px rgba(255, 176, 0, 0.18));
+    filter: drop-shadow(0 14px 24px rgba(0, 255, 120, 0.18));
   }
   
-  /* animação de entrada/saída */
   .softPillIn {
     opacity: 1;
   }
@@ -264,11 +307,26 @@
     .carouselEdgeRight {
       width: 96px;
     }
+  
+    .softField {
+      height: 230px;
+    }
+  
+    .softPill {
+      font-size: 12px;
+      padding: 9px 12px;
+    }
   }
   
-    .carousel { --logo-h: 72px; }
-    .carouselEdgeLeft,
-    .carouselEdgeRight { width: 74px; }
+  /* ⚠️ você tinha isso duplicado no final — mantive o comportamento,
+     mas agora faz mais sentido ajustar o tamanho do logo aqui no responsivo */
+  @media (max-width: 900px) {
+    .carousel {
+      --logo-h: 72px;
+    }
   
-    .softField { height: 230px; }
-    .softPill { font-size: 12px; padding: 9px 12px; }
+    .carouselEdgeLeft,
+    .carouselEdgeRight {
+      width: 74px;
+    }
+  }
