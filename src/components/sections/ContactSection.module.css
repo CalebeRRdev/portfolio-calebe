@@ -46,7 +46,7 @@
   
     /* defaults (pode manter seus tokens ou esses fallbacks) */
     --social-color: rgba(233, 236, 241, 0.92);
-    --social-fill: rgba(255, 255, 255, 0.03);
+    --social-fill: rgba(11, 13, 18, 0.92); /* mesmo do RepoButton */
     --social-hover-fill: var(--social-color);
     --social-border: linear-gradient(
       90deg,
