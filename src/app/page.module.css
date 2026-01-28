@@ -9,7 +9,13 @@
 .main {
   width: min(1100px, 92vw);
   margin: 0 auto;
-  padding: 90px 0 64px; /* navbar fixed */
+  padding: 90px 16px 64px; /* + padding lateral */
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 78px 14px 56px;
+  }
 }
 
 .footer {
