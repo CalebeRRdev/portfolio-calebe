@@ -10,6 +10,7 @@ export type VideoItem = {
   description: string;
   src: string;
   aspect: VideoAspect;
+  poster?: string; // ✅ usado no iOS pra preview confiável
 };
 
 export const videos: VideoItem[] = [
@@ -21,6 +22,7 @@ export const videos: VideoItem[] = [
       "iOS screen recording showcasing the main flow, navigation, and map-based tracking experience.",
     src: "/projects/mobtech-ios.mp4",
     aspect: "9/16",
+    // poster: "/projects/thumbs/mobtech-ios.jpg",
   },
   {
     id: "mobtech-android",
@@ -30,6 +32,7 @@ export const videos: VideoItem[] = [
       "Android screen recording highlighting interactions, trip status, and real-time tracking UX.",
     src: "/projects/mobtech-android.mp4",
     aspect: "9/16",
+    // poster: "/projects/thumbs/mobtech-android.jpg",
   },
   {
     id: "ipuy-light",
@@ -39,6 +42,7 @@ export const videos: VideoItem[] = [
       "Walkthrough of the website in light mode, focusing on layout, responsiveness, and UI details.",
     src: "/projects/ipuy-light.mp4",
     aspect: "16/9",
+    // poster: "/projects/thumbs/ipuy-light.jpg",
   },
   {
     id: "ipuy-dark",
@@ -48,5 +52,6 @@ export const videos: VideoItem[] = [
       "Walkthrough of the website in dark mode, showcasing theming consistency and sections.",
     src: "/projects/ipuy-dark.mp4",
     aspect: "16/9",
+    // poster: "/projects/thumbs/ipuy-dark.jpg",
   },
 ];

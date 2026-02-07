@@ -90,7 +90,7 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
     const xRef = useRef(0);
     const vRef = useRef(0);
   
-    const baseSpeed = 44; // px/s
+    const baseSpeed = 60; // px/s
     const targetSpeedRef = useRef(baseSpeed);
   
     const draggingRef = useRef(false);
