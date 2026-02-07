@@ -2,7 +2,8 @@
 
 .wrap {
   display: block;
-  width: min(980px, 92vw);
+  width: 100%;
+	max-width: 980px;
   margin-inline: auto;
   text-decoration: none;
 
@@ -407,3 +408,10 @@
   }
 }
 
+/* ✅ micro-ajuste: abaixo de 375px a topRow empurra (min 46px).
+   Compensa só o posicionamento do componente, sem mexer no layout interno. */
+   @media (max-width: 375px) {
+    .wrap {
+      transform: translateX(-14px);
+    }
+  }
