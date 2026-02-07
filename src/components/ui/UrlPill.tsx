@@ -53,12 +53,7 @@ export function UrlPill({ href, displayText, tabTitle, faviconSrc }: Props) {
           <div className={styles.tabStrip}>
             <div className={styles.tabCard}>
               <span className={styles.faviconBadge} aria-hidden="true">
-                <img
-                  className={styles.favicon}
-                  src={fav}
-                  alt=""
-                  draggable={false}
-                />
+                <img className={styles.favicon} src={fav} alt="" draggable={false} />
               </span>
 
               <span className={styles.tabTitle}>{title}</span>

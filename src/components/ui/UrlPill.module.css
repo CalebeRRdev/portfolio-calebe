@@ -393,6 +393,17 @@
   text-overflow: ellipsis;
 }
 
-@media (max-width: 420px) {
-  .wrap { --tab-w: clamp(190px, 58vw, 260px); }
+@media (max-width: 600px) {
+  .wrap { --tab-w: clamp(190px, 58vw, 260px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+  .dot {
+    width: clamp(8px, 2.2vw, 10px);
+    height: clamp(8px, 2.2vw, 10px);
+    margin-bottom: 1px;
+  }
 }
+

@@ -65,9 +65,15 @@
   margin-top: 28px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 690px) {
   .mobtechGrid {
     grid-template-columns: 1fr;
     gap: 18px;
+    display: grid;
+  place-items: center;
+  }
+
+  .mobtechCardWrap {
+    width: 80%;
   }
 }
