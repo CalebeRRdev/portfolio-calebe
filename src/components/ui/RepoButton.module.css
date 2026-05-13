@@ -5,62 +5,72 @@
   align-items: center;
   justify-content: center;
 
-  /* ✅ tokens responsivos (tudo deriva daqui) */
+  /* responsive tokens */
   --btn-py: clamp(12px, 2.2vw, 18px);
-  --btn-px: clamp(16px, 3.8vw, 26px);
+  --btn-px: clamp(18px, 3.8vw, 28px);
   --btn-gap: clamp(10px, 2.6vw, 16px);
 
   --icon: clamp(18px, 3.4vw, 20px);
-  --top-fs: clamp(11px, 2.2vw, 12px);
-  --main-fs: clamp(13px, 2.6vw, 15px);
-  --handle-fs: clamp(12px, 2.5vw, 14px);
+  --top-fs: clamp(10px, 1.6vw, 11px);
+  --main-fs: clamp(14px, 2.6vw, 16px);
+  --handle-fs: clamp(12px, 2.4vw, 13px);
   --chev: clamp(16px, 3vw, 18px);
 
   gap: var(--btn-gap);
   padding: var(--btn-py) var(--btn-px);
-  border-radius: 999px;
-  border: 2px solid transparent;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
 
-  --social-color: #8250df;
-  --social-fill: rgba(11, 13, 18, 0.92);
-  --social-hover-fill: #8250df;
-  --social-border: linear-gradient(90deg, #8250df, #b072ff, #8250df);
-
-  background:
-    linear-gradient(var(--social-fill), var(--social-fill)) padding-box,
-    var(--social-border) border-box;
-
-  color: var(--social-color);
+  background: var(--surface);
+  color: var(--text-0);
   text-decoration: none;
 
-  transition: transform 0.15s ease, filter 0.15s ease;
-  will-change: transform, filter;
+  font-family: var(--font-body);
+
+  position: relative;
+  overflow: hidden;
+
+  transition: transform var(--dur-fast) var(--ease-out),
+              background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+  will-change: transform;
 
   cursor: pointer;
   user-select: none;
-
-  margin-top: 15px;
-  margin-bottom: 30px;
-
-  /* ✅ evita estourar no mobile */
   max-width: 100%;
   flex-wrap: nowrap;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(0.98);
-
-  background:
-    linear-gradient(var(--social-hover-fill), var(--social-hover-fill)) padding-box,
-    var(--social-border) border-box;
-
-  color: #fff;
+/* subtle amber glow gradient on hover */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    140% 100% at 50% 0%,
+    var(--accent-faint),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  pointer-events: none;
 }
 
-.btn:focus-visible {
-  outline: 3px solid rgba(233, 236, 241, 0.22);
-  outline-offset: 3px;
+.btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-amber);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--accent-glow);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .iconWrap {
@@ -68,6 +78,12 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
+  color: var(--text-0);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.btn:hover .iconWrap {
+  color: var(--accent);
 }
 
 .icon {
@@ -78,37 +94,45 @@
 
 .textCol {
   display: grid;
-  gap: 2px;
-  line-height: 1.1;
-  min-width: 0; /* ✅ permite ellipsis */
+  gap: 1px;
+  line-height: 1.15;
+  min-width: 0;
 }
 
 .top {
-  font-weight: 850;
+  font-family: var(--font-mono);
+  font-weight: 500;
   font-size: var(--top-fs);
-  opacity: 0.78;
-  letter-spacing: 0.2px;
+  color: var(--text-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
 .main {
   display: inline-flex;
   align-items: baseline;
-  gap: clamp(8px, 2.2vw, 10px);
+  gap: clamp(6px, 1.5vw, 8px);
 
-  font-weight: 950;
+  font-weight: 600;
   font-size: var(--main-fs);
+  letter-spacing: -0.005em;
 
   min-width: 0;
   white-space: nowrap;
 }
 
-.handle {
-  font-weight: 900;
-  opacity: 0.85;
-  font-size: var(--handle-fs);
+.mainText {
+  color: var(--text-0);
+}
 
-  /* ✅ não deixar quebrar nem estourar */
+.handle {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  opacity: 0.7;
+  font-size: var(--handle-fs);
+  color: var(--text-1);
+
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -120,19 +144,23 @@
   justify-content: center;
 
   font-size: var(--chev);
-  font-weight: 900;
-  opacity: 0.9;
-  transform: translateY(-0.5px);
+  color: var(--text-1);
   flex: 0 0 auto;
+
+  transition: transform var(--dur-base) var(--ease-spring),
+              color var(--dur-base) var(--ease-out);
 }
 
-/* ✅ Em telas bem pequenas: reduz a chance de “apertar demais” */
+.btn:hover .chev {
+  color: var(--accent);
+  transform: translate(3px, -3px);
+}
+
 @media (max-width: 360px) {
   .btn {
     --btn-gap: 10px;
   }
-
   .handle {
-    display: none; /* opcional: some o @user pra caber bonito */
+    display: none;
   }
 }

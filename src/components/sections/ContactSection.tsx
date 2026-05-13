@@ -1,6 +1,9 @@
 // File: src/components/sections/ContactSection.tsx
+"use client";
 
 import styles from "./ContactSection.module.css";
+import { contacts, type ContactId } from "@/data/contact";
+import { useInView } from "@/hooks/useInView";
 
 function IconLinkedIn(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -44,76 +47,73 @@ function IconGitHub(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-type ContactBtnProps = {
-    href: string;
-    label: string;
-    className: string;
-    icon: React.ReactNode;
-    ariaLabel?: string;
-  };
-  
-  function ContactBtn({ href, label, className, icon, ariaLabel }: ContactBtnProps) {
-    const isMail = href.startsWith("mailto:");
-    return (
-      <a
-        className={`${styles.btnSocial} ${className}`}
-        href={href}
-        target={isMail ? undefined : "_blank"}
-        rel={isMail ? undefined : "noreferrer"}
-        aria-label={ariaLabel ?? label}
-        title={label}
+const ICONS: Record<
+  ContactId,
+  React.ComponentType<React.SVGProps<SVGSVGElement>>
+> = {
+  linkedin: IconLinkedIn,
+  whatsapp: IconWhatsApp,
+  gmail: IconGmail,
+  instagram: IconInstagram,
+  github: IconGitHub,
+};
+
+export function ContactSection() {
+  const { ref: headerRef, inView: headerIn } = useInView<HTMLDivElement>({
+    threshold: 0.2,
+  });
+  const { ref: gridRef, inView: gridIn } = useInView<HTMLDivElement>({
+    threshold: 0.05,
+  });
+
+  return (
+    <section id="contact" className={styles.section}>
+      <header
+        ref={headerRef}
+        className={`${styles.header} ${headerIn ? styles.isVisible : ""}`}
       >
-        <span className={styles.socialIco} aria-hidden="true">
-          {icon}
-        </span>
-        {label}
-      </a>
-    );
-  }
-  
-  export function ContactSection() {
-    return (
-      <section id="contact" className={styles.section}>
-        <header className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Contact</h2>
-        </header>
-  
-        <div className={styles.grid}>
-          <ContactBtn
-            className={styles.btnLinkedin}
-            href="https://www.linkedin.com/in/calebe-rodrigues-rolim/"
-            label="LinkedIn"
-            icon={<IconLinkedIn className={styles.socialSvg} />}
-          />
-  
-          <ContactBtn
-            className={styles.btnWhatsapp}
-            href="https://wa.me/5562991429651"
-            label="WhatsApp"
-            icon={<IconWhatsApp className={styles.socialSvg} />}
-          />
-  
-          <ContactBtn
-            className={styles.btnGmail}
-            href="mailto:caleberolim72@gmail.com"
-            label="Gmail"
-            icon={<IconGmail className={styles.socialSvg} />}
-          />
-  
-          <ContactBtn
-            className={styles.btnInstagram}
-            href="https://instagram.com/caleb__rodrigues/"
-            label="Instagram"
-            icon={<IconInstagram className={styles.socialSvg} />}
-          />
-  
-          <ContactBtn
-            className={styles.btnGithub}
-            href="https://github.com/CalebeRRdev"
-            label="GitHub"
-            icon={<IconGitHub className={styles.socialSvg} />}
-          />
-        </div>
-      </section>
-    );
-  }
+        <span className={styles.eyebrow}>04 — Get in touch</span>
+        <h2 className={styles.title}>
+          Let&apos;s build something good together.
+        </h2>
+        <p className={styles.subtitle}>
+          Open to freelance, full-time roles, or just a good conversation.
+        </p>
+      </header>
+
+      <div
+        ref={gridRef}
+        className={`${styles.grid} ${gridIn ? styles.isVisible : ""}`}
+      >
+        {contacts.map((c, idx) => {
+          const Icon = ICONS[c.id];
+          const isMail = c.href.startsWith("mailto:");
+          return (
+            <a
+              key={c.id}
+              className={`${styles.card} ${styles[`brand_${c.id}`]}`}
+              href={c.href}
+              target={isMail ? undefined : "_blank"}
+              rel={isMail ? undefined : "noreferrer"}
+              aria-label={`${c.label} — ${c.handle}`}
+              style={
+                { ["--delay" as string]: `${idx * 60}ms` } as React.CSSProperties
+              }
+            >
+              <span className={styles.cardIcon} aria-hidden="true">
+                <Icon className={styles.cardSvg} />
+              </span>
+              <span className={styles.cardText}>
+                <span className={styles.cardLabel}>{c.label}</span>
+                <span className={styles.cardHandle}>{c.handle}</span>
+              </span>
+              <span className={styles.cardArrow} aria-hidden="true">
+                →
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  );
+}

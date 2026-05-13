@@ -23,7 +23,14 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        © {new Date().getFullYear()} Calebe Rodrigues Rolim
+        <div className={styles.footerInner}>
+          <span className={styles.footerBrand}>
+            Calebe<span>.</span>
+          </span>
+          <span className={styles.footerMeta}>
+            © {new Date().getFullYear()} — Crafted with care
+          </span>
+        </div>
       </footer>
     </div>
   );

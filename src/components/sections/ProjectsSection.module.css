@@ -1,36 +1,217 @@
 /* File: src/components/sections/ProjectsSection.module.css */
 
 .section {
-  padding: 34px 0;
-  scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-16) 0;
+  border-bottom: 1px solid var(--border);
 }
 
+/* === Header === */
 .header {
-  display: grid;
-  justify-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
   text-align: center;
+  margin-bottom: var(--space-12);
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
+}
+
+.header.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-3xl);
+  color: var(--text-0);
   margin: 0;
-  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
 }
 
-.subTitle {
-  margin: 28px 0 14px;
-  font-size: 15px;
-  color: rgba(233, 236, 241, 0.92);
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--text-1);
+  margin: 0;
+  max-width: 480px;
+}
+
+/* === Project block === */
+.project {
+  margin-bottom: var(--space-20);
+
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
+}
+
+.project.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project:last-child {
+  margin-bottom: 0;
+}
+
+.projectHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 720px;
+  margin: 0 auto var(--space-10);
   text-align: center;
+  align-items: center;
 }
 
-/* MobTech: 2 cards verticais lado a lado */
+.projectMetaTop {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+.projectYear {
+  letter-spacing: 0.04em;
+}
+
+.projectDot {
+  color: var(--text-2);
+}
+
+.statusChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status_production {
+  background: rgba(95, 206, 143, 0.08);
+  color: var(--success);
+  border-color: rgba(95, 206, 143, 0.28);
+}
+
+.status_production .statusDot {
+  background: var(--success);
+}
+
+.status_development {
+  background: var(--accent-faint);
+  color: var(--accent-strong);
+  border-color: var(--border-amber);
+}
+
+.status_development .statusDot {
+  background: var(--accent);
+}
+
+.projectTitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-2xl);
+  color: var(--text-0);
+  margin: var(--space-1) 0 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.projectTagline {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--accent);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.projectDescription {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--text-1);
+  line-height: 1.6;
+  margin: var(--space-1) 0 0;
+  max-width: 620px;
+}
+
+.stack {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: center;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+}
+
+.stackChip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-1);
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--r-pill);
+}
+
+.projectRole {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+.projectRoleLabel {
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.projectRoleValue {
+  color: var(--text-0);
+}
+
+/* === MobTech grid === */
 .mobtechGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 360px));
-  gap: 100px;
+  grid-template-columns: repeat(2, minmax(0, 340px));
+  gap: var(--space-8);
   justify-content: center;
   align-items: start;
 }
@@ -39,11 +220,11 @@
   width: 100%;
 }
 
-/* IPUY: stacked */
+/* === IPUY stack === */
 .ipuyStack {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: var(--space-6);
   justify-items: center;
 }
 
@@ -51,29 +232,35 @@
   width: min(820px, 100%);
 }
 
-/* espaço entre cards e botões */
-.centerRow {
-  display: grid;
-  place-items: center;
-  margin-top: 28px;
+/* === Actions === */
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-8);
 }
 
-.centerCol {
-  display: grid;
-  place-items: center;
-  gap: 22px;
-  margin-top: 28px;
+.actionsCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
 }
 
+/* === Responsive === */
 @media (max-width: 690px) {
   .mobtechGrid {
     grid-template-columns: 1fr;
-    gap: 18px;
-    display: grid;
-  place-items: center;
+    gap: var(--space-5);
+    place-items: center;
   }
 
   .mobtechCardWrap {
-    width: 80%;
+    width: 85%;
+    max-width: 360px;
+  }
+
+  .project {
+    margin-bottom: var(--space-16);
   }
 }

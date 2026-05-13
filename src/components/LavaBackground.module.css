@@ -1,167 +1,158 @@
 /* File: src/components/LavaBackground.module.css */
 
-.wrap{
-    position: fixed;
-    inset: 0;
-    z-index: 0;            /* fundo mesmo */
-    pointer-events: none;
-    transform: translateZ(0);
-    isolation: isolate;
-  
-    /* 🎛️ CONTROLE DE VELOCIDADE (quanto MAIOR, mais rápido)
-       1 = normal | 1.6 = mais vivo | 2.2 = bem dinâmico */
-    --speed: 1.9;
-  
-    /* tema verde/preto */
-    background:
-      radial-gradient(900px 600px at 50% 0%, rgba(120, 255, 120, 0.10), transparent 60%),
-      radial-gradient(900px 600px at 50% 100%, rgba(50, 255, 170, 0.08), transparent 60%),
-      #040607;
-  
-    /* outline: 2px solid lime;  */
-  }
-  
-  /* a “massa” inteira também se mexe (ajuda muito no efeito) */
-  .lava{
-    position: absolute;
-    inset: -25%;
-    overflow: hidden;
-  
-    filter: blur(62px) saturate(1.45) contrast(1.12);
-    opacity: 0.95;
-  
-    animation: liquidDrift calc(10s / var(--speed)) ease-in-out infinite;
-    transform-origin: 50% 50%;
-    will-change: transform;
-  }
-  
-  /* bolha base */
-  .blob{
-    position: absolute;
-    width: 44vmax;
-    height: 44vmax;
-    border-radius: 999px;
-  
-    /* lava-lamp “glow” */
-    mix-blend-mode: screen;
-    opacity: 0.9;
-  
-    transform: translate3d(0,0,0);
-    will-change: transform;
-  }
-  
-  /* =========
-     BLOBS (verde)
-     ========= */
-  
-  .b1{
-    background: radial-gradient(circle at 35% 30%,
-      rgba(120, 255, 90, 0.95),
-      rgba(40, 255, 120, 0.22) 55%,
-      transparent 72%);
-    top: 8%;
-    left: 4%;
-    animation: drift1 calc(7.5s / var(--speed)) ease-in-out infinite;
-  }
-  
-  .b2{
-    background: radial-gradient(circle at 35% 35%,
-      rgba(80, 255, 140, 0.95),
-      rgba(40, 255, 200, 0.18) 55%,
-      transparent 72%);
-    top: 14%;
-    right: -6%;
-    width: 52vmax;
-    height: 52vmax;
-    animation: drift2 calc(8.5s / var(--speed)) ease-in-out infinite;
-  }
-  
-  .b3{
-    background: radial-gradient(circle at 30% 30%,
-      rgba(200, 255, 80, 0.90),
-      rgba(50, 255, 140, 0.16) 55%,
-      transparent 72%);
-    bottom: 8%;
-    left: 18%;
-    width: 48vmax;
-    height: 48vmax;
-    animation: drift3 calc(10s / var(--speed)) ease-in-out infinite;
-  }
-  
-  .b4{
-    background: radial-gradient(circle at 30% 30%,
-      rgba(60, 255, 120, 0.95),
-      rgba(30, 200, 90, 0.16) 55%,
-      transparent 72%);
-    bottom: -8%;
-    right: 8%;
-    width: 46vmax;
-    height: 46vmax;
-    animation: drift4 calc(7.8s / var(--speed)) ease-in-out infinite;
-  }
-  
-  .b5{
-    background: radial-gradient(circle at 30% 30%,
-      rgba(255, 255, 120, 0.70),
-      rgba(60, 255, 120, 0.12) 55%,
-      transparent 72%);
-    top: -12%;
-    left: 38%;
-    width: 40vmax;
-    height: 40vmax;
-    opacity: 0.75;
-    animation: drift5 calc(11s / var(--speed)) ease-in-out infinite;
-  }
-  
-  /* vinheta */
-  .vignette{
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(1200px 700px at 50% 40%,
-      transparent 40%,
-      rgba(0,0,0,0.70) 100%);
-    opacity: 0.6;
-  }
-  
-  /* ruído */
-  .noise{
-    position: absolute;
-    inset: 0;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-    background-size: 220px 220px;
-    mix-blend-mode: overlay;
-  }
-  
-  /* ===== animações ===== */
-  
-  @keyframes liquidDrift{
-    0%,100% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
-    50%     { transform: translate3d(-3vw, 2vh, 0) rotate(8deg) scale(1.03); }
-  }
-  
-  @keyframes drift1{
-    0%,100% { transform: translate3d(0,0,0) scale(1); }
-    50%     { transform: translate3d(18vw, 12vh, 0) scale(1.18); }
-  }
-  @keyframes drift2{
-    0%,100% { transform: translate3d(0,0,0) scale(1.08); }
-    50%     { transform: translate3d(-20vw, 14vh, 0) scale(0.98); }
-  }
-  @keyframes drift3{
-    0%,100% { transform: translate3d(0,0,0) scale(1.02); }
-    50%     { transform: translate3d(16vw, -18vh, 0) scale(1.18); }
-  }
-  @keyframes drift4{
-    0%,100% { transform: translate3d(0,0,0) scale(1.10); }
-    50%     { transform: translate3d(-16vw, -10vh, 0) scale(1.02); }
-  }
-  @keyframes drift5{
-    0%,100% { transform: translate3d(0,0,0) scale(1); }
-    50%     { transform: translate3d(6vw, 22vh, 0) scale(1.22); }
-  }
-  
-  /* reduz motion: não zera, só desacelera */
-  @media (prefers-reduced-motion: reduce){
-    .wrap { --speed: 0.8; }
-  }
+.wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  isolation: isolate;
+
+  /* 🎛️ SPEED — bigger = faster | 1 normal | 1.6 lively | 2.2 dynamic */
+  --speed: 1.7;
+
+  /* Warm amber base */
+  background:
+    radial-gradient(900px 600px at 50% 0%, rgba(255, 157, 46, 0.09), transparent 60%),
+    radial-gradient(900px 600px at 50% 100%, rgba(255, 110, 30, 0.06), transparent 60%),
+    #0a0908;
+}
+
+.lava {
+  position: absolute;
+  inset: -25%;
+  overflow: hidden;
+
+  filter: blur(72px) saturate(1.35) contrast(1.08);
+  opacity: 0.62;
+
+  animation: liquidDrift calc(10s / var(--speed)) ease-in-out infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.blob {
+  position: absolute;
+  width: 44vmax;
+  height: 44vmax;
+  border-radius: 999px;
+
+  mix-blend-mode: screen;
+  opacity: 0.85;
+
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* === amber blobs === */
+
+.b1 {
+  background: radial-gradient(circle at 35% 30%,
+    rgba(255, 180, 60, 0.92),
+    rgba(255, 140, 40, 0.22) 55%,
+    transparent 72%);
+  top: 8%;
+  left: 4%;
+  animation: drift1 calc(7.5s / var(--speed)) ease-in-out infinite;
+}
+
+.b2 {
+  background: radial-gradient(circle at 35% 35%,
+    rgba(255, 140, 50, 0.90),
+    rgba(255, 100, 30, 0.18) 55%,
+    transparent 72%);
+  top: 14%;
+  right: -6%;
+  width: 52vmax;
+  height: 52vmax;
+  animation: drift2 calc(8.5s / var(--speed)) ease-in-out infinite;
+}
+
+.b3 {
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 205, 80, 0.86),
+    rgba(255, 160, 40, 0.16) 55%,
+    transparent 72%);
+  bottom: 8%;
+  left: 18%;
+  width: 48vmax;
+  height: 48vmax;
+  animation: drift3 calc(10s / var(--speed)) ease-in-out infinite;
+}
+
+.b4 {
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 110, 30, 0.90),
+    rgba(220, 80, 20, 0.16) 55%,
+    transparent 72%);
+  bottom: -8%;
+  right: 8%;
+  width: 46vmax;
+  height: 46vmax;
+  animation: drift4 calc(7.8s / var(--speed)) ease-in-out infinite;
+}
+
+.b5 {
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255, 220, 120, 0.68),
+    rgba(255, 180, 70, 0.12) 55%,
+    transparent 72%);
+  top: -12%;
+  left: 38%;
+  width: 40vmax;
+  height: 40vmax;
+  opacity: 0.65;
+  animation: drift5 calc(11s / var(--speed)) ease-in-out infinite;
+}
+
+/* vignette */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(1200px 700px at 50% 40%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.78) 100%);
+  opacity: 0.7;
+}
+
+/* noise */
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  mix-blend-mode: overlay;
+}
+
+/* === animations === */
+
+@keyframes liquidDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  50%      { transform: translate3d(-3vw, 2vh, 0) rotate(8deg) scale(1.03); }
+}
+
+@keyframes drift1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(18vw, 12vh, 0) scale(1.18); }
+}
+@keyframes drift2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.08); }
+  50%      { transform: translate3d(-20vw, 14vh, 0) scale(0.98); }
+}
+@keyframes drift3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.02); }
+  50%      { transform: translate3d(16vw, -18vh, 0) scale(1.18); }
+}
+@keyframes drift4 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.10); }
+  50%      { transform: translate3d(-16vw, -10vh, 0) scale(1.02); }
+}
+@keyframes drift5 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(6vw, 22vh, 0) scale(1.22); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap { --speed: 0.6; }
+}

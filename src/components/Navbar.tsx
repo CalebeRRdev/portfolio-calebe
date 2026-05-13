@@ -20,6 +20,8 @@ export function Navbar() {
   );
 
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState<string>("inicio");
 
   const closeMenu = () => setOpen(false);
   const toggleMenu = () => setOpen((v) => !v);
@@ -30,14 +32,13 @@ export function Navbar() {
     if (!el) return;
 
     const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : 72;
-    const gap = 12; // espacinho extra pra respirar
+    const gap = 12;
 
     const y = el.getBoundingClientRect().top + window.scrollY - (navH + gap);
-
     window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
   };
 
-  // ESC closes drawer + lock scroll while open
+  // ESC closes drawer + lock body scroll while open
   useEffect(() => {
     if (!open) return;
 
@@ -55,7 +56,7 @@ export function Navbar() {
     };
   }, [open]);
 
-  // mantém CSS var com altura real da navbar (opcional, mas útil)
+  // Keep --nav-h in sync with actual navbar height
   useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
@@ -66,7 +67,6 @@ export function Navbar() {
     };
 
     update();
-
     const ro = new ResizeObserver(update);
     ro.observe(nav);
 
@@ -77,9 +77,45 @@ export function Navbar() {
     };
   }, []);
 
+  // Scroll-aware background opacity
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Scroll-spy: highlights active section
+  useEffect(() => {
+    const sections = items
+      .map(({ id }) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+
+    if (sections.length === 0) return;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActiveId(visible[0].target.id);
+      },
+      {
+        rootMargin: "-40% 0px -50% 0px",
+        threshold: [0, 0.1, 0.4, 0.7, 1],
+      }
+    );
+
+    sections.forEach((s) => obs.observe(s));
+    return () => obs.disconnect();
+  }, [items]);
+
   return (
     <>
-      <header ref={navRef} className={styles.header}>
+      <header
+        ref={navRef}
+        className={`${styles.header} ${scrolled ? styles.isScrolled : ""}`}
+      >
         <a
           className={styles.brand}
           href="#inicio"
@@ -90,6 +126,8 @@ export function Navbar() {
           }}
           aria-label="Go to Home section"
         >
+          <span className={styles.brandText}>Calebe</span>
+          <span className={styles.brandDot}>.</span>
         </a>
 
         <nav className={styles.navDesktop} aria-label="Primary">
@@ -97,6 +135,9 @@ export function Navbar() {
             <a
               key={it.id}
               href={`#${it.id}`}
+              className={`${styles.navLink} ${
+                activeId === it.id ? styles.navLinkActive : ""
+              }`}
               onClick={(e) => {
                 e.preventDefault();
                 scrollToId(it.id);
@@ -136,19 +177,28 @@ export function Navbar() {
         className={`${styles.drawer} ${open ? styles.isOpen : ""}`}
         aria-label="Menu"
       >
-        <div className={styles.drawerLinks} role="navigation" aria-label="Sections">
+        <div
+          className={styles.drawerLinks}
+          role="navigation"
+          aria-label="Sections"
+        >
           {items.map((it) => (
             <a
               key={it.id}
               href={`#${it.id}`}
-              className={styles.drawerLink}
+              className={`${styles.drawerLink} ${
+                activeId === it.id ? styles.drawerLinkActive : ""
+              }`}
               onClick={(e) => {
                 e.preventDefault();
                 scrollToId(it.id);
-                closeMenu(); // ✅ fecha drawer
+                closeMenu();
               }}
             >
-              {it.label}
+              <span className={styles.drawerLinkText}>{it.label}</span>
+              <span className={styles.drawerLinkArrow} aria-hidden="true">
+                →
+              </span>
             </a>
           ))}
         </div>

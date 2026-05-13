@@ -1,77 +1,342 @@
 /* File: src/components/sections/HeroSection.module.css */
 
 .hero {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 34px;
-    padding: 34px 0 44px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    align-items: center;
-  
-    scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
-  }
-  
-  .heroLeft {
+  padding: var(--space-12) 0 var(--space-16);
+  border-bottom: 1px solid var(--border);
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+/* === Stagger reveal === */
+.heroInner > div > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 680ms var(--ease-out), transform 680ms var(--ease-out);
+}
+
+.heroInner.isVisible .heroLeft > *:nth-child(1) { transition-delay: 60ms;  opacity: 1; transform: translateY(0); }
+.heroInner.isVisible .heroLeft > *:nth-child(2) { transition-delay: 140ms; opacity: 1; transform: translateY(0); }
+.heroInner.isVisible .heroLeft > *:nth-child(3) { transition-delay: 220ms; opacity: 1; transform: translateY(0); }
+.heroInner.isVisible .heroLeft > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+.heroInner.isVisible .heroLeft > *:nth-child(5) { transition-delay: 380ms; opacity: 1; transform: translateY(0); }
+.heroInner.isVisible .heroLeft > *:nth-child(6) { transition-delay: 460ms; opacity: 1; transform: translateY(0); }
+
+.heroInner.isVisible .heroRight > * {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 200ms;
+}
+
+/* === LEFT === */
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--text-1);
+  letter-spacing: 0.04em;
+}
+
+.badgeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 var(--accent);
+  animation: badgePulse 2.2s var(--ease-out) infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 157, 46, 0.55); }
+  50%      { box-shadow: 0 0 0 8px rgba(255, 157, 46, 0); }
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  line-height: 0.98;
+}
+
+.titleHello {
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+
+.titleName {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-4xl);
+  color: var(--text-0);
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+}
+
+.role {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.roleDivider {
+  color: var(--text-2);
+  margin: 0 4px;
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  color: var(--text-0);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 540px;
+}
+
+.taglineAccent {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--text-1);
+}
+
+.bio {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--text-1);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 520px;
+}
+
+/* === CTAs === */
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 12px 20px;
+  border-radius: var(--r-pill);
+
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  letter-spacing: -0.005em;
+
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+
+  transition: transform var(--dur-fast) var(--ease-out),
+              background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.cta:active {
+  transform: translateY(1px);
+}
+
+.ctaPrimary {
+  background: var(--accent);
+  color: var(--bg-0);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.ctaPrimary:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px var(--accent-glow);
+}
+
+.ctaSecondary {
+  background: var(--surface);
+  color: var(--text-0);
+  border-color: var(--border-strong);
+}
+
+.ctaSecondary:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-amber);
+  transform: translateY(-2px);
+}
+
+.ctaIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* === RIGHT === */
+.heroRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.avatarOuter {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+
+.avatarRing {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--border-amber);
+  animation: ringSpin 24s linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+.avatarGlow {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 20%,
+    var(--accent-glow),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.avatarOuter:hover .avatarGlow {
+  opacity: 1;
+}
+
+.avatarWrap {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-1);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 80% 35%;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.avatarOuter:hover .avatar {
+  transform: scale(1.04);
+}
+
+.nowLine {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  line-height: 1.5;
+  max-width: 320px;
+  text-align: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nowLabel {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.nowArrow {
+  color: var(--text-2);
+}
+
+.nowText {
+  color: var(--text-1);
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .heroInner {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    text-align: center;
     display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .heroLeft {
+    align-items: center;
+  }
+
+  .tagline,
+  .bio {
+    max-width: 540px;
+  }
+
+  .ctas {
     justify-content: center;
   }
-  
-  .heroRight {
-    max-width: 680px;
+
+  .avatarOuter {
+    width: 220px;
+    height: 220px;
   }
-  
-  .avatarWrap {
-    width: 250px;
-    height: 250px;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 14px 46px rgba(0, 0, 0, 0.45);
-  }
-  
-  .avatar {
+}
+
+@media (max-width: 480px) {
+  .ctas {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 80% 35%;
+    flex-direction: column;
   }
-  
-  .title {
-    font-size: 34px;
-    line-height: 1.08;
-    margin: 0 0 12px;
+
+  .cta {
+    width: 100%;
+    justify-content: center;
   }
-  
-  .subtitle {
-    margin: 0 0 10px;
-    color: rgba(233, 236, 241, 0.82);
-    line-height: 1.75;
-    font-size: 16px;
-  }
-  
-  .subtitleMuted {
-    margin: 0;
-    color: rgba(233, 236, 241, 0.6);
-    line-height: 1.75;
-  }
-  
-  @media (max-width: 900px) {
-    .hero {
-      grid-template-columns: 1fr;
-      text-align: center;
-      gap: 18px;
-    }
-  
-    .heroRight {
-      margin: 0 auto;
-    }
-  
-    .avatarWrap {
-      width: 220px;
-      height: 220px;
-    }
-  
-    .title {
-      font-size: 32px;
-    }
-  }
+}

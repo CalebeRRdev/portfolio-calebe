@@ -53,13 +53,13 @@ export function RepoButton({
       <span className={styles.textCol}>
         <span className={styles.top}>{titleTop}</span>
         <span className={styles.main}>
-          {titleMain}
+          <span className={styles.mainText}>{titleMain}</span>
           {username ? <span className={styles.handle}>{username}</span> : null}
         </span>
       </span>
 
       <span className={styles.chev} aria-hidden="true">
-      <GoArrowUpRight />
+        <GoArrowUpRight />
       </span>
     </a>
   );

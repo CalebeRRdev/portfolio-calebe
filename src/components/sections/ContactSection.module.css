@@ -1,152 +1,230 @@
 /* File: src/components/sections/ContactSection.module.css */
 
 .section {
-    padding: 34px 0;
-    scroll-margin-top: calc(var(--nav-h, 72px) + 14px);
-  }
-  
-  .sectionHeader {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    margin-bottom: 14px;
-    text-align: center;
-  }
-  
-  .sectionTitle {
-    margin-bottom: 20px;
-    font-size: 22px;
-  }
-  
-  /* ✅ tudo em coluna */
+  padding: var(--space-16) 0;
+}
+
+/* === Header === */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  margin-bottom: var(--space-10);
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
+}
+
+.header.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-3xl);
+  color: var(--text-0);
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  max-width: 640px;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--text-1);
+  margin: 0;
+  max-width: 480px;
+}
+
+/* === Grid === */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.card {
+  --brand: var(--text-0);
+  --brand-rgb: 245, 239, 232;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+
+  font-family: var(--font-body);
+  text-decoration: none;
+  color: var(--text-0);
+
+  position: relative;
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 680ms var(--ease-out) var(--delay, 0ms),
+    transform 680ms var(--ease-out) var(--delay, 0ms),
+    border-color var(--dur-base) var(--ease-out),
+    background var(--dur-base) var(--ease-out);
+}
+
+.grid.isVisible .card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    140% 100% at 50% 0%,
+    rgba(var(--brand-rgb), 0.10),
+    transparent 60%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--brand);
+  background: var(--surface-hover);
+}
+
+.grid.isVisible .card:hover {
+  transform: translateY(-3px);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--brand);
+
+  transition: background var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-spring);
+}
+
+.card:hover .cardIcon {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+  transform: rotate(-8deg) scale(1.05);
+}
+
+.cardSvg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.cardText {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cardLabel {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text-0);
+}
+
+.cardHandle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-2);
+  letter-spacing: 0.01em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.card:hover .cardHandle {
+  color: var(--text-1);
+}
+
+.cardArrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  color: var(--text-2);
+  flex: 0 0 auto;
+
+  transition: transform var(--dur-base) var(--ease-spring),
+              color var(--dur-base) var(--ease-out);
+}
+
+.card:hover .cardArrow {
+  color: var(--brand);
+  transform: translateX(4px);
+}
+
+/* === Brand themes === */
+.brand_linkedin  { --brand: var(--brand-linkedin);  --brand-rgb: 10, 102, 194; }
+.brand_whatsapp  { --brand: var(--brand-whatsapp);  --brand-rgb: 37, 211, 102; }
+.brand_gmail     { --brand: var(--brand-gmail);     --brand-rgb: 234, 67, 53; }
+.brand_instagram { --brand: var(--brand-instagram); --brand-rgb: 214, 41, 118; }
+.brand_github    { --brand: var(--brand-github);    --brand-rgb: 176, 114, 255; }
+
+/* GitHub centers when alone in last row of 2-col grid */
+.card:nth-child(5):last-child {
+  grid-column: 1 / -1;
+  max-width: 360px;
+  justify-self: center;
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
   .grid {
-    display: grid;
-    grid-template-columns: auto;
-    gap: 12px;
-    justify-items: center;
-    align-items: center;
+    grid-template-columns: 1fr;
   }
-  
-  /* =========================
-     SOCIAL BUTTONS (igual Footer)
-     borda garantida via ::before
-     ========================= */
-  
-  .btnSocial {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  
-    width: min(250px, 92vw);
-    height: 40px;
-    padding: 10px 14px;
-    border-radius: 999px;
-  
-    /* defaults (pode manter seus tokens ou esses fallbacks) */
-    --social-color: rgba(233, 236, 241, 0.92);
-    --social-fill: rgba(11, 13, 18, 0.92); /* mesmo do RepoButton */
-    --social-hover-fill: var(--social-color);
-    --social-border: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.28),
-      rgba(255, 255, 255, 0.12)
-    );
-  
-    /* o preenchimento */
-    background: var(--social-fill);
-    color: var(--social-color);
-  
-    font-weight: 900;
-    text-decoration: none;
-  
-    transition: transform 0.15s ease, filter 0.15s ease, background 0.15s ease, color 0.15s ease;
-    will-change: transform, filter;
-  
-    cursor: pointer;
-    user-select: none;
+
+  .card:nth-child(5):last-child {
+    grid-column: auto;
+    max-width: none;
+    justify-self: stretch;
   }
-  
-  /* ✅ BORDA (sempre visível) */
-  .btnSocial::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 2px; /* espessura da borda */
-    background: var(--social-border);
-    pointer-events: none;
-  
-    /* recorta o centro, sobrando só a “moldura” */
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  
-    /* dá um “pop” igual ao exemplo */
-    opacity: 1;
-  }
-  
-  .btnSocial:hover {
-    transform: translateY(-1px);
-    filter: brightness(0.98);
-    background: var(--social-hover-fill);
-    color: #fff;
-  }
-  
-  .btnSocial:focus-visible {
-    outline: 3px solid rgba(233, 236, 241, 0.22);
-    outline-offset: 3px;
-  }
-  
-  .socialIco {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .socialSvg {
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
-  }
-  
-  /* =========================
-     BRAND THEMES
-     ========================= */
-  
-  .btnLinkedin {
-    --li: #0a66c2;
-    --social-color: var(--li);
-    --social-hover-fill: var(--li);
-    --social-border: linear-gradient(90deg, var(--li), #4a90ff, var(--li));
-  }
-  
-  .btnWhatsapp {
-    --wa: #25d366;
-    --social-color: var(--wa);
-    --social-hover-fill: var(--wa);
-    --social-border: linear-gradient(90deg, var(--wa), #86efac, var(--wa));
-  }
-  
-  .btnGmail {
-    --gm: #ea4335;
-    --social-color: var(--gm);
-    --social-hover-fill: rgba(234, 67, 53, 0.95);
-    --social-border: linear-gradient(90deg, #ea4335, #fbbc05, #34a853, #4285f4);
-  }
-  
-  .btnInstagram {
-    --ig: #d62976;
-    --social-color: var(--ig);
-    --social-hover-fill: rgba(214, 41, 118, 0.92);
-    --social-border: linear-gradient(90deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-  }
-  
-  .btnGithub {
-    --gh: #8250df;
-    --social-color: var(--gh);
-    --social-hover-fill: var(--gh);
-    --social-border: linear-gradient(90deg, var(--gh), #b072ff, var(--gh));
-  }
+}

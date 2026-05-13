@@ -3,63 +3,8 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./SkillsSection.module.css";
-
-const hardSkills = [
-  "React Native",
-  "React",
-  "Expo",
-  "Next.js",
-  "HTML5",
-  "CSS3",
-  "JavaScript",
-  "TypeScript",
-  "Node.js",
-  "Express.js",
-  "Vercel",
-  "PostgreSQL",
-  "PostGIS",
-  "Git",
-  "GitHub",
-] as const;
-
-const softSkills = [
-  "Communication",
-  "Teamwork",
-  "Ownership",
-  "Problem-solving",
-  "Fast learner",
-  "Attention to detail",
-  "Adaptability",
-  "Effort",
-  "Creativity",
-  "Accountability",
-  "Empathy",
-  "Multicultural awareness",
-  "Resilience",
-  "Critical thinking",
-  "Versatility",
-  "Knowledge sharing",
-  "Proactiveness",
-  "Organization",
-] as const;
-
-const logos: Array<{ name: string; src: string }> = [
-  { name: "React Native", src: "/skills/reactnative.png" },
-  { name: "React", src: "/skills/react.png" },
-  { name: "Expo", src: "/skills/expo.png" },
-  { name: "Next.js", src: "/skills/nextjs.png" },
-  { name: "HTML5", src: "/skills/html5.png" },
-  { name: "CSS3", src: "/skills/css3.png" },
-  { name: "JavaScript", src: "/skills/javascript.png" },
-  { name: "TypeScript", src: "/skills/typescript.png" },
-  { name: "Node.js", src: "/skills/nodejs.png" },
-  { name: "Express.js", src: "/skills/expressjs.png" },
-  { name: "Vercel", src: "/skills/vercel.png" },
-  { name: "PostgreSQL", src: "/skills/postgresql.png" },
-  { name: "PostGIS", src: "/skills/postgis.png" },
-  { name: "Git", src: "/skills/git.png" },
-  { name: "GitHub", src: "/skills/github.png" },
-];
+import { hardSkillsLogos, softSkillGroups, type SkillLogo } from "@/data/skills";
+import { useInView } from "@/hooks/useInView";
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -74,10 +19,8 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-/** ================================
- *  CAROUSEL infinito (autoplay + easing + hover pause + drag)
- * ================================= */
-function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> }) {
+/** Infinite tech-logo carousel (autoplay + easing + hover pause + drag + arc) */
+function LogosCarousel({ items }: { items: SkillLogo[] }) {
   const reducedMotion = usePrefersReducedMotion();
 
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -89,7 +32,7 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
   const xRef = useRef(0);
   const vRef = useRef(0);
 
-  const baseSpeed = 60; // px/s
+  const baseSpeed = 56;
   const targetSpeedRef = useRef(baseSpeed);
 
   const draggingRef = useRef(false);
@@ -101,9 +44,9 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
 
   const loopItems = useMemo(() => [...items, ...items], [items]);
 
-  // ===== Curvatura do arco (ajuste aqui) =====
-  const ARC_HEIGHT = 26; // px
-  const ARC_ROT = 6; // deg
+  // Arc curvature
+  const ARC_HEIGHT = 22;
+  const ARC_ROT = 5;
 
   const applyArc = () => {
     const vp = viewportRef.current;
@@ -144,12 +87,10 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
 
     const ro1 = new ResizeObserver(measure);
     ro1.observe(track);
-
     const ro2 = new ResizeObserver(() => applyArc());
     ro2.observe(vp);
 
     window.addEventListener("resize", applyArc);
-
     return () => {
       ro1.disconnect();
       ro2.disconnect();
@@ -192,7 +133,6 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
       if (track) track.style.transform = `translate3d(${xRef.current}px, 0, 0)`;
 
       applyArc();
-
       rafRef.current = requestAnimationFrame(tick);
     };
 
@@ -247,7 +187,9 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
   return (
     <div
       ref={viewportRef}
-      className={`${styles.carousel} ${isDragging ? styles.carouselDragging : ""}`}
+      className={`${styles.carousel} ${
+        isDragging ? styles.carouselDragging : ""
+      }`}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onPointerDown={onPointerDown}
@@ -262,8 +204,17 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
 
       <div className={styles.carouselTrack} ref={trackRef}>
         {loopItems.map((it, idx) => (
-          <span className={styles.logoWrap} key={`${it.name}-${idx}`} title={it.name}>
-            <img className={styles.logoImg} src={it.src} alt={it.name} draggable={false} loading="lazy" />
+          <span className={styles.logoWrap} key={`${it.name}-${idx}`}>
+            <img
+              className={styles.logoImg}
+              src={it.src}
+              alt={it.name}
+              draggable={false}
+              loading="lazy"
+            />
+            <span className={styles.logoLabel} aria-hidden="true">
+              {it.name}
+            </span>
           </span>
         ))}
       </div>
@@ -272,42 +223,73 @@ function LogosCarousel({ items }: { items: Array<{ name: string; src: string }> 
 }
 
 export function SkillsSection() {
+  const { ref: headerRef, inView: headerIn } = useInView<HTMLDivElement>({
+    threshold: 0.2,
+  });
+  const { ref: hardRef, inView: hardIn } = useInView<HTMLDivElement>({
+    threshold: 0.05,
+  });
+  const { ref: softRef, inView: softIn } = useInView<HTMLDivElement>({
+    threshold: 0.05,
+  });
+
   return (
     <section id="skills" className={styles.section}>
-      <header className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>Skills</h2>
+      <header
+        ref={headerRef}
+        className={`${styles.header} ${headerIn ? styles.isVisible : ""}`}
+      >
+        <span className={styles.eyebrow}>03 — Toolkit</span>
+        <h2 className={styles.title}>Skills</h2>
+        <p className={styles.subtitle}>What I build with and how I work.</p>
       </header>
 
-      <div className={styles.stack}>
-        <h3 className={styles.groupTitle}>Hard skills</h3>
+      <div
+        ref={hardRef}
+        className={`${styles.group} ${hardIn ? styles.isVisible : ""}`}
+      >
+        <h3 className={styles.groupTitle}>
+          <span className={styles.groupTitleNum}>01</span>
+          <span>Hard skills</span>
+        </h3>
+        <p className={styles.groupSubtitle}>
+          The stack I reach for the most.
+        </p>
 
-        <div className={`${styles.card} ${styles.cardNarrow}`}>
-          <div className={styles.chips}>
-            {hardSkills.map((s) => (
-              <span key={s} className={styles.chip}>
-                {s}
-              </span>
-            ))}
-          </div>
+        <div className={styles.carouselWrap}>
+          <LogosCarousel items={hardSkillsLogos} />
         </div>
+      </div>
 
-        <div className={`${styles.card} ${styles.cardWide} ${styles.cardFullBleed}`}>
-          <LogosCarousel items={logos} />
+      <div
+        ref={softRef}
+        className={`${styles.group} ${softIn ? styles.isVisible : ""}`}
+      >
+        <h3 className={styles.groupTitle}>
+          <span className={styles.groupTitleNum}>02</span>
+          <span>Soft skills</span>
+        </h3>
+        <p className={styles.groupSubtitle}>
+          How I show up and collaborate.
+        </p>
+
+        <div className={styles.softGrid}>
+          {softSkillGroups.map((group) => (
+            <div key={group.id} className={styles.softCol}>
+              <header className={styles.softHeader}>
+                <h4 className={styles.softLabel}>{group.label}</h4>
+                <p className={styles.softDesc}>{group.description}</p>
+              </header>
+              <ul className={styles.softList}>
+                {group.items.map((item) => (
+                  <li key={item} className={styles.softPill}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-
-        <h3 className={styles.groupTitle}>Soft skills</h3>
-
-        <div className={`${styles.card} ${styles.cardNarrow}`}>
-          <div className={styles.chips}>
-            {softSkills.map((s) => (
-              <span key={s} className={styles.chip}>
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* ✅ REMOVIDO: honeycomb / SoftPillsField */}
       </div>
     </section>
   );

@@ -1,13 +1,65 @@
 // File: src/components/sections/ProjectsSection.tsx
+"use client";
 
 import styles from "./ProjectsSection.module.css";
 import { videos } from "@/data/videos";
-import { projects } from "@/data/projects";
+import { projects, type ProjectMeta } from "@/data/projects";
 import { VideoCard } from "@/components/cards/VideoCard";
 import { RepoButton } from "@/components/ui/RepoButton";
 import { UrlPill } from "@/components/ui/UrlPill";
+import { useInView } from "@/hooks/useInView";
+
+function StatusChip({ status }: { status: ProjectMeta["status"] }) {
+  return (
+    <span className={`${styles.statusChip} ${styles[`status_${status}`]}`}>
+      <span className={styles.statusDot} aria-hidden="true" />
+      <span>{status === "production" ? "Production" : "In development"}</span>
+    </span>
+  );
+}
+
+function ProjectHeader({ project }: { project: ProjectMeta }) {
+  return (
+    <header className={styles.projectHeader}>
+      <div className={styles.projectMetaTop}>
+        <span className={styles.projectYear}>{project.year}</span>
+        <span className={styles.projectDot} aria-hidden="true">
+          ·
+        </span>
+        <StatusChip status={project.status} />
+      </div>
+
+      <h3 className={styles.projectTitle}>{project.title}</h3>
+      <p className={styles.projectTagline}>{project.tagline}</p>
+      <p className={styles.projectDescription}>{project.description}</p>
+
+      <ul className={styles.stack}>
+        {project.stack.map((tech) => (
+          <li key={tech} className={styles.stackChip}>
+            {tech}
+          </li>
+        ))}
+      </ul>
+
+      <p className={styles.projectRole}>
+        <span className={styles.projectRoleLabel}>Role</span>
+        <span className={styles.projectRoleValue}>{project.role}</span>
+      </p>
+    </header>
+  );
+}
 
 export function ProjectsSection() {
+  const { ref: refHeader, inView: headerIn } = useInView<HTMLDivElement>({
+    threshold: 0.2,
+  });
+  const { ref: refMob, inView: mobIn } = useInView<HTMLElement>({
+    threshold: 0.05,
+  });
+  const { ref: refIpuy, inView: ipuyIn } = useInView<HTMLElement>({
+    threshold: 0.05,
+  });
+
   const mobtechProject = projects.find((p) => p.id === "mobtech");
   const ipuyProject = projects.find((p) => p.id === "ipuy");
 
@@ -16,14 +68,24 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" className={styles.section}>
-      <header className={styles.header}>
-        <h2 className={styles.title}>Projects</h2>
+      <header
+        ref={refHeader}
+        className={`${styles.header} ${headerIn ? styles.isVisible : ""}`}
+      >
+        <span className={styles.eyebrow}>02 — Featured work</span>
+        <h2 className={styles.title}>Selected projects</h2>
+        <p className={styles.subtitle}>
+          A look at what I&apos;ve been building lately.
+        </p>
       </header>
 
       {/* MobTech */}
       {mobtechProject && (
-        <>
-          <h3 className={styles.subTitle}>{mobtechProject.title}</h3>
+        <article
+          ref={refMob}
+          className={`${styles.project} ${mobIn ? styles.isVisible : ""}`}
+        >
+          <ProjectHeader project={mobtechProject} />
 
           <div className={styles.mobtechGrid}>
             {mobtechVideos.map((v) => (
@@ -33,23 +95,25 @@ export function ProjectsSection() {
             ))}
           </div>
 
-          <div className={styles.centerRow}>
+          <div className={styles.actions}>
             <RepoButton
               href={mobtechProject.repoUrl}
               titleTop={mobtechProject.title}
               titleMain={mobtechProject.repoLabel}
               username="@CalebeRRdev"
-              title="Open MobTech repository on GitHub"
               ariaLabel="Open MobTech repository on GitHub"
             />
           </div>
-        </>
+        </article>
       )}
 
       {/* IPUY */}
       {ipuyProject && (
-        <>
-          <h3 className={styles.subTitle}>{ipuyProject.title}</h3>
+        <article
+          ref={refIpuy}
+          className={`${styles.project} ${ipuyIn ? styles.isVisible : ""}`}
+        >
+          <ProjectHeader project={ipuyProject} />
 
           <div className={styles.ipuyStack}>
             {ipuyVideos.map((v) => (
@@ -59,13 +123,12 @@ export function ProjectsSection() {
             ))}
           </div>
 
-          <div className={styles.centerCol}>
+          <div className={styles.actionsCol}>
             <RepoButton
               href={ipuyProject.repoUrl}
               titleTop={ipuyProject.title}
               titleMain={ipuyProject.repoLabel}
               username="@CalebeRRdev"
-              title="Open IPUY repository on GitHub"
               ariaLabel="Open IPUY repository on GitHub"
             />
 
@@ -78,7 +141,7 @@ export function ProjectsSection() {
               />
             )}
           </div>
-        </>
+        </article>
       )}
     </section>
   );

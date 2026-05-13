@@ -3,12 +3,14 @@
 .wrap {
   display: block;
   width: 100%;
-	max-width: 980px;
+  max-width: 980px;
   margin-inline: auto;
   text-decoration: none;
 
-  --outer-bg: rgb(30 32 36);
-  --strip-bg: rgba(255, 255, 255, 0.10);
+  --outer-bg: #1a1715;
+  --outer-bg-hover: #1f1a17;
+  --strip-bg: rgba(255, 240, 220, 0.06);
+  --strip-bg-hover: rgba(255, 200, 130, 0.10);
   --cut-square-bg: var(--strip-bg);
 
   --outer-r: clamp(16px, 3.6vw, 22px);
@@ -29,7 +31,6 @@
   --domain-fs: clamp(13px, 2.6vw, 15px);
 
   --gap: clamp(10px, 2.6vw, 16px);
-
   --tab-w: clamp(220px, 48vw, 380px);
 
   --sq: 12px;
@@ -37,7 +38,9 @@
 }
 
 .wrap:hover {
-  --outer-bg: rgb(30 32 36);
+  --cut-square-bg: var(--strip-bg-hover);
+  --strip-bg: var(--strip-bg-hover);
+  --outer-bg: var(--outer-bg-hover);
 }
 
 /* OUTER */
@@ -45,20 +48,24 @@
   position: relative;
   border-radius: var(--outer-r);
   padding: var(--outer-pad-y) var(--outer-pad-x) calc(var(--outer-pad-y) - 2px);
+
   background: var(--outer-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 
-  box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.52),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-  transition: transform 160ms ease, filter 160ms ease, background 160ms ease;
+  transition: transform var(--dur-base) var(--ease-out),
+              filter var(--dur-base) var(--ease-out),
+              background var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out),
+              border-color var(--dur-base) var(--ease-out);
   z-index: 10;
 }
 
 .wrap:hover .outer {
-  transform: translateY(-1px);
-  filter: brightness(1.03);
-  background: var(--outer-bg);
+  transform: translateY(-3px);
+  filter: brightness(1.04);
+  border-color: var(--border-amber);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent-glow);
 }
 
 /* mac dots */
@@ -97,7 +104,6 @@
   overflow: visible;
 }
 
-/* ✅ + externo (AGORA ACIMA DE TUDO) */
 .tabPlus {
   width: clamp(24px, 5.2vw, 26px);
   height: clamp(24px, 5.2vw, 26px);
@@ -108,23 +114,23 @@
   line-height: 1;
   font-size: clamp(16px, 4vw, 18px);
 
-  color: rgba(233, 236, 241, 0.9);
+  color: var(--text-1);
   user-select: none;
 
   background: transparent;
-  transition: background 120ms ease, opacity 120ms ease;
+  transition: background var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
 
   cursor: pointer;
   transform: translateY(-1px);
 
-  /* 🔥 o pulo do gato */
   position: relative;
   z-index: 20;
 }
 
 .tabPlus:hover {
-  background: rgba(255, 255, 255, 0.06);
-  opacity: 1;
+  background: var(--surface-hover);
+  color: var(--text-0);
 }
 
 /* TAB STRIP */
@@ -150,13 +156,13 @@
   gap: 10px;
 
   padding: 0 10px;
-
   background: var(--strip-bg);
 
   position: relative;
   overflow: visible;
 
   z-index: 4;
+  transition: background var(--dur-base) var(--ease-out);
 }
 
 /* favicon */
@@ -185,10 +191,11 @@
   min-width: 0;
   flex: 1 1 auto;
 
+  font-family: var(--font-body);
   font-size: var(--tab-fs);
-  font-weight: 850;
-  letter-spacing: 0.2px;
-  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--text-0);
 
   white-space: nowrap;
   overflow: hidden;
@@ -208,31 +215,28 @@
 .tabClose {
   width: clamp(24px, 5.2vw, 26px);
   height: clamp(24px, 5.2vw, 26px);
+
   display: inline-grid;
   place-items: center;
-
   border-radius: 999px;
   line-height: 1;
-  font-size: clamp(16px, 4vw, 18px);
 
-  color: rgba(233, 236, 241, 0.9);
+  font-size: clamp(16px, 4vw, 18px);
+  color: var(--text-1);
   user-select: none;
 
   background: transparent;
-  transition: background 120ms ease, opacity 120ms ease;
+  transition: background var(--dur-fast) var(--ease-out);
 
   cursor: pointer;
   transform: translateY(-1px);
 }
 
 .tabClose:hover {
-  background: rgba(255, 255, 255, 0.06);
-  opacity: 1;
+  background: var(--surface-hover);
 }
 
-/* RECORTES */
-
-/* squares */
+/* RECORTES — squares */
 .tabStrip::before,
 .tabStrip::after {
   content: "";
@@ -244,14 +248,14 @@
 
   background: var(--cut-square-bg);
   pointer-events: none;
-
   z-index: 3;
+  transition: background var(--dur-base) var(--ease-out);
 }
 
 .tabStrip::before { left: calc(-1 * var(--sq)); }
 .tabStrip::after  { right: calc(-1 * var(--sq)); }
 
-/* ✅ circles (abaixa um pouco o z-index pra não tampar o +) */
+/* RECORTES — circles (carve into the outer bg) */
 .tabCard::before,
 .tabCard::after {
   content: "";
@@ -264,9 +268,8 @@
 
   background: var(--outer-bg);
   pointer-events: none;
-
-  /* era 4; agora fica abaixo do + (20) */
   z-index: 6;
+  transition: background var(--dur-base) var(--ease-out);
 }
 
 .tabCard::before { left: calc(-1 * var(--cut-r)); }
@@ -288,6 +291,7 @@
   z-index: 1;
 
   margin-top: calc(-1 * var(--sq));
+  transition: background var(--dur-base) var(--ease-out);
 }
 
 .navIcons {
@@ -310,11 +314,13 @@
   opacity: 0.92;
 
   cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
 }
 
 .iconBtn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
   opacity: 1;
 }
 
@@ -322,7 +328,7 @@
   width: var(--icon);
   height: var(--icon);
 
-  background-color: #e3e3e3;
+  background-color: var(--text-1);
 
   -webkit-mask-image: var(--icon-url);
   mask-image: var(--icon-url);
@@ -334,10 +340,10 @@
   mask-size: contain;
 }
 
-.iconArrow { background-color: #e3e3e3; }
+.iconArrow { background-color: var(--text-1); }
 
 .iconInfo {
-  background-color: rgba(227, 227, 227, 0.92);
+  background-color: var(--text-1);
   height: var(--info-icon);
   width: var(--info-icon);
 }
@@ -355,14 +361,19 @@
 
   padding: 0 clamp(12px, 3.6vw, 18px);
 
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border);
 
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, 0.22),
-    0 12px 28px rgba(0, 0, 0, 0.16);
+    0 8px 20px rgba(0, 0, 0, 0.12);
 
   position: relative;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+
+.wrap:hover .omnibox {
+  border-color: var(--border-amber);
 }
 
 .infoBadge {
@@ -374,9 +385,8 @@
   place-items: center;
   flex: 0 0 auto;
 
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
 }
 
@@ -384,22 +394,29 @@
   min-width: 0;
   display: block;
 
+  font-family: var(--font-mono);
   font-size: var(--domain-fs);
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--text-0);
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.wrap:hover .domain {
+  color: var(--accent-strong);
 }
 
 @media (max-width: 600px) {
-  .wrap { --tab-w: clamp(190px, 58vw, 260px);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+  .wrap {
+    --tab-w: clamp(190px, 58vw, 260px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
   .dot {
     width: clamp(8px, 2.2vw, 10px);
@@ -408,10 +425,8 @@
   }
 }
 
-/* ✅ micro-ajuste: abaixo de 375px a topRow empurra (min 46px).
-   Compensa só o posicionamento do componente, sem mexer no layout interno. */
-   @media (max-width: 375px) {
-    .wrap {
-      transform: translateX(-14px);
-    }
+@media (max-width: 375px) {
+  .wrap {
+    transform: translateX(-14px);
   }
+}

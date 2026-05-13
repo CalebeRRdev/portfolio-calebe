@@ -1,4 +1,4 @@
-// File: portfolio-site/src/components/ui/UrlPill.tsx
+// File: src/components/ui/UrlPill.tsx
 
 import styles from "./UrlPill.module.css";
 
@@ -19,7 +19,7 @@ function MaskIcon({ src, className, title }: MaskIconProps) {
   return (
     <span
       className={`${styles.maskIcon} ${className ?? ""}`}
-      style={{ ["--icon-url" as any]: `url("${src}")` }}
+      style={{ ["--icon-url" as string]: `url("${src}")` } as React.CSSProperties}
       aria-hidden="true"
       title={title}
     />
@@ -53,7 +53,12 @@ export function UrlPill({ href, displayText, tabTitle, faviconSrc }: Props) {
           <div className={styles.tabStrip}>
             <div className={styles.tabCard}>
               <span className={styles.faviconBadge} aria-hidden="true">
-                <img className={styles.favicon} src={fav} alt="" draggable={false} />
+                <img
+                  className={styles.favicon}
+                  src={fav}
+                  alt=""
+                  draggable={false}
+                />
               </span>
 
               <span className={styles.tabTitle}>{title}</span>

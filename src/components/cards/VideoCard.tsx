@@ -1,14 +1,22 @@
-// file: portfolio-site/src/components/cards/VideoCard.module.css
-
+// File: src/components/cards/VideoCard.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./VideoCard.module.css";
 import type { VideoItem } from "@/data/videos";
 
+function getVideoTag(id: string): string | null {
+  if (id.includes("ios")) return "iOS";
+  if (id.includes("android")) return "Android";
+  if (id.includes("light")) return "Light theme";
+  if (id.includes("dark")) return "Dark theme";
+  return null;
+}
+
 export function VideoCard({ item }: { item: VideoItem }) {
   const [open, setOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const tag = getVideoTag(item.id);
 
   const close = () => setOpen(false);
 
@@ -20,8 +28,6 @@ export function VideoCard({ item }: { item: VideoItem }) {
     };
 
     document.addEventListener("keydown", onKeyDown);
-
-    // trava scroll
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -31,7 +37,7 @@ export function VideoCard({ item }: { item: VideoItem }) {
     };
   }, [open]);
 
-  // ✅ sempre que fechar: pausa e volta pro início (evita bug de "áudio preso" no iOS)
+  // Pause + reset on close (prevents iOS audio bleed)
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -64,10 +70,20 @@ export function VideoCard({ item }: { item: VideoItem }) {
               <source src={item.src} type="video/mp4" />
             </video>
 
+            {tag && (
+              <span className={styles.tag} aria-hidden="true">
+                {tag}
+              </span>
+            )}
+
             <div className={styles.overlay} aria-hidden="true">
-              <div className={styles.overlayInner}>
-                <span className={styles.playIcon}>▶</span>
-              </div>
+              <span className={styles.playRing}>
+                <span className={styles.playBtn}>
+                  <svg viewBox="0 0 24 24" className={styles.playIcon}>
+                    <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
+                  </svg>
+                </span>
+              </span>
             </div>
           </div>
         </button>
@@ -86,8 +102,10 @@ export function VideoCard({ item }: { item: VideoItem }) {
           aria-modal="true"
           aria-label={`Video modal: ${item.title}`}
         >
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            {/* ✅ Close sempre acessível no iOS (no mobile vira FIXED via CSS) */}
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               className={styles.modalClose}
@@ -104,17 +122,19 @@ export function VideoCard({ item }: { item: VideoItem }) {
               autoPlay
               playsInline
               poster={item.poster}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment @ts-expect-error - atributo iOS
               webkit-playsinline="true"
               onEnded={close}
             >
               <source src={item.src} type="video/mp4" />
             </video>
 
-            {/* ✅ segunda rota de saída no mobile */}
             <div className={styles.mobileCloseBar}>
-              <button type="button" onClick={close} className={styles.mobileCloseBtn}>
-                Fechar
+              <button
+                type="button"
+                onClick={close}
+                className={styles.mobileCloseBtn}
+              >
+                Close
               </button>
             </div>
           </div>
