@@ -9,6 +9,12 @@ type Pin = { id: string; x: number; y: number };
 
 /** Where on screen the head of the route sits while scrolling (0 = top, 1 = bottom). */
 const HEAD_AT = 0.62;
+/**
+ * The trail runs well past both ends of the page so its start and end are never
+ * seen, not even when EdgeBounce stretches the page. The excess is clipped by
+ * [data-overscroll] (overflow: clip) so it doesn't add scrollable height.
+ */
+const RUN_OFF = 600;
 const LUT_STEPS = 400;
 
 /**
@@ -48,10 +54,10 @@ export function RouteLine() {
       });
 
       const h = container.scrollHeight;
-      const stops = [{ x, y: 0 }, ...pins, { x, y: h - 40 }];
+      const stops = [{ x, y: -RUN_OFF }, ...pins, { x, y: h + RUN_OFF }];
 
       // Meander between stops with alternating cubic bends, like a trail on a hillside
-      let d = `M ${x} 0`;
+      let d = `M ${x} ${-RUN_OFF}`;
       for (let i = 1; i < stops.length; i++) {
         const a = stops[i - 1];
         const b = stops[i];

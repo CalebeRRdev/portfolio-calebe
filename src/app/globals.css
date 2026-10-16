@@ -251,6 +251,13 @@ svg {
   border: 0;
 }
 
+/* Content that EdgeBounce stretches. The clip keeps the route line's run-off from
+   adding scroll height, while the margin still paints it past both page edges. */
+[data-overscroll] {
+  overflow: clip;
+  overflow-clip-margin: 160px;
+}
+
 /* === Layout shell === */
 .app-shell {
   position: relative;
