@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/getDictionary";
-import { getLenis, scrollToId, scrollToTop } from "@/lib/scroll";
+import { getLenis, ROUTE_LINE_EVENT, routeXAtPageY, scrollToId, scrollToTop } from "@/lib/scroll";
 import { ThemeToggle } from "./ThemeToggle";
 import { LangSwitch } from "./LangSwitch";
 import { SlimeNav } from "./SlimeNav";
@@ -27,6 +27,7 @@ function Mark() {
 
 export function Navbar({ dict, locale }: { dict: Dictionary["nav"]; locale: Locale }) {
   const navRef = useRef<HTMLElement | null>(null);
+  const brandRef = useRef<HTMLAnchorElement | null>(null);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeId, setActiveId] = useState<NavId>("home");
@@ -54,6 +55,34 @@ export function Navbar({ dict, locale }: { dict: Dictionary["nav"]; locale: Loca
       document.body.style.overflow = prev;
     };
   }, [open]);
+
+  // Wide screens: keep the brand clear of the route line that runs down the page.
+  // It steps left of the trail when there's room, otherwise to its right.
+  useEffect(() => {
+    const brand = brandRef.current;
+    if (!brand) return;
+    const GAP = 20;
+    const EDGE = 16;
+    const place = () => {
+      brand.style.marginLeft = "";
+      if (window.innerWidth < 900) return;
+      const r = brand.getBoundingClientRect();
+      // The navbar is fixed, so at the top of the page it sits at this page height
+      const lineX = routeXAtPageY(r.top + r.height / 2);
+      if (lineX === null || r.right + GAP <= lineX || r.left - GAP >= lineX) return;
+      const toLeft = lineX - GAP - r.right;
+      const shift = r.left + toLeft >= EDGE ? toLeft : lineX + GAP - r.left;
+      brand.style.marginLeft = `${Math.round(shift)}px`;
+    };
+    place();
+    window.addEventListener(ROUTE_LINE_EVENT, place);
+    window.addEventListener("resize", place);
+    document.fonts?.ready.then(place);
+    return () => {
+      window.removeEventListener(ROUTE_LINE_EVENT, place);
+      window.removeEventListener("resize", place);
+    };
+  }, []);
 
   // Keep --nav-h in sync with the real navbar height
   useEffect(() => {
@@ -99,6 +128,7 @@ export function Navbar({ dict, locale }: { dict: Dictionary["nav"]; locale: Loca
     <>
       <header ref={navRef} className={`${styles.header} ${scrolled ? styles.isScrolled : ""}`}>
         <a
+          ref={brandRef}
           className={styles.brand}
           href={`/${locale}`}
           onClick={(e) => {

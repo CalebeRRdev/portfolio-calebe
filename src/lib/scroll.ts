@@ -31,6 +31,21 @@ export function scrollToId(id: string) {
   else window.scrollTo({ top: y, behavior: "smooth" });
 }
 
+/** Fired by RouteLine whenever the trail is (re)drawn. */
+export const ROUTE_LINE_EVENT = "route-line";
+type RouteXAt = (pageY: number) => number | null;
+let routeXAt: RouteXAt | null = null;
+
+export function setRouteLine(xAt: RouteXAt) {
+  routeXAt = xAt;
+  window.dispatchEvent(new Event(ROUTE_LINE_EVENT));
+}
+
+/** Where the trail crosses a given page height, in screen x (px); null before it's drawn. */
+export function routeXAtPageY(pageY: number) {
+  return routeXAt?.(pageY) ?? null;
+}
+
 /** Fired when a trip to the top ends; EdgeBounce answers with a small slingshot. */
 export const EDGE_BOUNCE_EVENT = "edge-bounce";
 

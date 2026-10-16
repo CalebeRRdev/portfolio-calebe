@@ -103,7 +103,8 @@ export function ProjectsSection({ dict }: { dict: Dict }) {
           project.querySelector(`.${styles.media}`),
           { clipPath: "inset(18% 8% 18% 8% round 24px)", scale: 0.94 },
           {
-            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            // Slightly past the edges: phone rims that overhang the media stay whole
+            clipPath: "inset(-6% -5% -12% -5% round 0px)",
             scale: 1,
             ease: "power2.out",
             scrollTrigger: { trigger: project, start: "top 85%", end: "top 35%", scrub: 0.6 },

@@ -63,6 +63,8 @@
   position: relative;
   z-index: 2;
   margin-top: 10%;
+  /* Clear of the media's clip edge, so the phone's rim isn't cut */
+  margin-left: 14px;
   margin-right: -26%;
 }
 
@@ -88,7 +90,8 @@
 
 .compositePhone {
   position: absolute;
-  right: 0;
+  /* Clear of the media's clip edge, so the phone's rim isn't cut */
+  right: 14px;
   bottom: 0;
   width: clamp(110px, 24%, 200px);
   z-index: 2;
@@ -319,7 +322,7 @@
 
   .compositePhone {
     width: 104px;
-    bottom: -12px;
+    right: 8px;
   }
 
   .domain {

@@ -3,9 +3,29 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
+import { setRouteLine } from "@/lib/scroll";
 import styles from "./RouteLine.module.css";
 
 type Pin = { id: string; x: number; y: number };
+type Point = { x: number; y: number };
+type Segment = [Point, Point, Point, Point];
+
+/** x of the trail at height y, sampled from the cubic segment that spans it. */
+function xAtY(segments: Segment[], y: number) {
+  const seg = segments.find(([a, , , b]) => y >= a.y && y <= b.y);
+  if (!seg) return null;
+  const [p0, p1, p2, p3] = seg;
+  let best = { dy: Infinity, x: p0.x };
+  for (let i = 0; i <= 120; i++) {
+    const t = i / 120;
+    const u = 1 - t;
+    const py = u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y;
+    if (Math.abs(py - y) < best.dy) {
+      best = { dy: Math.abs(py - y), x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x };
+    }
+  }
+  return best.x;
+}
 
 /** Where on screen the head of the route sits while scrolling (0 = top, 1 = bottom). */
 const HEAD_AT = 0.62;
@@ -58,18 +78,27 @@ export function RouteLine() {
 
       // Meander between stops with alternating cubic bends, like a trail on a hillside
       let d = `M ${x} ${-RUN_OFF}`;
+      const segments: Segment[] = [];
       for (let i = 1; i < stops.length; i++) {
         const a = stops[i - 1];
         const b = stops[i];
         const span = b.y - a.y;
         const dir = i % 2 === 0 ? 1 : -1;
         const bend = Math.min(swing, span * 0.08) * dir;
-        d += ` C ${a.x + bend * 2.2} ${a.y + span * 0.3}, ${b.x - bend * 1.6} ${
-          b.y - span * 0.35
-        }, ${b.x} ${b.y}`;
+        const c1 = { x: a.x + bend * 2.2, y: a.y + span * 0.3 };
+        const c2 = { x: b.x - bend * 1.6, y: b.y - span * 0.35 };
+        d += ` C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${b.x} ${b.y}`;
+        segments.push([a, c1, c2, b]);
       }
 
       setGeometry({ d, w: Math.max(40, gutter), h, pins });
+      // Let others (the navbar brand) know where the trail runs
+      const left = box.left;
+      const top = box.top + window.scrollY;
+      setRouteLine((pageY) => {
+        const lx = xAtY(segments, pageY - top);
+        return lx === null ? null : left + lx;
+      });
     };
 
     build();
