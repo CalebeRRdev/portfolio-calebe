@@ -2,144 +2,147 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import styles from "./VideoCard.module.css";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
 import type { VideoItem } from "@/data/videos";
+import { getLenis } from "@/lib/scroll";
+import styles from "./VideoCard.module.css";
 
-function getVideoTag(id: string): string | null {
-  if (id.includes("ios")) return "iOS";
-  if (id.includes("android")) return "Android";
-  if (id.includes("light")) return "Light theme";
-  if (id.includes("dark")) return "Dark theme";
-  return null;
-}
+type Props = {
+  item: VideoItem;
+  title: string;
+  description: string;
+  tag: string;
+  playLabel: string;
+  closeLabel: string;
+  variant?: "phone" | "screen";
+  /** Keep the caption for screen readers only */
+  hideCaption?: boolean;
+};
 
-export function VideoCard({ item }: { item: VideoItem }) {
+const morph = { type: "spring", stiffness: 260, damping: 32 } as const;
+
+export function VideoCard({
+  item,
+  title,
+  description,
+  tag,
+  playLabel,
+  closeLabel,
+  variant = "screen",
+  hideCaption = false,
+}: Props) {
   const [open, setOpen] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const tag = getVideoTag(item.id);
+  const [mounted, setMounted] = useState(false);
+  const closeRef = useRef<HTMLButtonElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const layoutId = `video-${item.id}`;
 
-  const close = () => setOpen(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- portal target only exists on the client
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     document.addEventListener("keydown", onKeyDown);
-    const prevOverflow = document.body.style.overflow;
+    getLenis()?.stop();
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
+    closeRef.current?.focus();
+    const trigger = triggerRef.current;
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = prevOverflow;
+      getLenis()?.start();
+      document.body.style.overflow = prev;
+      trigger?.focus({ preventScroll: true });
     };
-  }, [open]);
-
-  // Pause + reset on close (prevents iOS audio bleed)
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-
-    if (!open) {
-      try {
-        v.pause();
-        v.currentTime = 0;
-      } catch {}
-    }
   }, [open]);
 
   return (
-    <>
-      <article className={styles.card}>
-        <button
-          type="button"
-          className={styles.mediaButton}
-          onClick={() => setOpen(true)}
-          aria-label={`Open ${item.title}`}
-        >
-          <div className={styles.frame} style={{ aspectRatio: item.aspect }}>
-            <video
-              className={styles.video}
-              preload="metadata"
-              playsInline
-              muted
-              poster={item.poster}
-            >
-              <source src={item.src} type="video/mp4" />
-            </video>
-
-            {tag && (
-              <span className={styles.tag} aria-hidden="true">
-                {tag}
-              </span>
-            )}
-
-            <div className={styles.overlay} aria-hidden="true">
-              <span className={styles.playRing}>
-                <span className={styles.playBtn}>
-                  <svg viewBox="0 0 24 24" className={styles.playIcon}>
-                    <path d="M8 5v14l11-7L8 5z" fill="currentColor" />
-                  </svg>
-                </span>
-              </span>
-            </div>
-          </div>
-        </button>
-
-        <div className={styles.body}>
-          <h4 className={styles.title}>{item.title}</h4>
-          <p className={styles.desc}>{item.description}</p>
-        </div>
-      </article>
-
-      {open && (
-        <div
-          className={styles.modalOverlay}
-          onClick={close}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Video modal: ${item.title}`}
-        >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
+    <figure className={`${styles.card} ${variant === "phone" ? styles.phone : styles.screen}`}>
+      <div className={styles.slot} style={{ aspectRatio: item.aspect.replace("/", " / ") }}>
+        {!open && (
+          <motion.button
+            ref={triggerRef}
+            type="button"
+            layoutId={layoutId}
+            transition={morph}
+            className={styles.thumb}
+            onClick={() => setOpen(true)}
+            aria-label={`${playLabel}: ${title}`}
           >
-            <button
-              type="button"
-              className={styles.modalClose}
-              onClick={close}
-              aria-label="Close video"
-            >
-              ✕
-            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={item.poster} alt="" className={styles.poster} loading="lazy" draggable={false} />
+            <span className={styles.tag}>{tag}</span>
+            <span className={styles.play} aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M8 5.5v13l10.5-6.5z" />
+              </svg>
+            </span>
+          </motion.button>
+        )}
+      </div>
 
-            <video
-              ref={videoRef}
-              className={styles.modalVideo}
-              controls
-              autoPlay
-              playsInline
-              poster={item.poster}
-              webkit-playsinline="true"
-              onEnded={close}
-            >
-              <source src={item.src} type="video/mp4" />
-            </video>
+      <figcaption className={hideCaption ? "sr-only" : styles.caption}>
+        <span className={styles.title}>{title}</span>
+        <span className={styles.desc}>{description}</span>
+      </figcaption>
 
-            <div className={styles.mobileCloseBar}>
-              <button
-                type="button"
-                onClick={close}
-                className={styles.mobileCloseBtn}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                className={styles.overlay}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setOpen(false)}
+                role="dialog"
+                aria-modal="true"
+                aria-label={title}
               >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+                <motion.div
+                  layoutId={layoutId}
+                  transition={morph}
+                  className={`${styles.player} ${item.aspect.startsWith("9/") ? styles.playerTall : styles.playerWide}`}
+                  style={
+                    {
+                      aspectRatio: item.aspect.replace("/", " / "),
+                      "--ar": item.aspect.replace("/", " / "),
+                    } as React.CSSProperties
+                  }
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <video
+                    className={styles.video}
+                    src={item.src}
+                    poster={item.poster}
+                    controls
+                    autoPlay
+                    playsInline
+                    onEnded={() => setOpen(false)}
+                  />
+                </motion.div>
+                <motion.button
+                  ref={closeRef}
+                  type="button"
+                  className={styles.close}
+                  onClick={() => setOpen(false)}
+                  aria-label={closeLabel}
+                  initial={{ opacity: 0, scale: 0.6, rotate: -90 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0, transition: { delay: 0.2 } }}
+                  exit={{ opacity: 0, scale: 0.6 }}
+                >
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M4 4l8 8M12 4l-8 8" />
+                  </svg>
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
+    </figure>
   );
 }

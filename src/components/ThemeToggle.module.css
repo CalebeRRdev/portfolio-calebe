@@ -1,0 +1,164 @@
+/* File: src/components/ThemeToggle.module.css */
+
+.toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.toggle:active {
+  transform: scale(0.94);
+}
+
+.scene {
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+}
+
+.rim {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.sky {
+  fill: #f6e7d6;
+  transition: fill 700ms var(--ease-out);
+}
+
+/* === Sun === */
+.sun {
+  transform-box: view-box;
+  transform-origin: 20px 17px;
+  transition: transform 800ms var(--ease-spring), opacity 400ms var(--ease-out);
+}
+
+.sunDisc {
+  fill: #e0a458;
+}
+
+.rays line {
+  stroke: #e0a458;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.rays {
+  transform-box: view-box;
+  transform-origin: 20px 17px;
+  transition: transform 900ms var(--ease-out), opacity 300ms var(--ease-out);
+}
+
+.toggle:hover .rays {
+  transform: rotate(45deg);
+}
+
+/* === Moon === */
+.moon {
+  fill: #e2e2b6;
+  transform-box: view-box;
+  transform-origin: 20px 30px;
+  transform: translateY(24px) rotate(40deg);
+  transition: transform 900ms var(--ease-spring);
+}
+
+.toggle:hover .moon {
+  transition-duration: 500ms;
+}
+
+/* === Stars === */
+.stars circle {
+  fill: #e2e2b6;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: transform 400ms var(--ease-spring), opacity 300ms var(--ease-out);
+}
+
+/* === Hills === */
+.hillBack {
+  fill: #b9d0b1;
+  transition: fill 700ms var(--ease-out);
+}
+
+.hill {
+  fill: #8eb486;
+  transition: fill 700ms var(--ease-out);
+}
+
+.contour {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 0.8;
+  stroke-dasharray: 2 2;
+}
+
+/* ===== Dark: the sun sets behind the hill, the moon rises ===== */
+:global([data-theme="dark"]) .sky {
+  fill: #03346e;
+}
+
+:global([data-theme="dark"]) .sun {
+  transform: translateY(22px) scale(0.8);
+}
+
+:global([data-theme="dark"]) .rays {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+:global([data-theme="dark"]) .moon {
+  transform: translateY(0) rotate(0deg);
+  transition-delay: 160ms;
+}
+
+:global([data-theme="dark"]) .toggle:hover .moon {
+  transform: translateY(-1.5px) rotate(-14deg);
+  transition-delay: 0ms;
+}
+
+:global([data-theme="dark"]) .stars circle {
+  opacity: 1;
+  transform: scale(1);
+}
+:global([data-theme="dark"]) .stars circle:nth-child(1) { transition-delay: 380ms; }
+:global([data-theme="dark"]) .stars circle:nth-child(2) { transition-delay: 460ms; }
+:global([data-theme="dark"]) .stars circle:nth-child(3) { transition-delay: 540ms; }
+:global([data-theme="dark"]) .stars circle:nth-child(4) { transition-delay: 620ms; }
+
+:global([data-theme="dark"]) .toggle:hover .stars circle {
+  animation: twinkle 1.2s ease-in-out infinite alternate;
+}
+:global([data-theme="dark"]) .toggle:hover .stars circle:nth-child(2n) {
+  animation-delay: 0.4s;
+}
+
+:global([data-theme="dark"]) .hillBack {
+  fill: #0a3a66;
+}
+
+:global([data-theme="dark"]) .hill {
+  fill: #021526;
+}
+
+:global([data-theme="dark"]) .contour {
+  stroke: rgba(110, 172, 218, 0.5);
+}
+
+@keyframes twinkle {
+  to {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+}
+
+/* Don't animate the icon into place on first paint */
+.toggle[data-mounted="false"] * {
+  transition: none !important;
+}

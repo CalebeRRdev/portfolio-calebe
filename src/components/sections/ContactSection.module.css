@@ -1,230 +1,205 @@
 /* File: src/components/sections/ContactSection.module.css */
 
 .section {
-  padding: var(--space-16) 0;
+  padding-block: clamp(72px, 12vw, 160px) clamp(56px, 8vw, 96px);
 }
 
-/* === Header === */
-.header {
+/* === Email === */
+.emailRow {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
-  text-align: center;
-  margin-bottom: var(--space-10);
-
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out);
+  gap: var(--space-4) var(--space-6);
+  padding-bottom: clamp(28px, 4vw, 48px);
+  border-bottom: 1px solid var(--line-strong);
 }
 
-.header.isVisible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  color: var(--accent);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.title {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: var(--fs-3xl);
-  color: var(--text-0);
-  margin: 0;
-  letter-spacing: -0.02em;
+.email {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(24px, 3.4vw + 8px, 56px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
   line-height: 1.05;
-  max-width: 640px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 0.08em;
+  background-position: 0 92%;
+  background-repeat: no-repeat;
+  transition: background-size 600ms var(--ease-out), color var(--dur-base) var(--ease-out);
 }
 
-.subtitle {
-  font-family: var(--font-body);
-  font-size: var(--fs-md);
-  color: var(--text-1);
-  margin: 0;
-  max-width: 480px;
+.email:hover {
+  background-size: 100% 0.08em;
+  color: var(--accent-ink);
 }
 
-/* === Grid === */
-.grid {
+.copy {
+  position: relative;
+  min-width: 150px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  overflow: hidden;
+  transition: border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+}
+
+.copy:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.copyInner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.copyIcon,
+.check {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.check {
+  stroke-width: 2.2;
+  stroke: var(--accent-ink);
+  stroke-dasharray: 16;
+  animation: draw 420ms var(--ease-out) 80ms both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 16;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* === Other channels === */
+.list {
+  list-style: none;
+}
+
+.row {
+  border-bottom: 1px solid var(--line);
+}
+
+.link {
+  --brand: var(--accent);
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-3);
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.card {
-  --brand: var(--text-0);
-  --brand-rgb: 245, 239, 232;
-
-  display: flex;
+  grid-template-columns: auto minmax(0, 0.4fr) minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-4);
-
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  background: var(--surface);
-
-  font-family: var(--font-body);
-  text-decoration: none;
-  color: var(--text-0);
-
-  position: relative;
-  overflow: hidden;
-
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 680ms var(--ease-out) var(--delay, 0ms),
-    transform 680ms var(--ease-out) var(--delay, 0ms),
-    border-color var(--dur-base) var(--ease-out),
-    background var(--dur-base) var(--ease-out);
+  padding: 18px 4px;
+  isolation: isolate;
 }
 
-.grid.isVisible .card {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card::before {
+/* A wash of the brand color fills the row from the left on hover */
+.link::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    140% 100% at 50% 0%,
-    rgba(var(--brand-rgb), 0.10),
-    transparent 60%
-  );
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--dur-base) var(--ease-out);
+  z-index: -1;
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms var(--ease-out);
 }
 
-.card:hover {
-  border-color: var(--brand);
-  background: var(--surface-hover);
+.link:hover::before {
+  transform: scaleX(1);
 }
 
-.grid.isVisible .card:hover {
-  transform: translateY(-3px);
-}
+.brand_linkedin { --brand: var(--brand-linkedin); }
+.brand_whatsapp { --brand: var(--brand-whatsapp); }
+.brand_instagram { --brand: var(--brand-instagram); }
+.brand_github { --brand: var(--brand-github); }
 
-.card:hover::before {
-  opacity: 1;
-}
-
-.cardIcon {
+.icon {
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
-  flex: 0 0 auto;
-
-  width: 44px;
-  height: 44px;
-  border-radius: var(--r-pill);
-
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  color: var(--brand);
-
-  transition: background var(--dur-base) var(--ease-out),
-              border-color var(--dur-base) var(--ease-out),
-              color var(--dur-base) var(--ease-out),
-              transform var(--dur-base) var(--ease-spring);
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  transition: background-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out), transform 400ms var(--ease-spring);
 }
 
-.card:hover .cardIcon {
+.icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.link:hover .icon {
   background: var(--brand);
-  color: #fff;
   border-color: var(--brand);
-  transform: rotate(-8deg) scale(1.05);
+  color: #fff;
+  transform: rotate(-10deg) scale(1.06);
 }
 
-.cardSvg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}
-
-.cardText {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.cardLabel {
-  font-size: var(--fs-md);
+.label {
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--fs-lg);
   font-weight: 600;
-  letter-spacing: -0.005em;
-  color: var(--text-0);
+  color: var(--ink);
+  letter-spacing: -0.015em;
 }
 
-.cardHandle {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-2);
-  letter-spacing: 0.01em;
-
-  white-space: nowrap;
+.handle {
+  color: var(--text-1);
+  font-size: var(--fs-sm);
   overflow: hidden;
   text-overflow: ellipsis;
-
-  transition: color var(--dur-base) var(--ease-out);
+  white-space: nowrap;
 }
 
-.card:hover .cardHandle {
-  color: var(--text-1);
+.arrow {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 
-.cardArrow {
-  font-family: var(--font-mono);
-  font-size: var(--fs-md);
-  color: var(--text-2);
-  flex: 0 0 auto;
-
-  transition: transform var(--dur-base) var(--ease-spring),
-              color var(--dur-base) var(--ease-out);
+.link:hover .arrow {
+  transform: translate(3px, -3px);
 }
 
-.card:hover .cardArrow {
-  color: var(--brand);
-  transform: translateX(4px);
-}
-
-/* === Brand themes === */
-.brand_linkedin  { --brand: var(--brand-linkedin);  --brand-rgb: 10, 102, 194; }
-.brand_whatsapp  { --brand: var(--brand-whatsapp);  --brand-rgb: 37, 211, 102; }
-.brand_gmail     { --brand: var(--brand-gmail);     --brand-rgb: 234, 67, 53; }
-.brand_instagram { --brand: var(--brand-instagram); --brand-rgb: 214, 41, 118; }
-.brand_github    { --brand: var(--brand-github);    --brand-rgb: 176, 114, 255; }
-
-/* GitHub centers when alone in last row of 2-col grid */
-.card:nth-child(5):last-child {
-  grid-column: 1 / -1;
-  max-width: 360px;
-  justify-self: center;
-}
-
-/* === Responsive === */
 @media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr;
+  .link {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon label arrow"
+      "icon handle arrow";
+    row-gap: 0;
+    column-gap: var(--space-3);
+    padding: 14px 2px;
   }
 
-  .card:nth-child(5):last-child {
-    grid-column: auto;
-    max-width: none;
-    justify-self: stretch;
+  .icon { grid-area: icon; }
+  .label { grid-area: label; }
+  .handle { grid-area: handle; }
+  .arrow { grid-area: arrow; }
+
+  .copy {
+    width: 100%;
   }
 }

@@ -1,0 +1,171 @@
+/* File: src/components/demos/PipelineDemo.module.css */
+
+.demo {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  padding: 8px;
+  min-height: 210px;
+  border-radius: var(--r-sm);
+  background: var(--surface-solid);
+  box-shadow: inset 0 0 0 1px var(--line), var(--shadow);
+}
+
+.column {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 6px;
+  background: var(--paper-2);
+}
+
+.won {
+  background: var(--accent-soft);
+}
+
+.columnHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 2px 2px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stageName {
+  min-width: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 10.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 7px 14px 7px 7px;
+  border-radius: 5px;
+  background: var(--surface-solid);
+  box-shadow: 0 1px 0 var(--line), 0 4px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+/* Owner dot in the corner, so the deal name gets the full width */
+.avatar {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+.avatar[data-deal="1"] { background: var(--accent); }
+.avatar[data-deal="2"] { background: var(--accent-ink); }
+
+.dealName {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.progress {
+  display: flex;
+  gap: 2px;
+}
+
+.step,
+.stepOn {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--line);
+  transition: background-color 400ms var(--ease-out);
+}
+
+.stepOn {
+  background: var(--accent);
+}
+
+.bar {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 40px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  transition: border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+}
+
+.action:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.action svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.action:hover svg {
+  transform: translateX(3px);
+}
+
+@media (max-width: 420px) {
+  .board {
+    gap: 4px;
+    padding: 5px;
+  }
+  .column {
+    padding: 4px;
+  }
+  .card {
+    padding: 5px 11px 5px 5px;
+  }
+}

@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# capture output (npm run capture): large videos, kept out of git
+/marketing/

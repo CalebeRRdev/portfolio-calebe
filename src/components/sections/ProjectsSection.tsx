@@ -1,148 +1,197 @@
 // File: src/components/sections/ProjectsSection.tsx
 "use client";
 
-import styles from "./ProjectsSection.module.css";
-import { videos } from "@/data/videos";
+import { useRef } from "react";
+import type { Dictionary } from "@/i18n/getDictionary";
 import { projects, type ProjectMeta } from "@/data/projects";
+import { videos } from "@/data/videos";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { VideoCard } from "@/components/cards/VideoCard";
-import { RepoButton } from "@/components/ui/RepoButton";
-import { UrlPill } from "@/components/ui/UrlPill";
-import { useInView } from "@/hooks/useInView";
+import { BrowserFrame } from "@/components/cards/BrowserFrame";
+import styles from "./ProjectsSection.module.css";
 
-function StatusChip({ status }: { status: ProjectMeta["status"] }) {
+type Dict = Dictionary["projects"];
+
+function ArrowUpRight() {
   return (
-    <span className={`${styles.statusChip} ${styles[`status_${status}`]}`}>
-      <span className={styles.statusDot} aria-hidden="true" />
-      <span>{status === "production" ? "Production" : "In development"}</span>
-    </span>
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.arrow}>
+      <path d="M5 11 11 5M6 5h5v5" />
+    </svg>
   );
 }
 
-function ProjectHeader({ project }: { project: ProjectMeta }) {
-  return (
-    <header className={styles.projectHeader}>
-      <div className={styles.projectMetaTop}>
-        <span className={styles.projectYear}>{project.year}</span>
-        <span className={styles.projectDot} aria-hidden="true">
-          ·
-        </span>
-        <StatusChip status={project.status} />
+function Media({ project, dict }: { project: ProjectMeta; dict: Dict }) {
+  const { media } = project;
+  const copy = dict.items[project.id];
+
+  if (media.kind === "page") {
+    const phone = media.phoneVideo;
+    return (
+      <div className={phone ? styles.composite : undefined}>
+        <BrowserFrame
+          src={media.src}
+          width={media.width}
+          height={media.height}
+          url={project.liveDisplayText ?? ""}
+          href={project.liveUrl ?? "#"}
+          alt={`${copy.title}: ${copy.tagline}`}
+        />
+        {phone && (
+          <div className={styles.compositePhone} data-parallax>
+            <VideoCard
+              item={videos[phone]}
+              title={dict.videos[phone].title}
+              description={dict.videos[phone].description}
+              tag={dict.videos[phone].tag}
+              playLabel={dict.playVideo}
+              closeLabel={dict.closeVideo}
+              variant="phone"
+              hideCaption
+            />
+          </div>
+        )}
       </div>
+    );
+  }
 
-      <h3 className={styles.projectTitle}>{project.title}</h3>
-      <p className={styles.projectTagline}>{project.tagline}</p>
-      <p className={styles.projectDescription}>{project.description}</p>
-
-      <ul className={styles.stack}>
-        {project.stack.map((tech) => (
-          <li key={tech} className={styles.stackChip}>
-            {tech}
-          </li>
-        ))}
-      </ul>
-
-      <p className={styles.projectRole}>
-        <span className={styles.projectRoleLabel}>Role</span>
-        <span className={styles.projectRoleValue}>{project.role}</span>
-      </p>
-    </header>
+  return (
+    <div className={media.layout === "phones" ? styles.phones : styles.screens}>
+      {media.videos.map((id) => (
+        <div key={id} className={styles.mediaItem} data-parallax>
+          <VideoCard
+            item={videos[id]}
+            title={dict.videos[id].title}
+            description={dict.videos[id].description}
+            tag={dict.videos[id].tag}
+            playLabel={dict.playVideo}
+            closeLabel={dict.closeVideo}
+            variant={media.layout === "phones" ? "phone" : "screen"}
+          />
+        </div>
+      ))}
+    </div>
   );
 }
 
-export function ProjectsSection() {
-  const { ref: refHeader, inView: headerIn } = useInView<HTMLDivElement>({
-    threshold: 0.2,
-  });
-  const { ref: refMob, inView: mobIn } = useInView<HTMLElement>({
-    threshold: 0.05,
-  });
-  const { ref: refIpuy, inView: ipuyIn } = useInView<HTMLElement>({
-    threshold: 0.05,
-  });
+export function ProjectsSection({ dict }: { dict: Dict }) {
+  const rootRef = useRef<HTMLElement | null>(null);
 
-  const mobtechProject = projects.find((p) => p.id === "mobtech");
-  const ipuyProject = projects.find((p) => p.id === "ipuy");
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
 
-  const mobtechVideos = videos.filter((v) => v.group === "mobtech");
-  const ipuyVideos = videos.filter((v) => v.group === "ipuy");
+      gsap.utils.toArray<HTMLElement>(`.${styles.project}`).forEach((project) => {
+        // Media is unveiled like a print sliding out of a sleeve
+        gsap.fromTo(
+          project.querySelector(`.${styles.media}`),
+          { clipPath: "inset(18% 8% 18% 8% round 24px)", scale: 0.94 },
+          {
+            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            scale: 1,
+            ease: "power2.out",
+            scrollTrigger: { trigger: project, start: "top 85%", end: "top 35%", scrub: 0.6 },
+          }
+        );
+
+        gsap.from(project.querySelectorAll("[data-reveal]"), {
+          opacity: 0,
+          y: 28,
+          duration: 0.9,
+          stagger: 0.07,
+          ease: "power3.out",
+          scrollTrigger: { trigger: project, start: "top 75%", once: true },
+        });
+
+        // Second media item drifts at a different speed: depth between the two
+        const items = project.querySelectorAll<HTMLElement>("[data-parallax]");
+        const drifting = items.length > 1 ? items[1] : project.querySelector<HTMLElement>(`.${styles.compositePhone}`);
+        if (drifting) {
+          gsap.fromTo(
+            drifting,
+            { y: 40 },
+            {
+              y: -40,
+              ease: "none",
+              scrollTrigger: { trigger: project, start: "top bottom", end: "bottom top", scrub: true },
+            }
+          );
+        }
+      });
+    },
+    { scope: rootRef }
+  );
 
   return (
-    <section id="projects" className={styles.section}>
-      <header
-        ref={refHeader}
-        className={`${styles.header} ${headerIn ? styles.isVisible : ""}`}
-      >
-        <span className={styles.eyebrow}>02 — Featured work</span>
-        <h2 className={styles.title}>Selected projects</h2>
-        <p className={styles.subtitle}>
-          A look at what I&apos;ve been building lately.
-        </p>
-      </header>
+    <section id="projects" ref={rootRef} className={styles.section}>
+      <SectionHeading waypoint="projects" title={dict.title} subtitle={dict.subtitle} />
 
-      {/* MobTech */}
-      {mobtechProject && (
-        <article
-          ref={refMob}
-          className={`${styles.project} ${mobIn ? styles.isVisible : ""}`}
-        >
-          <ProjectHeader project={mobtechProject} />
-
-          <div className={styles.mobtechGrid}>
-            {mobtechVideos.map((v) => (
-              <div key={v.id} className={styles.mobtechCardWrap}>
-                <VideoCard item={v} />
+      <div className={styles.list}>
+        {projects.map((project, i) => {
+          const copy = dict.items[project.id];
+          const live = project.status === "production";
+          return (
+            <article
+              key={project.id}
+              className={`${styles.project} ${i % 2 === 1 ? styles.flip : ""}`}
+            >
+              <div className={styles.media}>
+                <Media project={project} dict={dict} />
               </div>
-            ))}
-          </div>
 
-          <div className={styles.actions}>
-            <RepoButton
-              href={mobtechProject.repoUrl}
-              titleTop={mobtechProject.title}
-              titleMain={mobtechProject.repoLabel}
-              username="@CalebeRRdev"
-              ariaLabel="Open MobTech repository on GitHub"
-            />
-          </div>
-        </article>
-      )}
+              <div className={styles.info}>
+                <div className={styles.meta} data-reveal>
+                  <span className={styles.year}>{copy.year}</span>
+                  <span className={`${styles.status} ${live ? styles.live : styles.dev}`}>
+                    <span className={styles.statusDot} aria-hidden="true" />
+                    {live ? dict.production : dict.development}
+                  </span>
+                </div>
 
-      {/* IPUY */}
-      {ipuyProject && (
-        <article
-          ref={refIpuy}
-          className={`${styles.project} ${ipuyIn ? styles.isVisible : ""}`}
-        >
-          <ProjectHeader project={ipuyProject} />
+                <h3 className={styles.title} data-reveal>
+                  {copy.title}
+                </h3>
+                <p className={styles.tagline} data-reveal>
+                  {copy.tagline}
+                </p>
+                <p className={styles.description} data-reveal>
+                  {copy.description}
+                </p>
 
-          <div className={styles.ipuyStack}>
-            {ipuyVideos.map((v) => (
-              <div key={v.id} className={styles.ipuyCardWrap}>
-                <VideoCard item={v} />
+                <dl className={styles.role} data-reveal>
+                  <dt>{dict.roleLabel}</dt>
+                  <dd>{copy.role}</dd>
+                </dl>
+
+                <ul className={styles.stack} data-reveal>
+                  {project.stack.map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+                </ul>
+
+                <div className={styles.actions} data-reveal>
+                  {project.liveUrl && (
+                    <a href={project.liveUrl} target="_blank" rel="noreferrer" className={styles.primary}>
+                      {dict.visit}
+                      <span className={styles.domain}>{project.liveDisplayText}</span>
+                      <ArrowUpRight />
+                    </a>
+                  )}
+                  {project.repoUrl && (
+                    <a href={project.repoUrl} target="_blank" rel="noreferrer" className={styles.secondary}>
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.gh}>
+                        <path d="M12 .5C5.73.5.75 5.68.75 12.1c0 5.14 3.29 9.5 7.86 11.04.58.11.8-.26.8-.57v-2.1c-3.2.72-3.87-1.39-3.87-1.39-.52-1.37-1.27-1.73-1.27-1.73-1.04-.73.08-.72.08-.72 1.15.08 1.75 1.21 1.75 1.21 1.02 1.78 2.67 1.26 3.32.96.1-.76.4-1.26.73-1.55-2.55-.3-5.24-1.32-5.24-5.86 0-1.29.45-2.34 1.19-3.17-.12-.3-.52-1.53.11-3.18 0 0 .98-.32 3.2 1.21a10.8 10.8 0 0 1 2.91-.4c.99 0 1.99.14 2.91.4 2.22-1.53 3.2-1.21 3.2-1.21.63 1.65.23 2.88.11 3.18.74.83 1.19 1.88 1.19 3.17 0 4.55-2.7 5.56-5.27 5.85.41.37.78 1.1.78 2.22v3.29c0 .31.22.69.81.57 4.56-1.54 7.85-5.9 7.85-11.04C23.25 5.68 18.27.5 12 .5z" />
+                      </svg>
+                      {dict.repo}
+                      <ArrowUpRight />
+                    </a>
+                  )}
+                </div>
               </div>
-            ))}
-          </div>
-
-          <div className={styles.actionsCol}>
-            <RepoButton
-              href={ipuyProject.repoUrl}
-              titleTop={ipuyProject.title}
-              titleMain={ipuyProject.repoLabel}
-              username="@CalebeRRdev"
-              ariaLabel="Open IPUY repository on GitHub"
-            />
-
-            {ipuyProject.liveUrl && (
-              <UrlPill
-                href={ipuyProject.liveUrl}
-                displayText={ipuyProject.liveDisplayText ?? ipuyProject.liveUrl}
-                tabTitle="Iglesia Presbiteriana del Uruguay"
-                faviconSrc="/projects/favicon-light.png"
-              />
-            )}
-          </div>
-        </article>
-      )}
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }

@@ -1,0 +1,141 @@
+/* File: src/components/RouteLine.module.css */
+
+.root svg {
+  max-width: none;
+}
+
+.root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.revealPath {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 12;
+}
+
+.planned {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+  stroke-dasharray: 1 7;
+  stroke-linecap: round;
+}
+
+.travelled {
+  fill: none;
+  stroke: var(--route);
+  stroke-width: 2.5;
+  stroke-dasharray: 10 7;
+  stroke-linecap: round;
+}
+
+/* === Waypoint pins === */
+.pin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.pinIcon {
+  position: absolute;
+  width: 20px;
+  height: 27px;
+  left: -10px;
+  top: -27px;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  transform: translateY(-18px) scale(0.4);
+  opacity: 0;
+  transition: transform 520ms var(--ease-spring), opacity 200ms var(--ease-out);
+}
+
+.pinIcon path {
+  fill: var(--pin);
+  stroke: var(--paper);
+  stroke-width: 1.5;
+}
+
+.pinIcon circle {
+  fill: var(--paper);
+}
+
+.pinShadow {
+  position: absolute;
+  left: -7px;
+  top: -2px;
+  width: 14px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0;
+  transform: scale(0.2);
+  transition: transform 520ms var(--ease-spring), opacity 300ms var(--ease-out);
+}
+
+.pinReached .pinIcon {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.pinReached .pinShadow {
+  opacity: 0.18;
+  transform: scale(1);
+}
+
+/* === "You are here" marker === */
+.marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+
+.markerDot {
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--paper);
+}
+
+.markerPulse {
+  position: absolute;
+  left: -14px;
+  top: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  animation: pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}

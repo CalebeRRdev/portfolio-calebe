@@ -1,0 +1,117 @@
+/* File: src/components/LangSwitch.module.css */
+
+.root {
+  position: relative;
+}
+
+.board {
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.board:hover {
+  border-color: var(--accent);
+}
+
+.tile {
+  position: relative;
+  width: 16px;
+  height: 26px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  perspective: 120px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  font-variation-settings: "wdth" 80;
+  line-height: 1;
+}
+
+.flap {
+  display: block;
+  transform-origin: 50% 50%;
+  animation: flap 140ms var(--ease-out);
+  backface-visibility: hidden;
+}
+
+.hinge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--paper);
+  opacity: 0.35;
+}
+
+@keyframes flap {
+  from {
+    transform: rotateX(-88deg);
+    filter: brightness(0.6);
+  }
+  to {
+    transform: rotateX(0);
+    filter: brightness(1);
+  }
+}
+
+/* === Menu === */
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  list-style: none;
+  min-width: 168px;
+  padding: 6px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-strong);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow);
+  transform-origin: top right;
+  z-index: 90;
+}
+
+.option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  color: var(--text-1);
+  text-align: left;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.option:hover {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.optionActive {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.optionCode {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  font-variation-settings: "wdth" 80;
+  width: 26px;
+  padding: 2px 0;
+  text-align: center;
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--paper);
+}

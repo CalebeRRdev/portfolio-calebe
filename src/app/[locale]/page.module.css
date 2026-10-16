@@ -1,0 +1,9 @@
+/* File: src/app/[locale]/page.module.css */
+
+/* The left padding is the route gutter: the trail and its pins live there */
+.main {
+  position: relative;
+  width: min(var(--w-base) + var(--route-gutter), 100%);
+  margin: 0 auto;
+  padding-inline: calc(var(--route-gutter) + 4px) var(--gutter);
+}

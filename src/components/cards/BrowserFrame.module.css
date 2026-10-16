@@ -1,0 +1,79 @@
+/* File: src/components/cards/BrowserFrame.module.css */
+
+.browser {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--surface-solid);
+  box-shadow: 0 0 0 1px var(--line-strong), var(--shadow);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
+}
+
+.dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+.dots i:nth-child(2) { background: #febc2e; }
+.dots i:nth-child(3) { background: #28c840; }
+
+.omnibox {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 320px;
+  margin-inline: auto;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--surface-solid);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: var(--fs-xs);
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.omnibox svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.viewport {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  cursor: alias;
+}
+
+.page {
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    overflow-y: auto;
+  }
+}

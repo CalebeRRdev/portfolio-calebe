@@ -1,0 +1,53 @@
+/* File: src/components/Footer.module.css */
+
+.footer {
+  position: relative;
+  border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.inner {
+  width: min(var(--w-base) + var(--route-gutter), 100%);
+  margin: 0 auto;
+  padding: var(--space-6) var(--gutter) max(var(--space-6), env(safe-area-inset-bottom));
+  padding-left: calc(var(--route-gutter) + 4px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.made {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.top svg {
+  width: 14px;
+  height: 19px;
+  transition: transform 500ms var(--ease-spring);
+}
+
+.top path {
+  fill: var(--pin);
+}
+
+.top circle {
+  fill: var(--paper);
+}
+
+.top:hover svg {
+  transform: translateY(-4px);
+}

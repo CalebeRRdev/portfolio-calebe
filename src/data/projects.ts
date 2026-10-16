@@ -1,52 +1,69 @@
 // File: src/data/projects.ts
+// Language-independent project data. Copy lives in src/i18n/dictionaries.
+import type { ProjectId, VideoId } from "@/i18n/dictionaries/en";
 
-export type ProjectId = "mobtech" | "ipuy";
 export type ProjectStatus = "production" | "development";
+
+export type ProjectMedia =
+  | { kind: "videos"; videos: VideoId[]; layout: "phones" | "screens" }
+  | {
+      kind: "page";
+      /** Tall full-page screenshot, scrolled inside a browser frame */
+      src: string;
+      width: number;
+      height: number;
+      /** Optional phone recording layered over the browser */
+      phoneVideo?: VideoId;
+    };
 
 export type ProjectMeta = {
   id: ProjectId;
-  title: string;
-  tagline: string;
-  description: string;
-  role: string;
-  year: string;
   status: ProjectStatus;
   stack: string[];
-
-  repoUrl: string;
-  repoLabel: string;
-
+  repoUrl?: string;
   liveUrl?: string;
   liveDisplayText?: string;
+  tabTitle?: string;
+  faviconSrc?: string;
+  media: ProjectMedia;
 };
 
 export const projects: ProjectMeta[] = [
   {
-    id: "mobtech",
-    title: "MobTech Solutions",
-    tagline: "Mobile ride-tracking platform · iOS & Android",
-    description:
-      "Cross-platform mobile app focused on real-time tracking and trip flows. Built with React Native and Expo, with map-based interactions, status states, and a native feel on both platforms.",
-    role: "Mobile Developer",
-    year: "2024 — present",
-    status: "development",
-    stack: ["React Native", "Expo", "TypeScript", "Maps API"],
-    repoUrl: "https://github.com/CalebeRRdev/MobTech_Solutions",
-    repoLabel: "View repository",
+    id: "voltaaflora",
+    status: "production",
+    stack: ["Next.js", "React", "Vercel"],
+    liveUrl: "https://www.voltaaflora.com/",
+    liveDisplayText: "voltaaflora.com",
+    tabTitle: "Volta à Flora",
+    media: {
+      kind: "page",
+      src: "/projects/voltaaflora-page.jpg",
+      width: 1200,
+      height: 3030,
+      phoneVideo: "voltaaflora-mobile",
+    },
   },
   {
     id: "ipuy",
-    title: "IPUY Website",
-    tagline: "Institutional website · light & dark theming",
-    description:
-      "Modern website for Iglesia Presbiteriana del Uruguay, with responsive layouts, full theming support, and clean content sections. Designed for clarity and accessibility on every device.",
-    role: "Frontend Developer",
-    year: "2024",
     status: "production",
     stack: ["Next.js", "React", "TypeScript", "CSS Modules"],
     repoUrl: "https://github.com/CalebeRRdev/site-ipuy",
-    repoLabel: "View repository",
     liveUrl: "https://ipuy.org.uy/",
     liveDisplayText: "ipuy.org.uy",
+    tabTitle: "Iglesia Presbiteriana del Uruguay",
+    faviconSrc: "/projects/favicon-light.png",
+    media: { kind: "videos", videos: ["ipuy-light", "ipuy-dark"], layout: "screens" },
+  },
+  {
+    id: "mobtech",
+    status: "development",
+    stack: ["React Native", "Expo", "TypeScript", "PostGIS"],
+    repoUrl: "https://github.com/CalebeRRdev/MobTech_Solutions",
+    media: {
+      kind: "videos",
+      videos: ["mobtech-ios", "mobtech-android"],
+      layout: "phones",
+    },
   },
 ];

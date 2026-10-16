@@ -1,119 +1,128 @@
 // File: src/components/sections/ContactSection.tsx
 "use client";
 
+import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import type { IconType } from "react-icons";
+import { SiGithub, SiInstagram, SiWhatsapp } from "react-icons/si";
+import { FaLinkedinIn } from "react-icons/fa6";
+import { TbMail } from "react-icons/tb";
+import type { Dictionary } from "@/i18n/getDictionary";
+import { contacts, EMAIL, type ContactId } from "@/data/contact";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Magnetic } from "@/components/ui/Magnetic";
 import styles from "./ContactSection.module.css";
-import { contacts, type ContactId } from "@/data/contact";
-import { useInView } from "@/hooks/useInView";
 
-function IconLinkedIn(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path d="M20.45 20.45h-3.56v-5.58c0-1.33-.03-3.04-1.86-3.04-1.86 0-2.15 1.45-2.15 2.95v5.67H9.32V9h3.42v1.56h.05c.48-.9 1.65-1.86 3.39-1.86 3.62 0 4.29 2.38 4.29 5.47v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM3.56 20.45h3.56V9H3.56v11.45z" />
-    </svg>
-  );
-}
-
-function IconWhatsApp(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path d="M20.52 3.48A11.82 11.82 0 0 0 12.03 0C5.46 0 .15 5.32.15 11.88c0 2.1.55 4.15 1.59 5.96L0 24l6.34-1.66a11.8 11.8 0 0 0 5.69 1.45h.01c6.56 0 11.87-5.32 11.87-11.88 0-3.17-1.23-6.14-3.39-8.43Zm-8.49 18.3h-.01a9.8 9.8 0 0 1-4.99-1.37l-.36-.22-3.76.98 1.01-3.67-.23-.38A9.84 9.84 0 0 1 2.2 11.88C2.2 6.45 6.61 2.05 12.03 2.05c2.63 0 5.1 1.02 6.96 2.88a9.76 9.76 0 0 1 2.89 6.95c0 5.43-4.41 9.9-9.85 9.9Zm5.4-7.4c-.3-.15-1.77-.87-2.05-.97-.28-.1-.48-.15-.68.15-.2.3-.78.97-.95 1.17-.18.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.74-1.65-2.03-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.68-1.64-.93-2.25-.24-.58-.49-.5-.68-.51h-.58c-.2 0-.52.07-.8.37-.28.3-1.05 1.03-1.05 2.52s1.08 2.93 1.23 3.13c.15.2 2.12 3.24 5.14 4.54.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35Z" />
-    </svg>
-  );
-}
-
-function IconGmail(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4.2-8 5-8-5V6l8 5 8-5v2.2Z" />
-    </svg>
-  );
-}
-
-function IconInstagram(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9z" />
-      <path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
-      <path d="M17.5 6.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z" />
-    </svg>
-  );
-}
-
-function IconGitHub(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
-      <path d="M12 .5C5.73.5.75 5.68.75 12.1c0 5.14 3.29 9.5 7.86 11.04.58.11.8-.26.8-.57v-2.1c-3.2.72-3.87-1.39-3.87-1.39-.52-1.37-1.27-1.73-1.27-1.73-1.04-.73.08-.72.08-.72 1.15.08 1.75 1.21 1.75 1.21 1.02 1.78 2.67 1.26 3.32.96.1-.76.4-1.26.73-1.55-2.55-.3-5.24-1.32-5.24-5.86 0-1.29.45-2.34 1.19-3.17-.12-.3-.52-1.53.11-3.18 0 0 .98-.32 3.2 1.21a10.8 10.8 0 0 1 2.91-.4c.99 0 1.99.14 2.91.4 2.22-1.53 3.2-1.21 3.2-1.21.63 1.65.23 2.88.11 3.18.74.83 1.19 1.88 1.19 3.17 0 4.55-2.7 5.56-5.27 5.85.41.37.78 1.1.78 2.22v3.29c0 .31.22.69.81.57 4.56-1.54 7.85-5.9 7.85-11.04C23.25 5.68 18.27.5 12 .5z" />
-    </svg>
-  );
-}
-
-const ICONS: Record<
-  ContactId,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>
-> = {
-  linkedin: IconLinkedIn,
-  whatsapp: IconWhatsApp,
-  gmail: IconGmail,
-  instagram: IconInstagram,
-  github: IconGitHub,
+const ICONS: Record<ContactId, IconType> = {
+  email: TbMail,
+  linkedin: FaLinkedinIn,
+  whatsapp: SiWhatsapp,
+  github: SiGithub,
+  instagram: SiInstagram,
 };
 
-export function ContactSection() {
-  const { ref: headerRef, inView: headerIn } = useInView<HTMLDivElement>({
-    threshold: 0.2,
-  });
-  const { ref: gridRef, inView: gridIn } = useInView<HTMLDivElement>({
-    threshold: 0.05,
-  });
+export function ContactSection({ dict }: { dict: Dictionary["contact"] }) {
+  const rootRef = useRef<HTMLElement | null>(null);
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<number | null>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      gsap.from(`.${styles.row}`, {
+        opacity: 0,
+        x: -24,
+        duration: 0.8,
+        stagger: 0.07,
+        ease: "power3.out",
+        scrollTrigger: { trigger: `.${styles.list}`, start: "top 85%", once: true },
+      });
+    },
+    { scope: rootRef }
+  );
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+    } catch {
+      return;
+    }
+    setCopied(true);
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), 2200);
+  };
 
   return (
-    <section id="contact" className={styles.section}>
-      <header
-        ref={headerRef}
-        className={`${styles.header} ${headerIn ? styles.isVisible : ""}`}
-      >
-        <span className={styles.eyebrow}>04 — Get in touch</span>
-        <h2 className={styles.title}>
-          Let&apos;s build something good together.
-        </h2>
-        <p className={styles.subtitle}>
-          Open to freelance, full-time roles, or just a good conversation.
-        </p>
-      </header>
+    <section id="contact" ref={rootRef} className={styles.section}>
+      <SectionHeading waypoint="contact" title={dict.title} subtitle={dict.subtitle} />
 
-      <div
-        ref={gridRef}
-        className={`${styles.grid} ${gridIn ? styles.isVisible : ""}`}
-      >
-        {contacts.map((c, idx) => {
-          const Icon = ICONS[c.id];
-          const isMail = c.href.startsWith("mailto:");
-          return (
-            <a
-              key={c.id}
-              className={`${styles.card} ${styles[`brand_${c.id}`]}`}
-              href={c.href}
-              target={isMail ? undefined : "_blank"}
-              rel={isMail ? undefined : "noreferrer"}
-              aria-label={`${c.label} — ${c.handle}`}
-              style={
-                { ["--delay" as string]: `${idx * 60}ms` } as React.CSSProperties
-              }
-            >
-              <span className={styles.cardIcon} aria-hidden="true">
-                <Icon className={styles.cardSvg} />
-              </span>
-              <span className={styles.cardText}>
-                <span className={styles.cardLabel}>{c.label}</span>
-                <span className={styles.cardHandle}>{c.handle}</span>
-              </span>
-              <span className={styles.cardArrow} aria-hidden="true">
-                →
-              </span>
-            </a>
-          );
-        })}
+      <div className={styles.emailRow}>
+        <a href={`mailto:${EMAIL}`} className={styles.email}>
+          {EMAIL}
+        </a>
+        <Magnetic>
+          <button type="button" className={styles.copy} onClick={copy} aria-live="polite">
+            <AnimatePresence mode="popLayout" initial={false}>
+              {copied ? (
+                <motion.span
+                  key="copied"
+                  className={styles.copyInner}
+                  initial={{ y: 16, opacity: 0, filter: "blur(4px)" }}
+                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: -16, opacity: 0, filter: "blur(4px)" }}
+                >
+                  <svg viewBox="0 0 16 16" className={styles.check} aria-hidden="true">
+                    <path d="M3 8.5l3 3 7-7" />
+                  </svg>
+                  {dict.copied}
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="copy"
+                  className={styles.copyInner}
+                  initial={{ y: 16, opacity: 0, filter: "blur(4px)" }}
+                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: -16, opacity: 0, filter: "blur(4px)" }}
+                >
+                  <svg viewBox="0 0 16 16" className={styles.copyIcon} aria-hidden="true">
+                    <rect x="5" y="5" width="8.5" height="8.5" rx="1.5" />
+                    <path d="M10.5 5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5H5" />
+                  </svg>
+                  {dict.copyEmail}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </Magnetic>
       </div>
+
+      <ul className={styles.list}>
+        {contacts
+          .filter((c) => c.id !== "email")
+          .map((c) => {
+            const Icon = ICONS[c.id];
+            return (
+              <li key={c.id} className={styles.row}>
+                <a
+                  href={c.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${styles.link} ${styles[`brand_${c.id}`]}`}
+                >
+                  <span className={styles.icon} aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <span className={styles.label}>{dict.labels[c.id]}</span>
+                  <span className={styles.handle}>{c.handle}</span>
+                  <svg viewBox="0 0 16 16" className={styles.arrow} aria-hidden="true">
+                    <path d="M5 11 11 5M6 5h5v5" />
+                  </svg>
+                </a>
+              </li>
+            );
+          })}
+      </ul>
     </section>
   );
 }

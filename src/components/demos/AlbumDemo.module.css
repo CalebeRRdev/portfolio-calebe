@@ -1,0 +1,249 @@
+/* File: src/components/demos/AlbumDemo.module.css */
+
+.demo {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* Two facing pages */
+.spread {
+  position: relative;
+  aspect-ratio: 2 / 1.25;
+  border-radius: var(--r-sm);
+  background: var(--surface-solid);
+  box-shadow: inset 0 0 0 1px var(--line), var(--shadow);
+  overflow: hidden;
+  padding: 5%;
+}
+
+.fold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 18px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.07) 45%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.07) 55%, transparent);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.tile {
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--paper-3);
+  box-shadow: 0 0 0 3px #fff, 0 6px 18px -8px rgba(0, 0, 0, 0.45);
+}
+
+/* === Messy: photos scattered on the table === */
+.messy .tile {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  height: var(--h);
+  transform: rotate(var(--r));
+}
+
+/* === Arranged: an album spread layout === */
+.arranged {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  grid-template-areas:
+    "a a a b b c"
+    "a a a b b c"
+    "a a a d e e"
+    "a a a d e e";
+  gap: 3.5%;
+  column-gap: 2.4%;
+}
+
+.arranged .tile {
+  box-shadow: none;
+  border-radius: 2px;
+}
+
+.arranged .tile[data-tile="a"] { grid-area: a; }
+.arranged .tile[data-tile="b"] { grid-area: b; }
+.arranged .tile[data-tile="c"] { grid-area: c; }
+.arranged .tile[data-tile="d"] { grid-area: d; }
+.arranged .tile[data-tile="e"] { grid-area: e; }
+
+/* === AI scan pass === */
+.scan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, var(--accent-soft) 70%, var(--accent));
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transform: translateX(-110%);
+}
+
+.scanning .scan {
+  animation: sweep 1.05s var(--ease-in-out) forwards;
+}
+
+@keyframes sweep {
+  0% {
+    opacity: 1;
+    transform: translateX(-110%);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(360%);
+  }
+}
+
+/* === Illustrated photos === */
+.scene {
+  width: 100%;
+  height: 100%;
+}
+
+.bg_group { fill: #c9d9c3; }
+.bg_portrait { fill: #e7d3c6; }
+.bg_landscape { fill: #f3e2c9; }
+.bg_caps { fill: #bcd3e6; }
+.bg_couple { fill: #d8cfe4; }
+
+:global([data-theme="dark"]) .bg_group { fill: #1d4a78; }
+:global([data-theme="dark"]) .bg_portrait { fill: #2b5a85; }
+:global([data-theme="dark"]) .bg_landscape { fill: #0f3a63; }
+:global([data-theme="dark"]) .bg_caps { fill: #24507d; }
+:global([data-theme="dark"]) .bg_couple { fill: #183f68; }
+
+.sun { fill: #e0a458; }
+.hillA { fill: #8eb486; }
+.hillB { fill: #6f9a67; }
+:global([data-theme="dark"]) .sun { fill: #e2e2b6; }
+:global([data-theme="dark"]) .hillA { fill: #03346e; }
+:global([data-theme="dark"]) .hillB { fill: #021f42; }
+
+.cap { fill: #3b302c; }
+:global([data-theme="dark"]) .cap { fill: #e2e2b6; }
+
+.head { fill: #997c70; }
+.body { fill: #685752; }
+:global([data-theme="dark"]) .head { fill: #6eacda; }
+:global([data-theme="dark"]) .body { fill: #4b86b4; }
+
+.faceBox path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.faceBox {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(1.5);
+  transition: opacity 250ms var(--ease-out), transform 400ms var(--ease-spring);
+}
+
+.scanning .faceBox {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 350ms;
+}
+
+/* === Controls === */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 40px;
+}
+
+.pageLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.status {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.check {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  animation: draw 400ms var(--ease-out) 100ms both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 16;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.action {
+  white-space: nowrap;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  transition: background-color var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+}
+
+.action:hover {
+  background: var(--accent-ink);
+}
+
+.action:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.sparkle {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.action:hover .sparkle {
+  animation: twirl 800ms var(--ease-out);
+}
+
+@keyframes twirl {
+  to {
+    transform: rotate(180deg) scale(1.1);
+  }
+}
+
+@media (max-width: 480px) {
+  .pageLabel {
+    display: none;
+  }
+}
