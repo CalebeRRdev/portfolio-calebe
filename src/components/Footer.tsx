@@ -10,7 +10,10 @@ export function Footer({ dict }: { dict: Dictionary["footer"] }) {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <p className={styles.made}>
-          {dict.made}, {new Date().getFullYear()}
+          {dict.madeBy}{" "}
+          <a href="https://github.com/CalebeRRdev" target="_blank" rel="noreferrer" className={styles.handle}>
+            CalebeRRdev
+          </a>
         </p>
         <button type="button" className={styles.top} onClick={scrollToTop}>
           <svg viewBox="0 0 24 32" aria-hidden="true">

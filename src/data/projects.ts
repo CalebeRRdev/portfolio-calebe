@@ -2,10 +2,16 @@
 // Language-independent project data. Copy lives in src/i18n/dictionaries.
 import type { ProjectId, VideoId } from "@/i18n/dictionaries/en";
 
-export type ProjectStatus = "production" | "development";
+export type ProjectStatus = "production" | "development" | "paused";
 
 export type ProjectMedia =
-  | { kind: "videos"; videos: VideoId[]; layout: "phones" | "screens" }
+  | {
+      kind: "videos";
+      videos: VideoId[];
+      layout: "phones" | "screens";
+      /** Optional phone recording placed beside the screens */
+      phoneVideo?: VideoId;
+    }
   | {
       kind: "page";
       /** Tall full-page screenshot, scrolled inside a browser frame */
@@ -48,16 +54,20 @@ export const projects: ProjectMeta[] = [
     id: "ipuy",
     status: "production",
     stack: ["Next.js", "React", "TypeScript", "CSS Modules"],
-    repoUrl: "https://github.com/CalebeRRdev/site-ipuy",
     liveUrl: "https://ipuy.org.uy/",
     liveDisplayText: "ipuy.org.uy",
     tabTitle: "Iglesia Presbiteriana del Uruguay",
     faviconSrc: "/projects/favicon-light.png",
-    media: { kind: "videos", videos: ["ipuy-light", "ipuy-dark"], layout: "screens" },
+    media: {
+      kind: "videos",
+      videos: ["ipuy-light", "ipuy-dark"],
+      layout: "screens",
+      phoneVideo: "ipuy-mobile",
+    },
   },
   {
     id: "mobtech",
-    status: "development",
+    status: "paused",
     stack: ["React Native", "Expo", "TypeScript", "PostGIS"],
     repoUrl: "https://github.com/CalebeRRdev/MobTech_Solutions",
     media: {

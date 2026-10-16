@@ -1,7 +1,8 @@
 // File: src/data/videos.ts
 import type { VideoId } from "@/i18n/dictionaries/en";
 
-export type VideoAspect = "9/16" | "9/19.5" | "16/9" | "16/10";
+/** width/height, e.g. "16/9"; phone captures are 390/664 (iPhone viewport) */
+export type VideoAspect = `${number}/${number}`;
 
 export type VideoItem = {
   id: VideoId;
@@ -15,7 +16,13 @@ export const videos: Record<VideoId, VideoItem> = {
     id: "voltaaflora-mobile",
     src: "/projects/voltaaflora-mobile.mp4",
     poster: "/projects/voltaaflora-mobile.jpg",
-    aspect: "9/19.5",
+    aspect: "390/664",
+  },
+  "ipuy-mobile": {
+    id: "ipuy-mobile",
+    src: "/projects/ipuy-mobile.mp4",
+    poster: "/projects/ipuy-mobile.jpg",
+    aspect: "390/664",
   },
   "mobtech-ios": {
     id: "mobtech-ios",

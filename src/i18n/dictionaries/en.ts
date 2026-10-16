@@ -5,6 +5,7 @@ export type ProductId = "album" | "crm";
 export type ProjectId = "voltaaflora" | "ipuy" | "mobtech";
 export type VideoId =
   | "voltaaflora-mobile"
+  | "ipuy-mobile"
   | "mobtech-ios"
   | "mobtech-android"
   | "ipuy-light"
@@ -45,6 +46,8 @@ export type Dictionary = {
     current: string;
     builtLabel: string;
     stackLabel: string;
+    demoNote: { title: string; body: string };
+    diploma: { view: string; alt: string; caption: string };
     jobs: Record<
       JobId,
       {
@@ -71,6 +74,7 @@ export type Dictionary = {
     subtitle: string;
     production: string;
     development: string;
+    paused: string;
     roleLabel: string;
     repo: string;
     visit: string;
@@ -79,7 +83,15 @@ export type Dictionary = {
     close: string;
     items: Record<
       ProjectId,
-      { title: string; tagline: string; description: string; role: string; year: string }
+      {
+        title: string;
+        tagline: string;
+        description: string;
+        role: string;
+        year: string;
+        /** Invitation shown next to the repository link */
+        invite?: string;
+      }
     >;
     videos: Record<VideoId, { title: string; description: string; tag: string }>;
   };
@@ -98,7 +110,7 @@ export type Dictionary = {
     copied: string;
     labels: { linkedin: string; whatsapp: string; email: string; instagram: string; github: string };
   };
-  footer: { made: string; top: string };
+  footer: { madeBy: string; top: string };
 };
 
 export const en: Dictionary = {
@@ -124,14 +136,14 @@ export const en: Dictionary = {
     role: "Full-stack developer at LetsPic",
     tagline:
       "I build web and mobile products end to end, from the database to the last pixel of the interface.",
-    bio: "I like clean UI, practical UX, and untangling hard problems. Off-screen you'll find me on a basketball court, watching anime, or planning the next trip. The goal is to visit every country one day.",
+    bio: "I like clean UI, practical UX, and solving hard problems. Off-screen you'll find me on a basketball court or a football pitch, watching anime, or planning the next trip. My dream is to visit every country in the world one day, and I'm on my way.",
     nowLabel: "Now",
     now: "Building photo and album tools at LetsPic",
     open: "Open to hearing proposals",
     ctaWork: "See my work",
     ctaContact: "Get in touch",
     portraitAlt: "Portrait of Calebe",
-    ringsCaption: "Each ring is a year of building",
+    ringsCaption: "Each ring is a year of experience, like the growth rings of a tree trunk",
   },
   experience: {
     title: "Experience",
@@ -139,6 +151,15 @@ export const en: Dictionary = {
     current: "Current",
     builtLabel: "What I built",
     stackLabel: "Stack",
+    demoNote: {
+      title: "Why demos instead of screenshots?",
+      body: "These apps are LetsPic products, so showing real screens would break the company's confidentiality. Instead, I rebuilt their core ideas as small interactive examples. Go ahead and click them.",
+    },
+    diploma: {
+      view: "View diploma",
+      alt: "Bachelor's diploma in Software Engineering from UniEVANGÉLICA, personal details hidden",
+      caption: "Personal details hidden. Verifiable at diploma.unievangelica.edu.br",
+    },
     jobs: {
       letspic: {
         org: "LetsPic",
@@ -162,7 +183,7 @@ export const en: Dictionary = {
         org: "Software Engineering",
         role: "Bachelor's degree",
         period: "Graduated Dec 2025",
-        kind: "University",
+        kind: "UniEVANGÉLICA",
         summary:
           "My capstone project (TCC) was MobTech, an urban mobility app built on geospatial data, with real-time tracking and map-based trip flows. The app itself is still unfinished.",
       },
@@ -197,6 +218,7 @@ export const en: Dictionary = {
     subtitle: "Things I designed, built, and shipped.",
     production: "Live",
     development: "In development",
+    paused: "Paused",
     roleLabel: "My role",
     repo: "View repository",
     visit: "Visit site",
@@ -227,9 +249,16 @@ export const en: Dictionary = {
           "My capstone project: a cross-platform app for real-time tracking and trip flows, powered by geospatial data. Built with React Native and Expo, with map-based interactions and a native feel on both platforms.",
         role: "Mobile developer, capstone project",
         year: "2024 — 2025",
+        invite:
+          "The project is paused for now. If you'd like to help bring it back, open an issue or send a pull request. I'd love to keep building it with others.",
       },
     },
     videos: {
+      "ipuy-mobile": {
+        title: "IPUY on a phone",
+        description: "The whole site on an iPhone, in dark mode.",
+        tag: "iPhone",
+      },
       "voltaaflora-mobile": {
         title: "Volta à Flora on a phone",
         description: "The whole page, start to finish, on an iPhone.",
@@ -290,7 +319,7 @@ export const en: Dictionary = {
   contact: {
     title: "Let's build something good together.",
     subtitle:
-      "I'm building at LetsPic and still open to hearing about proposals, freelance work, or simply a good conversation.",
+      "I'm currently working at LetsPic, but I'm still open to hearing proposals and freelance projects, or simply talking about ideas.",
     copyEmail: "Copy email",
     copied: "Copied",
     labels: {
@@ -302,7 +331,7 @@ export const en: Dictionary = {
     },
   },
   footer: {
-    made: "Designed and built by Calebe",
+    madeBy: "Developed by",
     top: "Back to top",
   },
 };

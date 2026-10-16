@@ -24,14 +24,14 @@ export const es: Dictionary = {
     role: "Desarrollador full-stack en LetsPic",
     tagline:
       "Construyo productos web y móviles de punta a punta, desde la base de datos hasta el último píxel de la interfaz.",
-    bio: "Me gusta la UI limpia, la UX práctica y desenredar problemas difíciles. Fuera de la pantalla me encontrarás en una cancha de básquet, viendo anime o planeando el próximo viaje. La meta es conocer todos los países algún día.",
+    bio: "Me gusta la UI limpia, la UX práctica y resolver problemas difíciles. Fuera de la pantalla me encontrarás en una cancha de básquet o de fútbol, viendo anime o planeando el próximo viaje. Mi sueño es conocer todos los países del mundo algún día, y voy en camino.",
     nowLabel: "Ahora",
     now: "Construyendo herramientas de fotos y álbumes en LetsPic",
     open: "Abierto a escuchar propuestas",
     ctaWork: "Ver mi trabajo",
     ctaContact: "Hablemos",
     portraitAlt: "Retrato de Calebe",
-    ringsCaption: "Cada anillo es un año construyendo",
+    ringsCaption: "Cada anillo es un año de experiencia, como los anillos del tronco de un árbol",
   },
   experience: {
     title: "Experiencia",
@@ -39,6 +39,15 @@ export const es: Dictionary = {
     current: "Actual",
     builtLabel: "Lo que construí",
     stackLabel: "Stack",
+    demoNote: {
+      title: "¿Por qué demos y no capturas?",
+      body: "Estas apps son productos de LetsPic, así que mostrar pantallas reales violaría la confidencialidad de la empresa. Por eso recreé sus ideas principales como pequeños ejemplos interactivos. Haz clic y pruébalos.",
+    },
+    diploma: {
+      view: "Ver diploma",
+      alt: "Diploma de licenciatura en Ingeniería de Software de la UniEVANGÉLICA, con datos personales ocultos",
+      caption: "Datos personales ocultos. Verificable en diploma.unievangelica.edu.br",
+    },
     jobs: {
       letspic: {
         org: "LetsPic",
@@ -62,7 +71,7 @@ export const es: Dictionary = {
         org: "Ingeniería de Software",
         role: "Licenciatura",
         period: "Graduado en dic 2025",
-        kind: "Universidad",
+        kind: "UniEVANGÉLICA",
         summary:
           "Mi proyecto de fin de carrera (TCC) fue MobTech, una app de movilidad urbana basada en datos geoespaciales, con seguimiento en tiempo real y flujos de viaje sobre el mapa. La app todavía no está terminada.",
       },
@@ -97,6 +106,7 @@ export const es: Dictionary = {
     subtitle: "Cosas que diseñé, construí y publiqué.",
     production: "En línea",
     development: "En desarrollo",
+    paused: "En pausa",
     roleLabel: "Mi rol",
     repo: "Ver repositorio",
     visit: "Visitar sitio",
@@ -127,9 +137,16 @@ export const es: Dictionary = {
           "Mi proyecto de fin de carrera: una app multiplataforma de seguimiento en tiempo real y flujos de viaje, impulsada por datos geoespaciales. Hecha con React Native y Expo, con interacciones sobre el mapa y sensación nativa en ambas plataformas.",
         role: "Desarrollador mobile, proyecto de fin de carrera",
         year: "2024 — 2025",
+        invite:
+          "El proyecto está en pausa por ahora. Si quieres ayudar a retomarlo, abre un issue o envía un pull request. Me encantaría seguir desarrollándolo junto con otras personas.",
       },
     },
     videos: {
+      "ipuy-mobile": {
+        title: "IPUY en el celular",
+        description: "El sitio completo en un iPhone, en tema oscuro.",
+        tag: "iPhone",
+      },
       "voltaaflora-mobile": {
         title: "Volta à Flora en el celular",
         description: "La página completa, de principio a fin, en un iPhone.",
@@ -190,7 +207,7 @@ export const es: Dictionary = {
   contact: {
     title: "Construyamos algo bueno juntos.",
     subtitle:
-      "Estoy construyendo en LetsPic y sigo abierto a escuchar propuestas, proyectos freelance o simplemente una buena charla.",
+      "Actualmente trabajo en LetsPic, pero sigo abierto a escuchar propuestas, proyectos freelance o simplemente conversar sobre ideas y proyectos.",
     copyEmail: "Copiar correo",
     copied: "Copiado",
     labels: {
@@ -202,7 +219,7 @@ export const es: Dictionary = {
     },
   },
   footer: {
-    made: "Diseñado y desarrollado por Calebe",
+    madeBy: "Desarrollado por",
     top: "Volver arriba",
   },
 };

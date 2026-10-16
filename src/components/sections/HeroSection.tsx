@@ -16,8 +16,9 @@ const RINGS = [
   { r: 184, seed: 4.3, year: "2026", offset: "56%", spin: 200 },
 ];
 const RING_PATHS = RINGS.map((ring) => contourPath(200, 200, ring.r, ring.seed, 0.06));
-// Portrait mask in objectBoundingBox units (0..1)
-const PORTRAIT_CLIP = contourPath(0.5, 0.5, 0.47, 1.3, 0.035);
+// Portrait mask in objectBoundingBox units (0..1). The box is taller than wide,
+// so the ring stretches into an organic pebble around face, neck and shoulders.
+const PORTRAIT_CLIP = contourPath(0.5, 0.5, 0.48, 1.3, 0.05);
 
 export function HeroSection({ dict }: { dict: Dictionary["hero"] }) {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -148,11 +149,11 @@ export function HeroSection({ dict }: { dict: Dictionary["hero"] }) {
               </clipPath>
             </svg>
             <Image
-              src="/projects/profile-pic.png"
+              src="/projects/calebe-portrait.jpg"
               alt={dict.portraitAlt}
-              width={1320}
-              height={2868}
-              sizes="(max-width: 900px) 60vw, 340px"
+              width={700}
+              height={1000}
+              sizes="(max-width: 640px) 45vw, 240px"
               className={styles.photo}
               priority
             />

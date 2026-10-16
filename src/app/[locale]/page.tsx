@@ -21,7 +21,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <main className={styles.main}>
         <RouteLine />
         <HeroSection dict={dict.hero} />
-        <ExperienceSection dict={dict.experience} />
+        <ExperienceSection dict={dict.experience} closeLabel={dict.projects.close} />
         <ProjectsSection dict={dict.projects} />
         <SkillsSection dict={dict.skills} />
         <ContactSection dict={dict.contact} />

@@ -72,7 +72,7 @@ export default async function LocaleLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <TopoField />
         <SmoothScroll />
         <div className="app-shell">

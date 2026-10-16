@@ -8,6 +8,7 @@ import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AlbumDemo } from "@/components/demos/AlbumDemo";
 import { PipelineDemo } from "@/components/demos/PipelineDemo";
+import { DiplomaCard } from "@/components/cards/DiplomaCard";
 import styles from "./ExperienceSection.module.css";
 
 const LETSPIC_STACK = ["Svelte", "Python", "C#", "JavaScript", "CSS", "PostgreSQL", "Azure SWA", "Google Cloud"];
@@ -27,7 +28,13 @@ function Chips({ items }: { items: string[] }) {
   );
 }
 
-export function ExperienceSection({ dict }: { dict: Dictionary["experience"] }) {
+export function ExperienceSection({
+  dict,
+  closeLabel,
+}: {
+  dict: Dictionary["experience"];
+  closeLabel: string;
+}) {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useGSAP(
@@ -90,6 +97,16 @@ export function ExperienceSection({ dict }: { dict: Dictionary["experience"] }) 
             <h4 className={styles.subhead} data-reveal>
               {dict.builtLabel}
             </h4>
+            <aside className={styles.note} data-reveal>
+              <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.noteIcon}>
+                <rect x="5" y="10.5" width="14" height="10" rx="2" />
+                <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3M12 14.5v2.5" />
+              </svg>
+              <div>
+                <p className={styles.noteTitle}>{dict.demoNote.title}</p>
+                <p className={styles.noteBody}>{dict.demoNote.body}</p>
+              </div>
+            </aside>
             <div className={styles.products}>
               <article className={styles.product} data-reveal>
                 <header className={styles.productHead}>
@@ -165,6 +182,17 @@ export function ExperienceSection({ dict }: { dict: Dictionary["experience"] }) 
             </p>
             <div className={styles.stackRow} data-reveal>
               <Chips items={MOBTECH_STACK} />
+            </div>
+            <div data-reveal>
+              <DiplomaCard
+                src="/projects/diploma.jpg"
+                width={841}
+                height={595}
+                alt={dict.diploma.alt}
+                viewLabel={dict.diploma.view}
+                closeLabel={closeLabel}
+                caption={dict.diploma.caption}
+              />
             </div>
           </div>
         </li>

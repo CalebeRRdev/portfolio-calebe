@@ -55,6 +55,7 @@ function Media({ project, dict }: { project: ProjectMeta; dict: Dict }) {
     );
   }
 
+  const phone = media.phoneVideo;
   return (
     <div className={media.layout === "phones" ? styles.phones : styles.screens}>
       {media.videos.map((id) => (
@@ -67,9 +68,24 @@ function Media({ project, dict }: { project: ProjectMeta; dict: Dict }) {
             playLabel={dict.playVideo}
             closeLabel={dict.closeVideo}
             variant={media.layout === "phones" ? "phone" : "screen"}
+            hideCaption={media.layout === "screens"}
           />
         </div>
       ))}
+      {phone && (
+        <div className={styles.screensPhone}>
+          <VideoCard
+            item={videos[phone]}
+            title={dict.videos[phone].title}
+            description={dict.videos[phone].description}
+            tag={dict.videos[phone].tag}
+            playLabel={dict.playVideo}
+            closeLabel={dict.closeVideo}
+            variant="phone"
+            hideCaption
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -105,7 +121,9 @@ export function ProjectsSection({ dict }: { dict: Dict }) {
 
         // Second media item drifts at a different speed: depth between the two
         const items = project.querySelectorAll<HTMLElement>("[data-parallax]");
-        const drifting = items.length > 1 ? items[1] : project.querySelector<HTMLElement>(`.${styles.compositePhone}`);
+        const drifting =
+          project.querySelector<HTMLElement>(`.${styles.compositePhone}, .${styles.screensPhone}`) ??
+          (items.length > 1 ? items[1] : null);
         if (drifting) {
           gsap.fromTo(
             drifting,
@@ -129,7 +147,9 @@ export function ProjectsSection({ dict }: { dict: Dict }) {
       <div className={styles.list}>
         {projects.map((project, i) => {
           const copy = dict.items[project.id];
-          const live = project.status === "production";
+          const statusLabel = { production: dict.production, development: dict.development, paused: dict.paused }[
+            project.status
+          ];
           return (
             <article
               key={project.id}
@@ -142,9 +162,16 @@ export function ProjectsSection({ dict }: { dict: Dict }) {
               <div className={styles.info}>
                 <div className={styles.meta} data-reveal>
                   <span className={styles.year}>{copy.year}</span>
-                  <span className={`${styles.status} ${live ? styles.live : styles.dev}`}>
-                    <span className={styles.statusDot} aria-hidden="true" />
-                    {live ? dict.production : dict.development}
+                  <span className={`${styles.status} ${styles[`status_${project.status}`]}`}>
+                    {project.status === "paused" ? (
+                      <svg viewBox="0 0 12 12" className={styles.pauseIcon} aria-hidden="true">
+                        <rect x="2.5" y="2" width="2.4" height="8" rx="0.8" />
+                        <rect x="7.1" y="2" width="2.4" height="8" rx="0.8" />
+                      </svg>
+                    ) : (
+                      <span className={styles.statusDot} aria-hidden="true" />
+                    )}
+                    {statusLabel}
                   </span>
                 </div>
 
@@ -187,6 +214,18 @@ export function ProjectsSection({ dict }: { dict: Dict }) {
                     </a>
                   )}
                 </div>
+
+                {copy.invite && (
+                  <aside className={styles.invite} data-reveal>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.inviteIcon}>
+                      <circle cx="6" cy="6" r="2.5" />
+                      <circle cx="6" cy="18" r="2.5" />
+                      <circle cx="18" cy="18" r="2.5" />
+                      <path d="M6 8.5v7M18 15.5V10a3 3 0 0 0-3-3h-4M13 4.5 10.5 7l2.5 2.5" />
+                    </svg>
+                    <p>{copy.invite}</p>
+                  </aside>
+                )}
               </div>
             </article>
           );

@@ -24,14 +24,14 @@ export const pt: Dictionary = {
     role: "Desenvolvedor full-stack na LetsPic",
     tagline:
       "Construo produtos web e mobile de ponta a ponta, do banco de dados ao último pixel da interface.",
-    bio: "Gosto de UI limpa, UX prática e de desatar problemas difíceis. Fora da tela, você me encontra numa quadra de basquete, assistindo anime ou planejando a próxima viagem. A meta é conhecer todos os países um dia.",
+    bio: "Gosto de UI limpa, UX prática e de resolver problemas difíceis. Fora da tela, você me encontra numa quadra de basquete, de futebol, assistindo anime ou planejando a próxima viagem. Meu sonho é conhecer todos os países do mundo um dia, e estou no caminho.",
     nowLabel: "Agora",
     now: "Construindo ferramentas de fotos e álbuns na LetsPic",
     open: "Aberto a ouvir propostas",
     ctaWork: "Ver meu trabalho",
     ctaContact: "Fale comigo",
     portraitAlt: "Retrato do Calebe",
-    ringsCaption: "Cada anel é um ano construindo",
+    ringsCaption: "Cada anel é um ano de experiência, como os anéis do tronco de uma árvore",
   },
   experience: {
     title: "Experiência",
@@ -39,6 +39,15 @@ export const pt: Dictionary = {
     current: "Atual",
     builtLabel: "O que construí",
     stackLabel: "Stack",
+    demoNote: {
+      title: "Por que demos em vez de prints?",
+      body: "Esses apps são produtos da LetsPic, então mostrar telas reais seria uma violação da confidencialidade da empresa. Por isso recriei as ideias principais deles como pequenos exemplos interativos. Pode clicar e testar.",
+    },
+    diploma: {
+      view: "Ver diploma",
+      alt: "Diploma de bacharel em Engenharia de Software pela UniEVANGÉLICA, com dados pessoais ocultos",
+      caption: "Dados pessoais ocultos. Verificável em diploma.unievangelica.edu.br",
+    },
     jobs: {
       letspic: {
         org: "LetsPic",
@@ -62,7 +71,7 @@ export const pt: Dictionary = {
         org: "Engenharia de Software",
         role: "Bacharelado",
         period: "Formado em dez 2025",
-        kind: "Universidade",
+        kind: "UniEVANGÉLICA",
         summary:
           "Meu TCC foi o MobTech, um aplicativo de mobilidade urbana baseado em dados geoespaciais, com rastreamento em tempo real e fluxos de viagem no mapa. O app ainda não está finalizado.",
       },
@@ -97,6 +106,7 @@ export const pt: Dictionary = {
     subtitle: "Coisas que desenhei, construí e coloquei no ar.",
     production: "No ar",
     development: "Em desenvolvimento",
+    paused: "Em pausa",
     roleLabel: "Meu papel",
     repo: "Ver repositório",
     visit: "Visitar site",
@@ -127,9 +137,16 @@ export const pt: Dictionary = {
           "Meu TCC: um app multiplataforma de rastreamento em tempo real e fluxos de viagem, movido por dados geoespaciais. Feito com React Native e Expo, com interações no mapa e sensação nativa nas duas plataformas.",
         role: "Desenvolvedor mobile, TCC",
         year: "2024 — 2025",
+        invite:
+          "O projeto está em pausa por enquanto. Se você quiser ajudar a retomá-lo, abra uma issue ou mande um pull request. Vou adorar continuar o desenvolvimento junto com mais gente.",
       },
     },
     videos: {
+      "ipuy-mobile": {
+        title: "IPUY no celular",
+        description: "O site inteiro num iPhone, no tema escuro.",
+        tag: "iPhone",
+      },
       "voltaaflora-mobile": {
         title: "Volta à Flora no celular",
         description: "A página inteira, do início ao fim, num iPhone.",
@@ -190,7 +207,7 @@ export const pt: Dictionary = {
   contact: {
     title: "Vamos construir algo bom juntos.",
     subtitle:
-      "Estou construindo na LetsPic e continuo aberto a ouvir propostas, projetos freelance ou simplesmente uma boa conversa.",
+      "Atualmente trabalho na LetsPic, mas continuo aberto a ouvir propostas, projetos freelance ou simplesmente conversar sobre ideias e projetos.",
     copyEmail: "Copiar e-mail",
     copied: "Copiado",
     labels: {
@@ -202,7 +219,7 @@ export const pt: Dictionary = {
     },
   },
   footer: {
-    made: "Desenhado e desenvolvido pelo Calebe",
+    madeBy: "Desenvolvido por",
     top: "Voltar ao topo",
   },
 };

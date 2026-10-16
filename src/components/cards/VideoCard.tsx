@@ -22,6 +22,11 @@ type Props = {
 
 const morph = { type: "spring", stiffness: 260, damping: 32 } as const;
 
+const isPortrait = (aspect: string) => {
+  const [w, h] = aspect.split("/").map(Number);
+  return h > w;
+};
+
 export function VideoCard({
   item,
   title,
@@ -105,7 +110,7 @@ export function VideoCard({
                 <motion.div
                   layoutId={layoutId}
                   transition={morph}
-                  className={`${styles.player} ${item.aspect.startsWith("9/") ? styles.playerTall : styles.playerWide}`}
+                  className={`${styles.player} ${isPortrait(item.aspect) ? styles.playerTall : styles.playerWide}`}
                   style={
                     {
                       aspectRatio: item.aspect.replace("/", " / "),

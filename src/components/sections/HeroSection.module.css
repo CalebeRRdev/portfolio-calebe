@@ -296,17 +296,17 @@
   fill: var(--accent-ink);
 }
 
+/* Taller than wide: the head rises past the inner ring */
 .portrait {
   position: absolute;
-  inset: 21%;
-  transform-origin: 50% 50%;
+  inset: 12% 27% 21%;
+  transform-origin: 50% 60%;
 }
 
 .photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 42%;
   clip-path: url(#portrait-clip);
   transition: transform 900ms var(--ease-out), filter 600ms var(--ease-out);
 }
@@ -322,11 +322,14 @@
 .caption {
   position: absolute;
   left: 50%;
-  bottom: -6px;
+  top: 100%;
+  width: min(34ch, 100%);
   transform: translateX(-50%);
-  white-space: nowrap;
+  text-align: center;
   font-size: var(--fs-xs);
+  line-height: 1.45;
   color: var(--text-2);
+  text-wrap: balance;
 }
 
 @keyframes spin {
@@ -367,7 +370,7 @@
   .summit {
     justify-self: center;
     width: min(86vw, 340px);
-    margin-block: var(--space-2) var(--space-6);
+    margin-block: var(--space-2) var(--space-16);
   }
 
   .ctas > :first-child {

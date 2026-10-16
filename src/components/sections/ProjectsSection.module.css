@@ -55,6 +55,17 @@
   z-index: 1;
 }
 
+/* Phone sits in the empty corner under the first screen, leaning into the second */
+.screensPhone {
+  grid-column: 1 / 4;
+  grid-row: 2;
+  align-self: start;
+  position: relative;
+  z-index: 2;
+  margin-top: 10%;
+  margin-right: -26%;
+}
+
 .phones {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -115,18 +126,52 @@
   background: currentColor;
 }
 
-.live {
+.status_production {
   background: var(--accent-soft);
   color: var(--accent-ink);
 }
 
-.live .statusDot {
+.status_production .statusDot {
   animation: blink 2.4s var(--ease-in-out) infinite;
 }
 
-.dev {
+.status_development,
+.status_paused {
   background: var(--clay-soft);
   color: var(--text-1);
+}
+
+.pauseIcon {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+
+/* Open invitation to contribute */
+.invite {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--r-sm);
+  border: 1px dashed var(--accent);
+  background: var(--accent-soft);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.inviteIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  fill: none;
+  stroke: var(--accent-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 @keyframes blink {
@@ -281,11 +326,18 @@
     display: none;
   }
 
-  .screens .mediaItem:nth-child(1),
-  .screens .mediaItem:nth-child(2) {
+  .screens .mediaItem:nth-child(n) {
     grid-column: 1 / -1;
     grid-row: auto;
     margin-top: 0;
+  }
+
+  .screensPhone {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    justify-self: center;
+    width: 46%;
+    margin: 0;
   }
 
   .screens {

@@ -25,6 +25,20 @@
   color: var(--text-2);
 }
 
+.handle {
+  font-weight: 600;
+  color: var(--ink);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 100% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.handle:hover {
+  color: var(--accent-ink);
+}
+
 .top {
   display: inline-flex;
   align-items: center;

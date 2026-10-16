@@ -19,7 +19,8 @@ import {
   SiTypescript,
   SiVercel,
 } from "react-icons/si";
-import { TbBrandAzure, TbBrandCSharp } from "react-icons/tb";
+import { TbBrandAzure } from "react-icons/tb";
+import { CSharpIcon } from "@/components/icons/CSharpIcon";
 import type { SkillGroupId, SoftSkillGroupId } from "@/i18n/dictionaries/en";
 
 export type Skill = {
@@ -54,7 +55,7 @@ export const skillGroups: { id: SkillGroupId; skills: Skill[] }[] = [
       { name: "Node.js", icon: SiNodedotjs },
       { name: "Express", icon: SiExpress },
       { name: "Python", icon: SiPython },
-      { name: "C#", icon: TbBrandCSharp },
+      { name: "C#", icon: CSharpIcon },
       { name: ".NET", icon: SiDotnet },
     ],
   },

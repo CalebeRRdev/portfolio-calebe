@@ -121,6 +121,42 @@
   letter-spacing: 0;
 }
 
+/* Why the products are shown as demos */
+.note {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  max-width: 72ch;
+  padding: var(--space-4);
+  border-radius: var(--r-sm);
+  border: 1px dashed var(--line-strong);
+  background: var(--clay-soft);
+}
+
+.noteIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.noteTitle {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.noteBody {
+  font-size: var(--fs-sm);
+  color: var(--text-1);
+  line-height: 1.55;
+}
+
 /* === Products with live demos === */
 .products {
   display: grid;

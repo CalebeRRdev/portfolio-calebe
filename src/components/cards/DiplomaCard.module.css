@@ -1,0 +1,115 @@
+/* File: src/components/cards/DiplomaCard.module.css */
+
+.figure {
+  display: grid;
+  gap: var(--space-3);
+  width: min(100%, 420px);
+  margin-top: var(--space-4);
+}
+
+.slot {
+  position: relative;
+}
+
+/* Rests slightly askew, like a certificate on a desk; straightens on hover */
+.thumb {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow);
+  transform: rotate(-1.6deg);
+  transition: transform 500ms var(--ease-spring), box-shadow 500ms var(--ease-out);
+  cursor: zoom-in;
+}
+
+.thumb:hover {
+  transform: rotate(0deg) translateY(-4px) scale(1.02);
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity var(--dur-base) var(--ease-out), transform 400ms var(--ease-spring);
+}
+
+.thumb:hover .zoom,
+.thumb:focus-visible .zoom {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.zoom svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.caption {
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+
+/* === Full view === */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--paper) 72%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.full {
+  width: min(94vw, 1000px, calc((100svh - 120px) * 841 / 595));
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.55);
+}
+
+.close {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.close svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
