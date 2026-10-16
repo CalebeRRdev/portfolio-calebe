@@ -31,8 +31,12 @@ export function scrollToId(id: string) {
   else window.scrollTo({ top: y, behavior: "smooth" });
 }
 
+/** Fired when a trip to the top ends; EdgeBounce answers with a small slingshot. */
+export const EDGE_BOUNCE_EVENT = "edge-bounce";
+
 export function scrollToTop() {
-  if (lenis) lenis.scrollTo(0, { duration: 1.6 });
+  const arrive = () => window.dispatchEvent(new CustomEvent(EDGE_BOUNCE_EVENT, { detail: 1 }));
+  if (lenis) lenis.scrollTo(0, { duration: 1.6, onComplete: arrive });
   else window.scrollTo({ top: 0, behavior: "smooth" });
 }
 

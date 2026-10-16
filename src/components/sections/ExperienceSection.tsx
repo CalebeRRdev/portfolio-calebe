@@ -185,7 +185,7 @@ export function ExperienceSection({
             </div>
             <div data-reveal>
               <DiplomaCard
-                src="/projects/diploma.jpg"
+                src="/projects/diploma-calebe.jpg"
                 width={841}
                 height={595}
                 alt={dict.diploma.alt}

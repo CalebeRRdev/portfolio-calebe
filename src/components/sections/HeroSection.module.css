@@ -266,7 +266,7 @@
   animation: spin var(--spin, 120s) linear infinite;
 }
 
-.ringGroup:nth-of-type(2) {
+.ringGroup:nth-of-type(even) {
   animation-direction: reverse;
 }
 
@@ -277,7 +277,7 @@
   stroke-width: 1.1;
 }
 
-.ringGroup:last-of-type .ring {
+.ringOuter .ring {
   stroke: var(--accent);
   stroke-opacity: 1;
   stroke-width: 1.6;
@@ -302,7 +302,7 @@
 /* Taller than wide: the head rises past the inner ring */
 .portrait {
   position: absolute;
-  inset: 5% 24% 11%;
+  inset: 3% 21% 8%;
   transform-origin: 50% 60%;
 }
 
@@ -328,11 +328,6 @@
   right: -2%;
   bottom: -1%;
   width: 22ch;
-  padding: 8px 10px;
-  border-radius: var(--r-xs);
-  background: color-mix(in srgb, var(--paper) 86%, transparent);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   text-align: right;
   font-size: var(--fs-xs);
   line-height: 1.45;
@@ -398,10 +393,6 @@
     top: 100%;
     transform: translateX(50%);
     width: min(34ch, 100%);
-    padding: 0;
-    background: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     text-align: center;
   }
 

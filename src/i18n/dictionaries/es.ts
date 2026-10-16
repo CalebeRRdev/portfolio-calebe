@@ -45,8 +45,8 @@ export const es: Dictionary = {
     },
     diploma: {
       view: "Ver diploma",
-      alt: "Diploma de licenciatura en Ingeniería de Software de la UniEVANGÉLICA, con datos personales ocultos",
-      caption: "Datos personales ocultos. Verificable en diploma.unievangelica.edu.br",
+      alt: "Diploma de licenciatura en Ingeniería de Software de la UniEVANGÉLICA",
+      caption: "Verificable en diploma.unievangelica.edu.br",
     },
     jobs: {
       letspic: {
@@ -195,12 +195,12 @@ export const es: Dictionary = {
       mindset: {
         label: "Mentalidad",
         description: "Cómo me presento",
-        items: ["Sentido de dueño", "Responsabilidad", "Resiliencia", "Proactividad", "Atención al detalle"],
+        items: ["UX/UI primero", "Responsabilidad", "Resiliencia", "Proactividad", "Atención al detalle"],
       },
       growth: {
         label: "Crecimiento",
         description: "Cómo sigo mejorando",
-        items: ["Resolución de problemas", "Aprendo rápido", "Adaptabilidad", "Pensamiento crítico", "Creatividad"],
+        items: ["Resolución de problemas", "Aprendizaje rápido", "Adaptabilidad", "Pensamiento crítico", "Creatividad"],
       },
     },
   },

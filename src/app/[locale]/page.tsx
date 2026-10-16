@@ -17,7 +17,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const dict = getDictionary(locale);
 
   return (
-    <>
+    <div data-overscroll>
       <main className={styles.main}>
         <RouteLine />
         <HeroSection dict={dict.hero} />
@@ -27,6 +27,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <ContactSection dict={dict.contact} />
       </main>
       <Footer dict={dict.footer} />
-    </>
+    </div>
   );
 }

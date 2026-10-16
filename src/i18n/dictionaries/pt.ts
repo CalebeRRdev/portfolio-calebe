@@ -45,8 +45,8 @@ export const pt: Dictionary = {
     },
     diploma: {
       view: "Ver diploma",
-      alt: "Diploma de bacharel em Engenharia de Software pela UniEVANGÉLICA, com dados pessoais ocultos",
-      caption: "Dados pessoais ocultos. Verificável em diploma.unievangelica.edu.br",
+      alt: "Diploma de bacharel em Engenharia de Software pela UniEVANGÉLICA",
+      caption: "Verificável em diploma.unievangelica.edu.br",
     },
     jobs: {
       letspic: {
@@ -195,12 +195,12 @@ export const pt: Dictionary = {
       mindset: {
         label: "Mentalidade",
         description: "Como eu me posiciono",
-        items: ["Senso de dono", "Responsabilidade", "Resiliência", "Proatividade", "Atenção aos detalhes"],
+        items: ["UX/UI em primeiro lugar", "Responsabilidade", "Resiliência", "Proatividade", "Atenção aos detalhes"],
       },
       growth: {
         label: "Crescimento",
         description: "Como continuo melhorando",
-        items: ["Resolução de problemas", "Aprendo rápido", "Adaptabilidade", "Pensamento crítico", "Criatividade"],
+        items: ["Resolução de problemas", "Aprendizado rápido", "Adaptabilidade", "Pensamento crítico", "Criatividade"],
       },
     },
   },

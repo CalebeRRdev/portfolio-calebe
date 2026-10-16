@@ -165,6 +165,8 @@ html,
 body {
   max-width: 100%;
   overflow-x: clip;
+  /* The browser's own bounce/glow is replaced by EdgeBounce */
+  overscroll-behavior-y: none;
 }
 
 body {

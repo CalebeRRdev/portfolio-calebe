@@ -10,10 +10,13 @@ import { contourPath } from "@/lib/blob";
 import { Magnetic } from "@/components/ui/Magnetic";
 import styles from "./HeroSection.module.css";
 
+// Like growth rings in a trunk: the oldest year is the innermost ring (university began in 2022)
 const RINGS = [
-  { r: 128, seed: 0.4, year: "2024", offset: "8%", spin: 120 },
-  { r: 156, seed: 2.1, year: "2025", offset: "30%", spin: -160 },
-  { r: 184, seed: 4.3, year: "2026", offset: "56%", spin: 200 },
+  { r: 132, seed: 0.4, year: "2022", offset: "4%", spin: 140 },
+  { r: 148, seed: 1.6, year: "2023", offset: "52%", spin: 170 },
+  { r: 164, seed: 2.9, year: "2024", offset: "10%", spin: 200 },
+  { r: 180, seed: 4.3, year: "2025", offset: "58%", spin: 230 },
+  { r: 196, seed: 5.5, year: "2026", offset: "30%", spin: 260 },
 ];
 const RING_PATHS = RINGS.map((ring) => contourPath(200, 200, ring.r, ring.seed, 0.06));
 // Portrait mask in objectBoundingBox units (0..1). The box is taller than wide,
@@ -125,7 +128,7 @@ export function HeroSection({ dict }: { dict: Dictionary["hero"] }) {
             {RINGS.map((ring, i) => (
               <g
                 key={ring.year}
-                className={styles.ringGroup}
+                className={`${styles.ringGroup} ${i === RINGS.length - 1 ? styles.ringOuter : ""}`}
                 style={{ ["--spin" as string]: `${ring.spin}s` } as React.CSSProperties}
               >
                 <path d={RING_PATHS[i]} className={styles.ring} />
@@ -138,7 +141,7 @@ export function HeroSection({ dict }: { dict: Dictionary["hero"] }) {
             ))}
             {/* Summit marker */}
             <g className={styles.summitMark}>
-              <path d="M200 10 l6 10 h-12 z" />
+              <path d="M200 -10 l6 10 h-12 z" />
             </g>
           </svg>
 
@@ -149,11 +152,11 @@ export function HeroSection({ dict }: { dict: Dictionary["hero"] }) {
               </clipPath>
             </svg>
             <Image
-              src="/projects/calebe-hero-2.jpg"
+              src="/projects/calebe-hero-3.jpg"
               alt={dict.portraitAlt}
               width={770}
-              height={1242}
-              sizes="(max-width: 640px) 50vw, 300px"
+              height={1185}
+              sizes="(max-width: 640px) 55vw, 320px"
               className={styles.photo}
               priority
             />

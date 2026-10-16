@@ -8,6 +8,7 @@ import { getDictionary } from "@/i18n/getDictionary";
 import { THEME_SCRIPT } from "@/lib/theme";
 import { TopoField } from "@/components/TopoField";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { EdgeBounce } from "@/components/EdgeBounce";
 import { Navbar } from "@/components/Navbar";
 
 const display = Bricolage_Grotesque({
@@ -75,6 +76,7 @@ export default async function LocaleLayout({
       <body suppressHydrationWarning>
         <TopoField />
         <SmoothScroll />
+        <EdgeBounce />
         <div className="app-shell">
           <Navbar dict={dict.nav} locale={locale} />
           {children}

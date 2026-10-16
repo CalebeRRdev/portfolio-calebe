@@ -8,6 +8,7 @@ import type { Dictionary } from "@/i18n/getDictionary";
 import { getLenis, scrollToId, scrollToTop } from "@/lib/scroll";
 import { ThemeToggle } from "./ThemeToggle";
 import { LangSwitch } from "./LangSwitch";
+import { SlimeNav } from "./SlimeNav";
 import styles from "./Navbar.module.css";
 
 type NavId = "home" | "experience" | "projects" | "skills" | "contact";
@@ -109,29 +110,7 @@ export function Navbar({ dict, locale }: { dict: Dictionary["nav"]; locale: Loca
           <span className={styles.brandText}>Calebe</span>
         </a>
 
-        <nav className={styles.navDesktop} aria-label="Primary">
-          {NAV_IDS.map((id) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className={`${styles.navLink} ${activeId === id ? styles.navLinkActive : ""}`}
-              aria-current={activeId === id ? "true" : undefined}
-              onClick={(e) => {
-                e.preventDefault();
-                go(id);
-              }}
-            >
-              {activeId === id && (
-                <motion.span
-                  layoutId="nav-active"
-                  className={styles.navActiveBg}
-                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                />
-              )}
-              <span className={styles.navLinkText}>{dict[id]}</span>
-            </a>
-          ))}
-        </nav>
+        <SlimeNav ids={NAV_IDS} labels={dict} activeId={activeId} onGo={go} />
 
         <div className={styles.actions}>
           <LangSwitch locale={locale} label={dict.language} />

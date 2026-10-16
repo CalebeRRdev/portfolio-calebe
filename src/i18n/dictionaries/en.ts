@@ -157,8 +157,8 @@ export const en: Dictionary = {
     },
     diploma: {
       view: "View diploma",
-      alt: "Bachelor's diploma in Software Engineering from UniEVANGÉLICA, personal details hidden",
-      caption: "Personal details hidden. Verifiable at diploma.unievangelica.edu.br",
+      alt: "Bachelor's diploma in Software Engineering from UniEVANGÉLICA",
+      caption: "Verifiable at diploma.unievangelica.edu.br",
     },
     jobs: {
       letspic: {
@@ -307,7 +307,7 @@ export const en: Dictionary = {
       mindset: {
         label: "Mindset",
         description: "How I show up",
-        items: ["Ownership", "Accountability", "Resilience", "Proactiveness", "Attention to detail"],
+        items: ["UX/UI first", "Accountability", "Resilience", "Proactiveness", "Attention to detail"],
       },
       growth: {
         label: "Growth",
