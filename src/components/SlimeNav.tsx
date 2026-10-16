@@ -1,7 +1,7 @@
 // File: src/components/SlimeNav.tsx
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
 import styles from "./Navbar.module.css";
 
@@ -15,16 +15,19 @@ type Props<T extends string> = {
 // Fast start, long soft landing
 const LEAD_EASE = [0.16, 1, 0.3, 1] as const;
 const TRAIL_EASE = [0.33, 1, 0.68, 1] as const;
+/** Slightly longer than the Lenis scroll to a section (1.4s) */
+const TRAVEL_MS = 1700;
 
 /**
  * Desktop nav whose highlight moves like slime in a tube: the leading edge
  * shoots ahead, the trailing edge catches up, and the blob thins as it stretches.
- * It follows the hovered link and settles back on the active section.
+ * It rests on the section in view; after a click it travels straight to the
+ * destination instead of stopping at every section the page scrolls past.
  */
 export function SlimeNav<T extends string>({ ids, labels, activeId, onGo }: Props<T>) {
   const navRef = useRef<HTMLElement | null>(null);
   const linkRefs = useRef(new Map<T, HTMLAnchorElement>());
-  const [hoverId, setHoverId] = useState<T | null>(null);
+  const [clickedId, setClickedId] = useState<T | null>(null);
   const reduced = useReducedMotion();
 
   const left = useMotionValue(0);
@@ -32,12 +35,18 @@ export function SlimeNav<T extends string>({ ids, labels, activeId, onGo }: Prop
   const squash = useMotionValue(1);
   const width = useTransform(() => right.get() - left.get());
   const placed = useRef(false);
+  const targetRef = useRef<T | null>(null);
 
-  const target = hoverId ?? activeId;
+  // While a click-scroll is travelling, ignore the sections it passes through
+  const target = clickedId ?? activeId;
+
+  const travelTimer = useRef(0);
+  useEffect(() => () => window.clearTimeout(travelTimer.current), []);
 
   useLayoutEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
+    targetRef.current = target;
 
     const measure = () => {
       const link = linkRefs.current.get(target);
@@ -72,19 +81,29 @@ export function SlimeNav<T extends string>({ ids, labels, activeId, onGo }: Prop
 
     move(!placed.current);
     placed.current = true;
-
-    const ro = new ResizeObserver(() => move(true));
-    ro.observe(nav);
-    return () => ro.disconnect();
   }, [target, reduced, left, right, squash]);
 
+  // Re-snap (no animation) when the nav changes size, e.g. fonts load or language changes
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    let first = true;
+    const ro = new ResizeObserver(() => {
+      if (first) {
+        first = false; // fires once on observe; the layout effect already placed the pill
+        return;
+      }
+      const link = targetRef.current && linkRefs.current.get(targetRef.current);
+      if (!link) return;
+      left.set(link.offsetLeft);
+      right.set(link.offsetLeft + link.offsetWidth);
+    });
+    ro.observe(nav);
+    return () => ro.disconnect();
+  }, [left, right]);
+
   return (
-    <nav
-      ref={navRef}
-      className={styles.navDesktop}
-      aria-label="Primary"
-      onMouseLeave={() => setHoverId(null)}
-    >
+    <nav ref={navRef} className={styles.navDesktop} aria-label="Primary">
       <motion.span
         className={styles.slime}
         style={{ left, width, scaleY: squash }}
@@ -100,12 +119,12 @@ export function SlimeNav<T extends string>({ ids, labels, activeId, onGo }: Prop
           href={`#${id}`}
           className={`${styles.navLink} ${target === id ? styles.navLinkActive : ""}`}
           aria-current={activeId === id ? "true" : undefined}
-          onMouseEnter={() => setHoverId(id)}
-          onFocus={() => setHoverId(id)}
-          onBlur={() => setHoverId(null)}
           onClick={(e) => {
             e.preventDefault();
-            setHoverId(null);
+            // Hold the pill on the destination for the length of the scroll trip
+            window.clearTimeout(travelTimer.current);
+            setClickedId(id);
+            travelTimer.current = window.setTimeout(() => setClickedId(null), TRAVEL_MS);
             onGo(id);
           }}
         >
