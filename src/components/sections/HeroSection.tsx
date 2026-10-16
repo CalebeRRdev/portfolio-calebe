@@ -149,11 +149,11 @@ export function HeroSection({ dict }: { dict: Dictionary["hero"] }) {
               </clipPath>
             </svg>
             <Image
-              src="/projects/calebe-portrait.jpg"
+              src="/projects/calebe-hero-2.jpg"
               alt={dict.portraitAlt}
-              width={700}
-              height={1000}
-              sizes="(max-width: 640px) 45vw, 240px"
+              width={770}
+              height={1242}
+              sizes="(max-width: 640px) 50vw, 300px"
               className={styles.photo}
               priority
             />
