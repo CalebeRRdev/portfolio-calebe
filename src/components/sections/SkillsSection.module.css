@@ -87,8 +87,8 @@
 }
 
 .maskIcon {
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   background: currentColor;
   -webkit-mask: var(--icon) center / contain no-repeat;
   mask: var(--icon) center / contain no-repeat;

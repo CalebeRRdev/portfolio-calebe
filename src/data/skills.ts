@@ -63,7 +63,7 @@ export const skillGroups: { id: SkillGroupId; skills: Skill[] }[] = [
     id: "data",
     skills: [
       { name: "PostgreSQL", icon: SiPostgresql },
-      { name: "PostGIS", icon: { mask: "/skills/postgis.png" } },
+      { name: "PostGIS", icon: { mask: "/skills/postgis-mark.png" } },
     ],
   },
   {

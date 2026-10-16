@@ -10,7 +10,9 @@ const MAX_PULL = 110;
 /** Higher = more input needed to reach MAX_PULL */
 const RESISTANCE = 240;
 /** Wheel/trackpad: let go once input pauses this long */
-const WHEEL_RELEASE_MS = 140;
+const WHEEL_RELEASE_MS = 120;
+/** A pause this long between wheel events starts a new gesture */
+const GESTURE_GAP_MS = 220;
 
 /**
  * Slingshot effect at the top and bottom of the page: pull past the edge with
@@ -26,6 +28,10 @@ export function EdgeBounce() {
     let pull = 0; // raw input: > 0 pulled down past the top, < 0 pulled up past the bottom
     let releaseTimer = 0;
     let lastTouchY = 0;
+    let lastWheelAt = 0;
+    // Only a gesture that *starts* at an edge may stretch it. The tail of a fast
+    // scroll (trackpad momentum, Lenis catching up) arriving at the top is ignored.
+    let gestureEdge: "top" | "bottom" | null = null;
 
     const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
     const atTop = () => window.scrollY <= 0;
@@ -35,20 +41,32 @@ export function EdgeBounce() {
 
     const rubber = (raw: number) => Math.sign(raw) * MAX_PULL * (1 - Math.exp(-Math.abs(raw) / RESISTANCE));
 
+    // Follow the input closely, smoothed a touch so it feels like scrolling
     const apply = () => {
-      gsap.killTweensOf(el);
-      gsap.set(el, { y: rubber(pull) });
+      gsap.to(el, { y: rubber(pull), duration: 0.16, ease: "power2.out", overwrite: true });
     };
 
     const release = () => {
       window.clearTimeout(releaseTimer);
       if (pull === 0) return;
       pull = 0;
-      gsap.to(el, { y: 0, duration: 1.1, ease: "elastic.out(1, 0.32)", clearProps: "transform" });
+      gsap.to(el, {
+        y: 0,
+        duration: 0.9,
+        ease: "elastic.out(1, 0.45)",
+        overwrite: true,
+        clearProps: "transform",
+      });
     };
 
     const onWheel = (e: WheelEvent) => {
       if (locked()) return;
+      const now = performance.now();
+      if (now - lastWheelAt > GESTURE_GAP_MS) {
+        gestureEdge = atTop() ? "top" : atBottom() ? "bottom" : null;
+      }
+      lastWheelAt = now;
+
       const dy = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;
 
       if ((pull > 0 && dy > 0) || (pull < 0 && dy < 0)) {
@@ -56,8 +74,8 @@ export function EdgeBounce() {
         release();
         return;
       }
-      if (dy < 0 && atTop()) pull -= dy;
-      else if (dy > 0 && atBottom()) pull -= dy;
+      if (dy < 0 && gestureEdge === "top" && atTop()) pull -= dy;
+      else if (dy > 0 && gestureEdge === "bottom" && atBottom()) pull -= dy;
       else return;
 
       apply();
