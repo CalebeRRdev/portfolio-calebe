@@ -3,6 +3,7 @@
 .demo {
   display: grid;
   gap: var(--space-3);
+  container-type: inline-size;
 }
 
 .board {
@@ -18,7 +19,10 @@
 
 .column {
   display: grid;
+  /* minmax(0, …) lets long stage names truncate instead of spilling into the next column */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
+  min-width: 0;
   gap: 6px;
   padding: 6px;
   border-radius: 6px;
@@ -167,5 +171,17 @@
   }
   .card {
     padding: 5px 11px 5px 5px;
+  }
+}
+
+/* Narrow (phones): four columns don't fit, so the pipeline wraps into a 2×2 board */
+@container (max-width: 350px) {
+  .board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 0;
+  }
+
+  .column {
+    min-height: 104px;
   }
 }

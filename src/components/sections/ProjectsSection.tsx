@@ -126,11 +126,13 @@ export function ProjectsSection({ dict }: { dict: Dict }) {
           project.querySelector<HTMLElement>(`.${styles.compositePhone}, .${styles.screensPhone}`) ??
           (items.length > 1 ? items[1] : null);
         if (drifting) {
+          // Stacked on phones: a gentler drift so it never rides over the screen above
+          const drift = window.matchMedia("(max-width: 520px)").matches ? 14 : 40;
           gsap.fromTo(
             drifting,
-            { y: 40 },
+            { y: drift },
             {
-              y: -40,
+              y: -drift,
               ease: "none",
               scrollTrigger: { trigger: project, start: "top bottom", end: "bottom top", scrub: true },
             }

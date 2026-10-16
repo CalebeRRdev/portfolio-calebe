@@ -126,7 +126,7 @@
 .burgerIcon {
   position: relative;
   width: 18px;
-  height: 8px;
+  height: 13px;
 }
 
 .burgerIcon span {
@@ -136,18 +136,25 @@
   height: 1.8px;
   border-radius: 2px;
   background: var(--ink);
-  transition: transform var(--dur-base) var(--ease-out), top var(--dur-base) var(--ease-out);
+  transition: transform var(--dur-base) var(--ease-out), top var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
 }
 
 .burgerIcon span:nth-child(1) { top: 0; }
-.burgerIcon span:nth-child(2) { top: 6px; }
+.burgerIcon span:nth-child(2) { top: 5.6px; }
+.burgerIcon span:nth-child(3) { top: 11.2px; }
 
+/* Open: the outer bars swing into an X while the middle one shrinks away */
 .isOpen .burgerIcon span:nth-child(1) {
-  top: 3px;
+  top: 5.6px;
   transform: rotate(45deg);
 }
 .isOpen .burgerIcon span:nth-child(2) {
-  top: 3px;
+  opacity: 0;
+  transform: scaleX(0.2);
+}
+.isOpen .burgerIcon span:nth-child(3) {
+  top: 5.6px;
   transform: rotate(-45deg);
 }
 

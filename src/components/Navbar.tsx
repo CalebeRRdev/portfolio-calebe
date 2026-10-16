@@ -156,6 +156,7 @@ export function Navbar({ dict, locale }: { dict: Dictionary["nav"]; locale: Loca
             <span className={styles.burgerIcon} aria-hidden="true">
               <span />
               <span />
+              <span />
             </span>
           </button>
         </div>

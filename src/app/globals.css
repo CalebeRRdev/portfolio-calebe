@@ -255,7 +255,7 @@ svg {
    adding scroll height, while the margin still paints it past both page edges. */
 [data-overscroll] {
   overflow: clip;
-  overflow-clip-margin: 160px;
+  overflow-clip-margin: 480px;
 }
 
 /* === Layout shell === */

@@ -23,11 +23,25 @@ const morph = { type: "spring", stiffness: 260, damping: 30 } as const;
 export function DiplomaCard({ src, width, height, alt, viewLabel, closeLabel, caption }: Props) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [settled, setSettled] = useState(false);
+  const slotRef = useRef<HTMLDivElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect -- portal target only exists on the client
   useEffect(() => setMounted(true), []);
+
+  // Touch screens have no hover to straighten it: it settles once it's in view
+  useEffect(() => {
+    const slot = slotRef.current;
+    if (!slot || !window.matchMedia("(hover: none)").matches) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setSettled(entry.intersectionRatio >= 0.6),
+      { threshold: [0, 0.6] }
+    );
+    io.observe(slot);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -48,7 +62,7 @@ export function DiplomaCard({ src, width, height, alt, viewLabel, closeLabel, ca
 
   return (
     <figure className={styles.figure}>
-      <div className={styles.slot} style={{ aspectRatio: `${width} / ${height}` }}>
+      <div ref={slotRef} className={styles.slot} style={{ aspectRatio: `${width} / ${height}` }}>
         {!open && (
           <motion.button
             ref={triggerRef}
@@ -56,6 +70,7 @@ export function DiplomaCard({ src, width, height, alt, viewLabel, closeLabel, ca
             layoutId="diploma"
             transition={morph}
             className={styles.thumb}
+            data-settled={settled || undefined}
             onClick={() => setOpen(true)}
             aria-label={viewLabel}
           >
