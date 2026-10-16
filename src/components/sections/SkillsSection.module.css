@@ -1,7 +1,7 @@
 /* File: src/components/sections/SkillsSection.module.css */
 
 .section {
-  padding-block: clamp(72px, 12vw, 160px);
+  padding-block: clamp(40px, 6vw, 80px);
 }
 
 /* A map legend: framed box with a tab label on its border */

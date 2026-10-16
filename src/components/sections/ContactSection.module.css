@@ -1,7 +1,7 @@
 /* File: src/components/sections/ContactSection.module.css */
 
 .section {
-  padding-block: clamp(72px, 12vw, 160px) clamp(56px, 8vw, 96px);
+  padding-block: clamp(40px, 6vw, 80px) clamp(56px, 8vw, 96px);
 }
 
 /* === Email === */
